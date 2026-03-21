@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 2: Advanced Classical Ciphers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; z-index: 1; position: relative; }
+        .section-panel { background: var(--panel-bg); border: 1px solid var(--secondary-color); padding: 2.5rem; margin-bottom: 3rem; position: relative; box-shadow: 0 0 15px rgba(0, 0, 0, 0.9); animation: fadeIn 0.5s ease forwards; opacity: 0; backdrop-filter: blur(5px); }
+        .section-panel:hover { border-color: var(--primary-color); box-shadow: var(--border-glow); }
+        h2.cyber-heading { color: var(--primary-color); border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; font-size: 1.8rem; text-transform: uppercase; text-shadow: 0 0 5px rgba(0, 229, 255, 0.3); direction: ltr; }
+        h2.cyber-heading::before { content: '[SEC.02] '; color: var(--secondary-color); margin-right: 15px; font-size: 1.2rem; animation: blink 1s infinite step-start; }
+        h3.sub-heading { color: var(--primary-color); margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem; border-left: 3px solid var(--primary-color); padding-left: 10px; direction: rtl; text-align: right; }
+        
+        .cyber-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: var(--font-code); background: rgba(0,0,0,0.6); }
+        .cyber-table th, .cyber-table td { border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px; text-align: center; font-size: 1.1rem; }
+        .cyber-table th { background: rgba(0, 229, 255, 0.1); color: var(--primary-color); font-weight: bold; }
+        
+        .playfair-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; max-width: 300px; margin: 20px auto; }
+        .pf-cell { border: 1px solid rgba(0, 229, 255, 0.5); padding: 15px; text-align: center; font-family: var(--font-code); font-size: 1.2rem; background: rgba(11, 15, 25, 0.8); color: #fff; transition: 0.3s; }
+        .pf-cell:hover { background: rgba(0, 229, 255, 0.2); border-color: #00e5ff; box-shadow: 0 0 10px #00e5ff; transform: scale(1.05); }
+        
+        .svg-container { display: flex; justify-content: center; align-items: center; margin: 30px 0; padding: 30px; background: rgba(11, 15, 25, 0.8); border: 1px dashed rgba(0, 229, 255, 0.4); border-radius: 4px; overflow-x: auto; flex-direction: column; }
+        .flow-path { stroke-dasharray: 10; animation: dash 1s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: -20; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .badge { display: inline-block; padding: 4px 10px; background: rgba(0, 229, 255, 0.2); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 2px; font-size: 0.6em; margin-left: 15px; font-weight: bold; vertical-align: middle; }
+        
+        .ar-text { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #e2e8f0; margin: 15px 0; padding: 15px 20px; border-right: 3px solid var(--primary-color); background: rgba(0, 229, 255, 0.02); line-height: 1.8; font-size: 1.1rem; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; direction: rtl; }
+        .stat-card { background: rgba(11, 15, 25, 0.6); border: 1px solid #333; padding: 20px; transition: 0.3s; position: relative; overflow: hidden; text-align: center; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--primary-color); opacity: 0.5; }
+        .stat-card:hover { border-color: rgba(0, 229, 255, 0.5); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 229, 255, 0.1); }
+        .stat-card:hover::before { opacity: 1; box-shadow: 0 0 10px var(--primary-color); }
+        
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); padding: 10px 25px; font-family: var(--font-code); background: rgba(0,0,0,0.8); }
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="SECTION 2" style="font-size: 4rem; color: #fff;">SECTION 2</h1>
+            </div>
+            <p style="color: #00e5ff; font-size: 1.8rem; letter-spacing: 2px;">ADVANCED CLASSICAL CIPHERS</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">AUTHORIZATION LEVEL: MAX | CLEARANCE: HACKER</div>
+        </header>
+
+        <!-- 1. INTRO & ROT13 -->
+        <div class="section-panel" style="animation-delay: 0.1s;">
+            <h2 class="cyber-heading">1. ROT13 Cipher <span class="badge">SHIFT BY 13</span></h2>
+            <div class="ar-text">
+                في السيكشن اللي فات اتكلمنا عن أساسيات التشفير زي الـ (Caesar) والـ (Columnar). النهاردة هنكمل المشوار مع نوعين أقوى ومهمين جداً.. ونبدأ بالخفيفة اللي بتيجي كتير في المسائل: <b>ROT13</b>.<br><br>
+                <b>ROT13</b> هي اختصار لجملة (Rotate by 13). باختصار شديد، هي مجرد حالة خاصة من (شفرة قيصر) القديمة، بس هنا المفتاح متثبت ومبيتغيرش أبداً: <b>Key = 13</b>.<br>
+                يعني كل اللي بنعمله إننا بنشفت أي حرف في الرسالة 13 خطوة لقدام في الأبجدية الإنجليزية، فنلاقي (A) بقت (N)، و(B) بقت (O) وهكذا.
+            </div>
+
+            <div class="grid-2">
+                <div class="stat-card" style="border-top: 2px solid #a855f7;">
+                    <h3 style="color:#a855f7;">ميزة ساحرة رياضياً</h3>
+                    <div class="ar-text" style="background:none; border:none; padding:10px 0;">
+                        الميزة الغريبة في ROT13 إن نفس العملية هي هي اللي بتستخدم في الـ (Encryption) والـ (Decryption)! ليه؟ لأن الأبجدية 26 حرف، فلو لفينا 13 خطوة قدام (تشفير)، وعايزين نرجع لفينا 13 كمان (فك تشفير).. هنلاقي نفسنا رجعنا لنقطة الصفر وظهرلنا الحرف الأصلي!
+                    </div>
+                </div>
+                <div class="stat-card" style="border-top: 2px solid #ef4444;">
+                    <h3 style="color:#ef4444;">استخداماتها الحالية</h3>
+                    <div class="ar-text" style="background:none; border:none; padding:10px 0;">
+                        الـ ROT13 مش مستخدمة تماماً في التشفير الحقيقي عشان تتكسر في ثانية بالعين المجردة للهاكرز. لكن بتُستخدم كأمثلة تعليمية أو لتخبئة "حرق أحداث فيلم" (Spoilers) في المنتديات القديمة على الإنترنت.
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="sub-heading" style="color:#00e5ff; border-right-color:#00e5ff;">أمثلة للحل (Rot13 Walkthrough)</h3>
+            <div class="ar-text">
+                <b>مثال التشفير:</b> لو عندنا الكلمة (HELLO)<br>
+                H → يتحرك 13 خطوة يبقى → U <br>
+                E → R | L → Y | L → Y | O → B<br>
+                إذن الـ <b>Ciphertext:</b> URYYB.<br><br>
+
+                <b>مثال لفك التشفير:</b> لو الدكتور جابلك (QHPX) وعايزك تفكها، هتطبق نفس الـ 13 خطوة القدام:<br>
+                Q → D | H → U | P → C | X → K<br>
+                إذن الـ <b>Plaintext:</b> DUCK.
+            </div>
+        </div>
+
+        <!-- 2. PLAYFAIR INTRO -->
+        <div class="section-panel" style="animation-delay: 0.2s; border-color: #f97316;">
+            <h2 class="cyber-heading" style="color: #f97316; border-bottom-color:rgba(249, 115, 22, 0.3);">2. Playfair Cipher <span class="badge" style="border-color:#f97316; color:#f97316;">PAIRED BLOCKS</span></h2>
+            <div class="ar-text" style="border-right-color:#f97316;">
+                دلوقتي نروح لخوارزمية أعقد وأقوى بكتير من اللي فاتوا اسمها <b>Playfair Cipher</b>.<br>
+                ودي مختلفة عنهم جوهرياً، لأنها مابتشفرش حرف حرف لوحده (زي قيصر و Rot13).. دي بتشفر <b>كل حرفين مع بعض (Pair of letters)</b>.
+            </div>
+            
+            <h3 class="sub-heading" style="color:#f97316; border-right-color:#f97316;">تجهيزات الحل الأول (Preprocessing Rules)</h3>
+            <div class="ar-text" style="border-right-color:#f97316;">
+                مستحيل تبدأ تحل مسألة Playfair من غير ما تعمل التجهيزات دي بالمللي عشان المسألة ماتضربش منك:<br>
+                1️⃣ <b>بناء المصفوفة الـ (5x5):</b> بنرسم جدول 5 صفوف في 5 أعمدة. ونرص فيه الـ Key في الأول من الشمال لليمين بدون تكرار! ونكمل باقي مساحات الجدول بباقي الحروف الإنجليزية، وبما إن الحروف 26 والمربعات 25، فدايماً هتحشر حرفين <b style="color:#fff;">(I / J)</b> سوا في مربع واحد.<br><br>
+                2️⃣ <b>تقسيم رسالتك لـ أزواج (Pairs):</b> نقطع الكلمة اللي هنشفرها حتت كل حتة حرفين.<br><br>
+                3️⃣ <b>حل مشكلة الحروف الزوجية:</b> لو بتقطع ولقيت نفس الحرفين مع بعض (مثال: LL)، بنضطر نحشر حرف غريب في النص وليكن <b>X</b> فنفصلهم.<br><br>
+                4️⃣ <b>لو عدد الحروف بقى فردي:</b> لو بنقطع ومتبقي حرف واحد في الآخر لوحده يتيم، بنسنده برضه بحرف الـ <b>X</b> عشان يبقوا Pair.
+            </div>
+
+            <!-- THE BIG TRICK EXPLANATION -->
+            <div class="ar-text" style="background:rgba(239, 68, 68, 0.05); border-right-color:#ef4444; border-radius:4px;">
+                <b style="color:#ef4444; font-size:1.2rem;">تريكة درجات ليه حطينا الـ X دي أصلاً؟ (سؤال الميدتيرم!)</b><br>
+                النقطة دي الطلبة بتتلخبط فيها دايماً في الـ Playfair.. ليه بحط حرف الـ X؟<br>
+                لأن فيه قاعدة ذهبية في اللعبة دي بتقول: <b>يُمنع منعاً باتاً تشفير زوج مكون من نفس الحرف.</b><br>
+                مثلاً كلمة (BALLOON)، لو قطعناها عادي: BA / <b>LL</b> / OO / N.<br>
+                الـ LL دي ممنوعة وهتدمر المصفوفة، فبنحط استيكة وهمية بينهم (X) كعازل!<br>
+                فتبقى: L X. ونرجع نقطع من الأول وجديد: BA / LX / LO / ON.<br>
+                نفس الكلام حصل في كلمة (HELLO) اتقطعت لـ: HE / LX / LO.
+            </div>
+        </div>
+
+        <!-- 3. HOW ENCRYPTION WORKS (RULES) -->
+        <div class="section-panel" style="animation-delay: 0.3s; background: rgba(11, 15, 25, 0.9);">
+            <h2 class="cyber-heading">3. Playing the Fair Game (Encryption Rules) <span class="badge">MATRIX ALGORITHM</span></h2>
+            <div class="ar-text">
+                بعد ما بنيت المصفوفة وقطعت الكلمة اتنينات اتنينات، هنطبق 3 قواعد أساسية عشان نطلع الشفرة (Ciphertext):
+            </div>
+
+            <div class="grid-3" style="direction:ltr; text-align:left;">
+                <div class="stat-card" style="border-top: 2px solid #00e5ff; direction:rtl; text-align:right;">
+                    <h3 style="color:#00e5ff;">1. في نفس الصف (Same Row)</h3>
+                    <p style="color:#aaa; font-size:0.9rem;">
+                        لو الحرفين بتاع الـ Pair المعين طلعوا في نفس مستوى الصف! بنحرك كل حرف فيهم <b style="color:#fff;">خطوة واحدة لليمين</b> وناخد بديله.. ولو الحرف أصلاً في آخر المربع يمين، بنلفه من ورا ونبدأ من أول العمود شمال (كأن المربع استيكة بتلف).
+                    </p>
+                </div>
+                <div class="stat-card" style="border-top: 2px solid #a855f7; direction:rtl; text-align:right;">
+                    <h3 style="color:#a855f7;">2. في نفس العمود (Same Col)</h3>
+                    <p style="color:#aaa; font-size:0.9rem;">
+                        لو الحرفين وقعوا فوق بعض في نفس العمود! بنحرك كل حرف <b style="color:#fff;">خطوة واحدة لتحت</b> وناخد الحرف الجديد.. ولو الحرف في القاع تحت خالص، بنلفه ونبدأ من قمة العمود فوق.
+                    </p>
+                </div>
+                <div class="stat-card" style="border-top: 2px solid #10b981; direction:rtl; text-align:right;">
+                    <h3 style="color:#10b981;">3. قاعدة المستطيل (Rectangle)</h3>
+                    <p style="color:#aaa; font-size:0.9rem;">
+                        لو الحرفين ولا هم صف ولا عمود وواقعين بالعرض عن بعض.. كده كونوا "مستطيل وهمي" بمكانهم، الحل إننا بنستبدل كل حرف بالحرف المقابل له في العمود التاني لنفس المستطيل!
+                    </p>
+                </div>
+            </div>
+
+            <!-- EXAMPLES WALKTHROUGH -->
+            <h3 class="sub-heading" style="color:#fff; border-right-color:#fff;">مثال 1: بالبلدي والماتريكس (Encryption Check)</h3>
+            <div class="ar-text">
+                عايزين نشفر الكلمة اللي اتكلمنا عليها <b>(BALLOON)</b> بالمفتاح <b>(MONARCHY)</b>.<br>
+                <b>الخطوة 1:</b> رسم المصفوفة وحط المفتاح في الأول (بدون تكرار حروف) وكمل باقي الأبجدية، هتبقى كدة:<br>
+                <b>الخطوة 2:</b> بعد تقطيعنا وحل مشكلة التكرار للـ BALLOON بقت: BA / LX / LO / ON.<br>
+            </div>
+
+            <div class="ar-text" style="background:rgba(0, 0, 0, 0.4); border:1px solid #333;">
+                <h4 style="color:#00e5ff; text-align:center;">الخطوة 3: شرح تشفير كل Pair على الماتريكس</h4>
+                
+                <!-- STEP 1: BA -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#f97316;">👉 الزوج الأول (BA):</b><br>
+                    بنبص على الـ B والـ A نلاقيهم تحت بعض في <b style="color:#fff;">نفس العمود!</b> (عمود 4). القاعدة بتقول ننزل لكل واحد خطوة لتحت.<br>الـ B تحتيها I/J، والـ A تحتيها B. إذن (BA) تتحول لـ <b>(IB)</b>.
+                    <div class="playfair-grid" style="transform: scale(0.85); margin: 10px auto;">
+                        <div class="pf-cell">M</div><div class="pf-cell">O</div><div class="pf-cell">N</div><div class="pf-cell" style="background:#f97316; color:#000;">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell" style="background:#f97316; color:#000; box-shadow:0 0 10px #f97316;">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell">S</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: LX -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#f97316;">👉 الزوج التاني (LX):</b><br>
+                    دول ولا صف ولا عمود، دول عاملين <b style="color:#fff;">مستطيل وهمي</b>. بناخد الزوايا المقابلة ليهم، الـ L قدامها في اخر المستطيل S، والـ X قدامها U. إذن (LX) تتحول لـ <b>(SU)</b>.
+                    <div class="playfair-grid" style="transform: scale(0.85); margin: 10px auto;">
+                        <div class="pf-cell">M</div><div class="pf-cell">O</div><div class="pf-cell">N</div><div class="pf-cell">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell" style="background:#f97316; color:#000;">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">S</div><div class="pf-cell">T</div>
+                        <div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell" style="background:#f97316; color:#000; box-shadow:0 0 10px #f97316;">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: LO -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#f97316;">👉 الزوج التالت (LO):</b><br>
+                    برضه <b style="color:#fff;">مستطيل وهمي</b>. الـ L في آخر الشمال تحت والـ O فوق. بناخد الزوايا المقابلة: L قدامها P، والـ O قدامها M. إذن (LO) تتحول لـ <b>(PM)</b>.
+                    <div class="playfair-grid" style="transform: scale(0.85); margin: 10px auto;">
+                        <div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">M</div><div class="pf-cell" style="background:#f97316; color:#000;">O</div><div class="pf-cell">N</div><div class="pf-cell">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell" style="background:#f97316; color:#000; box-shadow:0 0 10px #f97316;">L</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">P</div><div class="pf-cell">Q</div><div class="pf-cell">S</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: ON -->
+                <div style="margin-top: 20px;">
+                    <b style="color:#f97316;">👉 الزوج الرابع والأخير (ON):</b><br>
+                    حلاوة دول إنهم في <b style="color:#fff;">نفس الصف</b> فوق! نمشي يمين لكل حرف خطوة.. الـ O يمينها N، والـ N يمينها A. إذن (ON) تتحول لـ <b>(NA)</b>.
+                    <div class="playfair-grid" style="transform: scale(0.85); margin: 10px auto;">
+                        <div class="pf-cell">M</div><div class="pf-cell" style="background:#f97316; color:#000;">O</div><div class="pf-cell" style="background:#f97316; color:#000; box-shadow:0 0 10px #f97316;">N</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell">S</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; padding-top:10px; border-top:1px dashed #333; margin-top:20px;">
+                    <b>النتيجة النهائية للرسالة (Ciphertext) بقت:</b> <span style="color:#00e5ff; font-size:1.3rem;">IBSUPMNA</span>
+                </div>
+            </div>
+            
+            <h3 class="sub-heading" style="color:#10b981; border-right-color:#10b981;">مثال 2: بصمجة الماتريكس بسرعة 🚀</h3>
+            <div class="ar-text">
+                الكلمة المرة دي: <b>ROCKY</b> والمفتاح <b>LARKSPUR</b>.<br>
+                <b>الخطوة 1:</b> نبني الماتريكس ونرص مفتاحنا ونشيل الحروف المكررة (زي الـ R). كمل الأبجدية:
+            </div>
+
+            <!-- Matrix for LARKSPUR -->
+            <div class="playfair-grid">
+                <div class="pf-cell" style="color:#10b981;">L</div><div class="pf-cell" style="color:#10b981;">A</div><div class="pf-cell" style="color:#10b981;">R</div><div class="pf-cell" style="color:#10b981;">K</div><div class="pf-cell" style="color:#10b981;">S</div>
+                <div class="pf-cell" style="color:#10b981;">P</div><div class="pf-cell" style="color:#10b981;">U</div><div class="pf-cell">B</div><div class="pf-cell">C</div><div class="pf-cell">D</div>
+                <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell">H</div><div class="pf-cell" style="font-size:1rem;">I/J</div>
+                <div class="pf-cell">M</div><div class="pf-cell">N</div><div class="pf-cell">O</div><div class="pf-cell">Q</div><div class="pf-cell">T</div>
+                <div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Y</div><div class="pf-cell">Z</div>
+            </div>
+
+            <div class="ar-text" style="background:rgba(0, 0, 0, 0.4); border:1px solid #333; margin-top:20px;">
+                <h4 style="color:#10b981; text-align:center;">الخطوة 3: تطبيق قواعد الماتريكس بتركيز للمثال التاني</h4>
+                
+                <!-- STEP 1: RO -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#10b981;">👉 الزوج الأول (RO):</b><br>
+                    واقعين في <b style="color:#fff;">نفس العمود</b> (عمود 3)! ننزل خطوة لتحت لكل واحد → الـ R تحتيها B، والـ O تحتيها X.. يبقوا <b>(BX)</b>.
+                    <div class="playfair-grid" style="transform: scale(0.85); margin: 10px auto;">
+                        <div class="pf-cell">L</div><div class="pf-cell">A</div><div class="pf-cell" style="background:#10b981; color:#000;">R</div><div class="pf-cell">K</div><div class="pf-cell">S</div>
+                        <div class="pf-cell">P</div><div class="pf-cell">U</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">B</div><div class="pf-cell">C</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell">H</div><div class="pf-cell" style="font-size:1rem;">I/J</div>
+                        <div class="pf-cell">M</div><div class="pf-cell">N</div><div class="pf-cell" style="background:#10b981; color:#000; box-shadow:0 0 10px #10b981;">O</div><div class="pf-cell">Q</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">X</div><div class="pf-cell">Y</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: CK -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#10b981;">👉 الزوج التاني (CK):</b><br>
+                    برضه في <b style="color:#fff;">نفس العمود</b> (عمود 4)! ننزل خطوة لتحت → الـ K تحتيها C (لأن الكلمة أصلها C ثم K يعني نبدأ بالـ C)، الـ C تحتيها H، والـ K تحتيها C.. يبقوا <b>(HC)</b>.
+                    <div class="playfair-grid" style="transform: scale(0.85); margin: 10px auto;">
+                        <div class="pf-cell">L</div><div class="pf-cell">A</div><div class="pf-cell">R</div><div class="pf-cell" style="background:#10b981; color:#000;">K</div><div class="pf-cell">S</div>
+                        <div class="pf-cell">P</div><div class="pf-cell">U</div><div class="pf-cell">B</div><div class="pf-cell" style="background:#10b981; color:#000; box-shadow:0 0 10px #10b981; border-color:#00e5ff;">C</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">H</div><div class="pf-cell" style="font-size:1rem;">I/J</div>
+                        <div class="pf-cell">M</div><div class="pf-cell">N</div><div class="pf-cell">O</div><div class="pf-cell">Q</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Y</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: YX -->
+                <div style="margin-top: 20px;">
+                    <b style="color:#10b981;">👉 الزوج التالت والأخير (YX):</b><br>
+                    دول في <b style="color:#fff;">نفس الصف</b> تحت خالص! نمشي يمين خطوة بدوران → الـ Y يمينها Z، والـ X يمينها Y.. يبقوا <b>(ZY)</b>.
+                    <div class="playfair-grid" style="transform: scale(0.85); margin: 10px auto;">
+                        <div class="pf-cell">L</div><div class="pf-cell">A</div><div class="pf-cell">R</div><div class="pf-cell">K</div><div class="pf-cell">S</div>
+                        <div class="pf-cell">P</div><div class="pf-cell">U</div><div class="pf-cell">B</div><div class="pf-cell">C</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell">H</div><div class="pf-cell" style="font-size:1rem;">I/J</div>
+                        <div class="pf-cell">M</div><div class="pf-cell">N</div><div class="pf-cell">O</div><div class="pf-cell">Q</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell" style="background:#10b981; color:#000;">X</div><div class="pf-cell" style="background:#10b981; color:#000; box-shadow:0 0 10px #10b981; border-color:#00e5ff;">Y</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">Z</div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; padding-top:10px; border-top:1px dashed #333; margin-top:20px;">
+                    <b>رسالة الـ Ciphertext بقت:</b> <span style="color:#00e5ff; font-size:1.3rem;">BXHCZY</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. DECRYPTION -->
+        <div class="section-panel" style="animation-delay: 0.4s; border-color: #a855f7;">
+            <h2 class="cyber-heading" style="color: #a855f7; border-bottom-color: rgba(168, 85, 247, 0.3);">4. Reverse Engineering (Decryption) <span class="badge" style="border-color:#a855f7; color:#a855f7;">DECODE PLAYFAIR</span></h2>
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                إزاي لو معانا الشفرة نرجعها لأصلها؟ (فك التشفير في Playfair).<br>
+                هو هواه التشفير بالمللي، هنرسم نفس المصفوفة باستخدام المفتاح، لكن <b>هنعكس الحركات (Shifts)</b>! يعني:<br><br>
+                1. <b>لو في نفس الصف:</b> بدل ما بنمشي يمين التشفير، هنعكس ونمشي <b style="color:#00e5ff;">خطوة شمال</b>.<br>
+                2. <b>لو نفس العمود:</b> بدل ما ننزل تحت، هنعكس ونطلع <b style="color:#00e5ff;">خطوة لفوق</b>.<br>
+                3. <b>لو مستطيل:</b> بنطبق "نفس القاعدة من غير ما نعكس حاجة" بناخد الطرف المعاكس للمستطيل.
+            </div>
+
+            <h3 class="sub-heading" style="color:#a855f7; border-right-color:#a855f7;">فك شبكة معقدة (Decryption Challenge)</h3>
+            <div class="ar-text">
+                تخيل الميدتيرم جابلك الـ Ciphertext ده: <b>(GATLMZCLRQTX)</b> والمفتاح كان حبيبنا <b>(MONARCHY)</b>.<br>
+                <b>الخطوة 1:</b> رسم الماتريكس بتاعتنا (بتاعة أول مثال فوق).<br>
+                <b>الخطوة 2:</b> نقطع الشفرة لأزواج: GA / TL / MZ / CL / RQ / TX.
+            </div>
+
+            <div class="playfair-grid">
+                <div class="pf-cell" style="color:#a855f7;">M</div><div class="pf-cell" style="color:#a855f7;">O</div><div class="pf-cell" style="color:#a855f7;">N</div><div class="pf-cell" style="color:#a855f7;">A</div><div class="pf-cell" style="color:#a855f7;">R</div>
+                <div class="pf-cell" style="color:#a855f7;">C</div><div class="pf-cell" style="color:#a855f7;">H</div><div class="pf-cell" style="color:#a855f7;">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="font-size:1rem;">I/J</div><div class="pf-cell">K</div>
+                <div class="pf-cell">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell">S</div><div class="pf-cell">T</div>
+                <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+            </div>
+
+            <div class="ar-text" style="background:rgba(168, 85, 247, 0.05); border:1px solid #333; margin-top:20px;">
+                <h4 style="color:#a855f7; text-align:center;">الخطوة 3: نطبق قواعد العكس (Decryption) لكل Pair</h4>
+
+                <!-- GA -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#a855f7;">👉 (GA):</b> مستطيل وهمي بالعرض → بيبدلوا أطرافهم ويدونا <b>IN</b>.
+                    <div class="playfair-grid" style="transform: scale(0.65); margin: 0 auto; margin-top:-30px; margin-bottom:-30px;">
+                        <div class="pf-cell">M</div><div class="pf-cell">O</div><div class="pf-cell">N</div><div class="pf-cell" style="background:#a855f7; color:#fff;">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell" style="background:#a855f7; color:#fff;">G</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff; font-size:1rem;">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell">S</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- TL -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#a855f7;">👉 (TL):</b> دول مستطيل برضه → بيبدلوا يدينا <b>ST</b>.
+                    <div class="playfair-grid" style="transform: scale(0.65); margin: 0 auto; margin-top:-30px; margin-bottom:-30px;">
+                        <div class="pf-cell">M</div><div class="pf-cell">O</div><div class="pf-cell">N</div><div class="pf-cell">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="font-size:1rem;">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell" style="background:#a855f7; color:#fff;">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">S</div><div class="pf-cell" style="background:#a855f7; color:#fff;">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- MZ -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#a855f7;">👉 (MZ):</b> مستطيل عملاق من أطراف الماتريكس → يدونا <b>RU</b>.
+                    <div class="playfair-grid" style="transform: scale(0.65); margin: 0 auto; margin-top:-30px; margin-bottom:-30px;">
+                        <div class="pf-cell" style="background:#a855f7; color:#fff;">M</div><div class="pf-cell">O</div><div class="pf-cell">N</div><div class="pf-cell">A</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="font-size:1rem;">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell">S</div><div class="pf-cell">T</div>
+                        <div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell" style="background:#a855f7; color:#fff;">Z</div>
+                    </div>
+                </div>
+
+                <!-- CL -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#a855f7;">👉 (CL):</b> دول <b style="color:#fff;">نفس العمود</b>! <b>في الفك بنطلع <span style="color:#00e5ff;">لفوق خطوة</span></b> → الـ C فوقها M والـ L فوقها E، يبقوا <b>ME</b>.
+                    <div class="playfair-grid" style="transform: scale(0.65); margin: 0 auto; margin-top:-30px; margin-bottom:-30px;">
+                        <div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">M</div><div class="pf-cell">O</div><div class="pf-cell">N</div><div class="pf-cell">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell" style="background:#a855f7; color:#fff;">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="font-size:1rem;">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell" style="background:#a855f7; color:#fff;">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell">S</div><div class="pf-cell">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- RQ -->
+                <div style="margin-top: 20px; border-bottom:1px dashed #444; padding-bottom:15px;">
+                    <b style="color:#a855f7;">👉 (RQ):</b> مستطيل وهمي → يدونا <b>NT</b>.
+                    <div class="playfair-grid" style="transform: scale(0.65); margin: 0 auto; margin-top:-30px; margin-bottom:-30px;">
+                        <div class="pf-cell">M</div><div class="pf-cell">O</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">N</div><div class="pf-cell">A</div><div class="pf-cell" style="background:#a855f7; color:#fff;">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="font-size:1rem;">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell">L</div><div class="pf-cell">P</div><div class="pf-cell" style="background:#a855f7; color:#fff;">Q</div><div class="pf-cell">S</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell">X</div><div class="pf-cell">Z</div>
+                    </div>
+                </div>
+
+                <!-- TX -->
+                <div style="margin-top: 20px; padding-bottom:15px;">
+                    <b style="color:#a855f7;">👉 (TX):</b> مستطيل وهمي → يدونا <b>SZ</b>.
+                    <div class="playfair-grid" style="transform: scale(0.65); margin: 0 auto; margin-top:-30px; margin-bottom:-30px;">
+                        <div class="pf-cell">M</div><div class="pf-cell">O</div><div class="pf-cell">N</div><div class="pf-cell">A</div><div class="pf-cell">R</div>
+                        <div class="pf-cell">C</div><div class="pf-cell">H</div><div class="pf-cell">Y</div><div class="pf-cell">B</div><div class="pf-cell">D</div>
+                        <div class="pf-cell">E</div><div class="pf-cell">F</div><div class="pf-cell">G</div><div class="pf-cell" style="font-size:1rem;">I/J</div><div class="pf-cell">K</div>
+                        <div class="pf-cell">L</div><div class="pf-cell">P</div><div class="pf-cell">Q</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">S</div><div class="pf-cell" style="background:#a855f7; color:#fff;">T</div>
+                        <div class="pf-cell">U</div><div class="pf-cell">V</div><div class="pf-cell">W</div><div class="pf-cell" style="background:#a855f7; color:#fff;">X</div><div class="pf-cell" style="border-color:#00e5ff; color:#00e5ff;">Z</div>
+                    </div>
+                </div>
+
+                <div style="text-align:center; padding-top:10px; border-top:1px dashed #333; margin-top:20px;">
+                    <b>الرسالة الأصلية المخبأة (Plaintext):</b> IN ST RU ME NT SZ.<br>
+                    يعني <b>INSTRUMENTSZ</b>. ولما نشيل حرف الـ Z المساعد اللي كان محطوط في الآخر عشان يوزن زوج الحروف.. تطلع الكلمة المنطقية: <br>
+                    <b style="font-size:1.5rem; color:#fff; text-shadow:0 0 10px #a855f7; display:block; margin-top:10px; text-align:center;">🎷 INSTRUMENTS 🎻</b>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Matrix Animation -->
+    <script>
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const letters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                // Flashing bits logic
+                if(Math.random() > 0.98){
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+</html>

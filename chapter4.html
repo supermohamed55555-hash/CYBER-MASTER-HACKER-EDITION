@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: Cryptography Basics Part I</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; z-index: 1; position: relative; }
+        .section-panel { background: rgba(5, 5, 10, 0.85); border: 1px solid var(--secondary-color); padding: 2.5rem; margin-bottom: 3rem; position: relative; box-shadow: 0 0 15px rgba(0, 0, 0, 0.9); animation: fadeIn 0.5s ease forwards; opacity: 0; backdrop-filter: blur(5px); }
+        .section-panel:hover { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1); }
+        
+        h2.cyber-heading { color: var(--primary-color); border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; font-size: 1.8rem; text-transform: uppercase; text-shadow: 0 0 5px rgba(0, 229, 255, 0.3); direction: ltr; }
+        h2.cyber-heading::before { content: '[CH.04] '; color: var(--secondary-color); margin-right: 15px; font-size: 1.2rem; animation: blink 1s infinite step-start; }
+        
+        h3.sub-heading { color: var(--primary-color); margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem; border-left: 3px solid var(--primary-color); padding-left: 10px; direction: rtl; text-align: right; }
+        
+        .badge { display: inline-block; padding: 4px 10px; background: rgba(0, 229, 255, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 2px; font-size: 0.6em; margin-left: 15px; font-weight: bold; vertical-align: middle; }
+        
+        /* Typography Elements */
+        .en-def { direction: ltr; text-align: left; font-family: var(--font-code); color: #00e5ff; line-height: 1.5; padding: 15px 20px; border-left: 3px solid #00e5ff; background: rgba(0, 229, 255, 0.05); margin-bottom: 15px; font-size: 1.05rem; }
+        .ar-text { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #cbd5e1; margin: 0 0 25px 0; padding: 15px 20px; border-right: 3px solid var(--primary-color); background: rgba(0, 0, 0, 0.3); line-height: 1.8; font-size: 1.1rem; }
+        
+        /* Utility Colors */
+        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
+        .eng-red { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
+        .eng-purple { font-family: var(--font-code); color: #a855f7; font-weight: bold; }
+        .eng-orange { font-family: var(--font-code); color: #f97316; font-weight: bold; }
+        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
+        .eng-yellow { font-family: var(--font-code); color: #eab308; font-weight: bold; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; direction: rtl; }
+        
+        .term-card { background: rgba(11, 15, 25, 0.9); border: 1px solid #333; padding: 20px; transition: 0.3s; position: relative; overflow: hidden; text-align: right; direction: rtl;}
+        .term-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--primary-color); opacity: 0.5; }
+        .term-card:hover { border-color: rgba(0, 229, 255, 0.5); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 229, 255, 0.1); }
+        .term-card:hover::before { opacity: 1; box-shadow: 0 0 10px var(--primary-color); }
+        .term-title { font-family: var(--font-code); color: var(--primary-color); font-size: 1.3rem; margin-bottom: 10px; display: block; border-bottom: 1px dashed rgba(0,229,255,0.3); padding-bottom: 5px; direction: ltr; text-align: left; }
+
+        ul.cyber-list { list-style-type: none; padding-right: 20px; text-align: right; direction: rtl; margin-bottom: 20px;}
+        ul.cyber-list li { margin-bottom: 12px; position: relative; color: #cbd5e1; font-size: 1.1rem;}
+        ul.cyber-list li::before { content: '>'; color: var(--primary-color); position: absolute; right: -25px; font-weight: bold; font-family: var(--font-code);}
+
+        .flow-diagram { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.6); padding: 30px; border: 1px dashed #555; margin: 20px 0; font-family: var(--font-code); color: #fff; text-align: center; overflow-x: auto;}
+        .flow-box { border: 1px solid var(--primary-color); padding: 15px; background: rgba(0,229,255,0.05); border-radius: 4px;}
+        .flow-arrow { color: #a855f7; font-size: 1.5rem; animation: pulse 1.5s infinite; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 10px #a855f7; } 100% { opacity: 0.5; } }
+        
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); padding: 10px 25px; font-family: var(--font-code); background: rgba(0, 0, 0, 0.8); transition: 0.3s; }
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CHAPTER 4" style="font-size: 4rem; color: #fff;">CHAPTER 4</h1>
+            </div>
+            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">CRYPTOGRAPHY BASICS (PART I)</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: CORE PROTOCOL | CLEARANCE: LEVEL 1</div>
+        </header>
+
+        <!-- 1. The Importance -->
+        <div class="section-panel" style="animation-delay: 0.1s; border-color: #ef4444;">
+            <h2 class="cyber-heading" style="color: #ef4444; border-bottom-color: rgba(239, 68, 68, 0.3);">1. Why Do We Need Security? <span class="badge" style="color:#ef4444; border-color:#ef4444; background:rgba(239, 68, 68, 0.1);">CRITICAL</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#ef4444;">
+                <b>ليه أصلًا محتاجين اتصال آمن (Secure Communication)؟</b><br>
+                المحاضرة دي هي <b>الباب الرئيسي</b> لكل اللي جاي. إحنا بنحتاج نامن اتصالاتنا في مجالين كبار جدًا:<br>
+                1️⃣ <b>وقت الحروب (War time):</b> لو العدو كشف رسالتك، خطتك كلها بتتدمر.<br>
+                2️⃣ <b>البيزنس والبنوك (Business transactions):</b> عقود، فلوس، أرقام فيزا، بيانات عملاء، كلها ماشية في الهواء ولو مش متشفرة أي حد هيسرقها.
+            </div>
+
+            <h3 class="sub-heading" style="color:#ef4444; border-right-color:#ef4444;">الثلاثية الذهبية للاتصال الآمن (Requirements)</h3>
+            <div class="ar-text" style="background:none; border:none; padding-bottom:0;">عشان نقول إن الاتصال ده 100% آمن، لازم يتحقق فيه الـ 3 شروط دول (احفظهم زي اسمك):</div>
+            
+            <ul class="cyber-list">
+                <li><span class="eng-red">1. Secrecy (السرية):</span> Only the intended receiver understands the message. (لازم الرسالة يفهمها المستلم المقصود فقط).</li>
+                <li><span class="eng-red">2. Authentication (الموثوقية):</span> Confirm each other's identity. (لازم نتأكد إن المرسل والمستقبل هما الأشخاص الحقيقيين).</li>
+                <li><span class="eng-red">3. Message Integrity (سلامة الرسالة):</span> Ensure message has not been altered. (الرسالة توصل زي ما هي بدون تعديل في السكة).</li>
+            </ul>
+        </div>
+
+        <!-- 2. Cryptography & Terminology -->
+        <div class="section-panel" style="animation-delay: 0.2s; border-color: #00e5ff;">
+            <h2 class="cyber-heading">2. Cryptography & Terminology <span class="badge">DICTIONARY</span></h2>
+            
+            <div class="en-def">
+                "Cryptography is the art and science of secret, or hidden writing."
+            </div>
+            <div class="ar-text">
+                <b>فن التشفير أو علم التعمية:</b> الموضوع مش مجرد تحويل كلام واضح لطلاسم (Encryption) وبس! التشفير مجال أوسع بيشمل حماية الرسالة والتأكد من أصحابها (Authentication & Integrity).
+            </div>
+
+            <h3 class="sub-heading">أساسيات اللغة (Cyber Dictionary)</h3>
+            <div class="grid-2">
+                <div class="term-card">
+                    <span class="term-title">Plaintext</span>
+                    الرسالة الأصلية الواضحة قبل التشفير. زي: <br><span class="eng-word">HELLO FRIEND</span>
+                </div>
+                <div class="term-card">
+                    <span class="term-title">Ciphertext</span>
+                    الرسالة المشفرة الغير مفهومة. زي: <br><span class="eng-red">XJ7P2Q</span>
+                </div>
+                <div class="term-card">
+                    <span class="term-title">Cipher (Algorithm)</span>
+                    الخوارزمية أو الطريقة الرياضية اللي بنشفر بيها الرسالة. (زي Caesar أو Vigenère).
+                </div>
+                <div class="term-card">
+                    <span class="term-title">Key</span>
+                    <b>المفتاح:</b> معلومة سرية حرجة بتتحط جوة الخوارزمية. الألجوريزم لوحده ميسواش حاجة من غير المفتاح بتاعه.
+                </div>
+                <div class="term-card">
+                    <span class="term-title">Encipher / Decipher</span>
+                    <b>Encipher (Encrypt):</b> تحويل النص الواضح لمشفر.<br><b>Decipher (Decrypt):</b> استرجاع النص الأصلي.
+                </div>
+                <div class="term-card">
+                    <span class="term-title">Cryptanalysis</span>
+                    <b>محاولات الهاكرز:</b> علم تحليل الشفرات ومحاولة كسرها <i>بدون</i> معرفة المفتاح السري.
+                </div>
+            </div>
+            
+            <div class="ar-text" style="margin-top:20px; text-align:center; background:rgba(0,229,255,0.05);">
+                <span class="eng-orange">Cryptology</span> = <span class="eng-word">Cryptography</span> (صناعة التشفير) + <span class="eng-red">Cryptanalysis</span> (كسر التشفير)
+            </div>
+
+            <div class="flow-diagram">
+                <div class="flow-box">Plaintext (Message)</div>
+                <div class="flow-arrow">➡ <br><span style="font-size:0.6em; color:#888;">+ Key (Encrypt)</span></div>
+                <div class="flow-box" style="border-color:#ef4444; color:#ef4444;">Ciphertext (XJ7P2Q)</div>
+                <div class="flow-arrow">➡ <br><span style="font-size:0.6em; color:#888;">+ Key (Decrypt)</span></div>
+                <div class="flow-box" style="border-color:#10b981; color:#10b981;">Plaintext (Message)</div>
+            </div>
+        </div>
+
+        <!-- 3. Cryptographic Services -->
+        <div class="section-panel" style="animation-delay: 0.3s; border-color: #a855f7;">
+            <h2 class="cyber-heading" style="color: #a855f7; border-bottom-color: rgba(168,85,247,0.3);">3. Cryptographic Services <span class="badge" style="color:#a855f7; border-color:#a855f7; background:rgba(168,85,247,0.1);">THE 4 PILLARS</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                <b>التشفير بيقدملنا إيه عموماً؟</b> دي أهم جزء نظري، التشفير الناجح بيوفر 4 خدمات رئيسية:
+            </div>
+
+            <div class="grid-2">
+                <div class="term-card" style="border-left-color:#a855f7;">
+                    <span class="term-title" style="color:#a855f7;">1. Confidentiality</span>
+                    <b>السرية:</b> محدش يقدر يطلع على الداتا السرية غير المسموح له إنه يشوفها.
+                </div>
+                <div class="term-card" style="border-left-color:#a855f7;">
+                    <span class="term-title" style="color:#a855f7;">2. Integrity</span>
+                    <b>سلامة الداتا:</b> التأكد إن الرسالة متلعبش فيها في النص. (تخيل تحول 1000$، واحد في النص يخليها 9000$).
+                </div>
+                <div class="term-card" style="border-left-color:#a855f7;">
+                    <span class="term-title" style="color:#a855f7;">3. Authentication</span>
+                    <b>تأكيد الهوية:</b> التأكد إن اللي باعت الرسالة هو فعلاً صاحبي مش هاكر منتحل شخصيته (زي كلمات السر والتوقيع الرقمي).
+                </div>
+                <div class="term-card" style="border-left-color:#a855f7;">
+                    <span class="term-title" style="color:#f97316;">4. Non-repudiation</span>
+                    <b>عدم الإنكار:</b> منع الشخص إنه يبعت رسالة وبعدين يقول "والله ما بعت حاجة!". والحل السحري ليها هو <span class="eng-word">Digital Signatures</span> (التوقيع الرقمي).
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Symmetric vs Asymmetric -->
+        <div class="section-panel" style="animation-delay: 0.4s; border-color: #eab308;">
+            <h2 class="cyber-heading" style="color: #eab308; border-bottom-color: rgba(234, 179, 8, 0.3);">4. Algorithm Families <span class="badge" style="color:#eab308; border-color:#eab308; background:rgba(234, 179, 8, 0.1);">SYMMETRIC VS ASYMMETRIC</span></h2>
+            
+            <h3 class="sub-heading" style="color:#eab308; border-right-color:#eab308;">النوع الأول: Symmetric Algorithms (التشفير المتماثل)</h3>
+            <div class="en-def" style="border-left-color:#eab308; color:#eab308;">
+                "Algorithms in which the key for encryption and decryption are the SAME."
+            </div>
+            <div class="ar-text" style="border-right-color:#eab308;">
+                <b>نفس المفتاح اللي بنقفل بيه، هو اللي بنفتح بيه!</b><br>
+                المعادلة: <code>Dk(Ek(M)) = M</code><br>
+                <b>الميزة:</b> سريع جداً طلّقة.<br>
+                <b>العيب القاتل:</b> إزاي هوصّل المفتاح السري ده للطرف التاني من غير ما حد يسرقه في السكة؟<br><br>
+                <b>بينقسم لنوعين من حيث الشغل:</b><br>
+                1) <span class="eng-yellow">Block Ciphers:</span> بياخد الداتا بلوكات (64-bit أو 128-bit) ويشفر بلكشة بلكشة.<br>
+                2) <span class="eng-yellow">Stream Ciphers:</span> بيشفر بت ورا بت (Bit by Bit) وممتاز للـ Real-time زي البث المباشر والمكالمات.
+            </div>
+
+            <div class="ar-text" style="background:rgba(239,68,68,0.05); border-right-color:#ef4444;">
+                <b class="eng-red">Key Space & Brute Force (طول المفتاح يفرق!)</b><br>
+                قوة التشفير تتحدد بـ <b>طول المفتاح بالـ Bits</b>. كل 1 bit زيادة، بيضاعف لك الأمن 100% لأن الاحتمالات بتبقى الدِعف.<br>
+                السوبر كمبيوتر يقدر يكسر قفل (56-bit) في 24 ساعة... لكن لو القفل (128-bit) السوبر كمبيوتر هياخد وقت أطول من <b>عمر الكون نفسه!</b><br><br>
+                <span style="color:#888;">أمثلة Symmetric للحفظ:</span> <b class="eng-word">AES</b> (الأشهر 128/192/256-bit) - <b class="eng-word">DES</b> (56-bit) - <b class="eng-word">3DES</b> - <b class="eng-word">IDEA</b> - <b class="eng-word">Blowfish</b> - <b class="eng-word">RC5</b>.
+            </div>
+
+            <h3 class="sub-heading" style="color:#f97316; border-right-color:#f97316; margin-top:40px;">النوع الثاني: Asymmetric Algorithms (التشفير غير المتماثل / Public-Key)</h3>
+            <div class="en-def" style="border-left-color:#f97316; color:#f97316;">
+                "Algorithms in which DIFFERENT keys are used for encryption and decryption. Decryption key cannot be calculated from encryption key."
+            </div>
+            <div class="ar-text" style="border-right-color:#f97316;">
+                <b>مفتاحين لكل شخص!</b><br>
+                نظام عبقري، بيبقى عندك مفتاحين مرتبطين ببعض بس مستحيل رياضياً تستنتج واحد من التاني:<br>
+                - <span class="eng-orange">Public Key (المفتاح العام):</span> مفتاح التشفير، توزعه على العالم كله.<br>
+                - <span class="eng-orange">Private Key (المفتاح الخاص):</span> مفتاح فك التشفير، مخبيه في جيبك.<br><br>
+                <b>في حالة التوقيع الرقمي (Digital Signatures):</b><br>
+                بنعكس! بنشفّر بالمفتاح الخاص (الخاص بيا أنا بس كدليل إن أنا اللي باعت) وأي حد يفك التشفير بالمفتاح العام عشان (يتأكد أو يوثق) رسالتي (Authentication / Non-repudiation).<br><br>
+                <span style="color:#888;">أمثلة Asymmetric للحفظ:</span> <b class="eng-word">RSA</b> (الأشهر) - <b class="eng-word">DSA</b> (للتوقيع الرقمي) - <b class="eng-word">Diffie-Hellman</b> (لتبادل المفاتيح).
+            </div>
+        </div>
+
+        <!-- 5. OTP -->
+        <div class="section-panel" style="animation-delay: 0.5s; border-color: #10b981;">
+            <h2 class="cyber-heading" style="color: #10b981; border-bottom-color: rgba(16, 185, 129, 0.3);">5. One-Time Pad (OTP) <span class="badge" style="color:#10b981; border-color:#10b981; background:rgba(16, 185, 129, 0.1);">THE UNBREAKABLE</span></h2>
+            
+            <div class="en-def" style="border-left-color:#10b981; color:#10b981;">
+                "OTP is a perfect encryption scheme, unbreakable if used properly. Primarily used for ultra-secure low bandwidth channels."
+            </div>
+            
+            <div class="ar-text" style="border-right-color:#10b981;">
+                <b>التشفير الذي لا يُقهر!</b><br>
+                الـ OTP يعتبر كابوس لأي هاكر ونظرياً <b>مستحيل الكسر (Unbreakable attack)</b>. بيستخدم إما بالبيتس (XOR) أو بالحروف (Shift + Mod 26 زي مثال المحاضرة).<br><br>
+                <b>إيه شروطه التعسفية عشان يبقى مستحيل كسره؟</b>
+                <ul class="cyber-list">
+                    <li>المفتاح لازم يكون <b>نفس طول الرسالة</b> بالظبط (The key is as long as the message).</li>
+                    <li>المفتاح لازم يكون <b>عشوائي بشكل حقيقي تماماً</b> (Truly random sequence).</li>
+                    <li>المفتاح بنستخدمه يشفر رسالة واحدة وتولّع فيه (<b>Used ONE time only!</b>).</li>
+                    <li>فيه بس نسختين للمفتاح: بينك وبين المستقبل.</li>
+                </ul>
+                <i style="color:#cf5; font-size: 0.9em;">* عيبه الوحيد عملياً إنك صعب جداً تتبادل مفاتيح حجمها بالجيجات بايت عشان تشفر فيلم مثلاً طول الوقت!</i>
+            </div>
+
+            <div class="ar-text" style="background:rgba(0,0,0,0.6); padding:20px;">
+                <b class="eng-green">مثال الحروف (MOD 26):</b><br>
+                بترقم الحروف (A=1, B=2 ... Z=0 أو كالعادة A=0 .. Z=25 حسب ترقيم الدكتور في الامتحان).<br><br>
+                Plaintext: <span class="eng-word" style="letter-spacing:2px;">ONETIMEPAD</span><br>
+                Key: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="eng-purple" style="letter-spacing:2px;">TBFRGFARFM</span><br>
+                -------------------------<br>
+                بنجمع كل حرف مع اللي تحته Mod 26 (مثلاً O(15) + T(20) mod 26 = 9 = I)...<br>
+                Ciphertext: <span class="eng-red" style="letter-spacing:2px;">IPKLPSFHGQ</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const letters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+</html>

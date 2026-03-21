@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter: The Ultimate Cyber Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; position: relative; z-index: 1;}
+        
+        .cyber-heading { color: var(--primary-color); border-bottom: 1px dashed rgba(0, 229, 255, 0.3); padding-bottom: 15px; margin-top: 40px; margin-bottom: 25px; display: flex; align-items: center; font-size: 2rem; text-transform: uppercase; text-shadow: 0 0 10px rgba(0, 229, 255, 0.3); }
+        .cyber-heading::before { content: '>'; color: #ef4444; margin-right: 15px; font-size: 1.5rem; animation: blink 1s infinite step-start; }
+        
+        /* MCQ Section */
+        .question-card { background: rgba(11, 15, 25, 0.95); border: 1px solid #333; border-left: 4px solid var(--primary-color); padding: 25px; margin-bottom: 20px; transition: 0.3s; position: relative; }
+        .question-card:hover { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0,229,255,0.1); }
+        .q-text { font-family: var(--font-code); color: #fff; font-size: 1.2rem; margin-bottom: 20px; font-weight: bold; }
+        
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .option-btn { background: rgba(0,0,0,0.6); border: 1px solid #444; color: #cbd5e1; padding: 15px; text-align: left; font-family: var(--font-code); cursor: pointer; transition: 0.2s; font-size: 1rem; border-radius: 4px; }
+        .option-btn:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--primary-color); color: #fff; }
+        .option-btn.correct { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; }
+        .option-btn.wrong { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444; }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        /* Score Tracker */
+        .score-board { position: sticky; top: 20px; background: rgba(0,0,0,0.9); border: 2px solid var(--primary-color); padding: 15px 30px; text-align: center; font-family: var(--font-code); font-size: 1.5rem; color: #fff; box-shadow: 0 0 20px rgba(0,229,255,0.3); z-index: 100; margin-bottom: 30px; border-radius: 8px;}
+        .score-board span { color: var(--primary-color); font-weight: bold; font-size: 2rem; }
+
+        /* Written Questions Section */
+        .written-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; }
+        .written-card { background: rgba(0,0,0,0.8); border: 1px dashed #555; padding: 20px; font-family: var(--font-code); }
+        .written-card h3 { color: #ef4444; margin-bottom: 15px; font-size: 1.2rem; display: flex; justify-content: space-between; }
+        .written-card .type-badge { background: rgba(239, 68, 68, 0.2); padding: 5px 10px; font-size: 0.8rem; border-radius: 3px; color: #ff6b6b; border: 1px solid #ef4444; }
+        .written-card pre { background: #0b0f19; padding: 15px; border-left: 3px solid var(--primary-color); color: #00e5ff; font-size: 1.1rem; overflow-x: auto; margin-bottom: 15px; white-space: pre-wrap; }
+        .written-card textarea { width: 100%; background: #111; border: 1px solid #444; color: #fff; padding: 10px; font-family: var(--font-code); resize: vertical; min-height: 80px; }
+        .written-card textarea:focus { outline: none; border-color: var(--primary-color); }
+
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); padding: 10px 25px; font-family: var(--font-code); background: rgba(0, 0, 0, 0.8); transition: 0.3s; }
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.1;"></canvas>
+    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 40px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CYBER EXAM ARENA" style="font-size: 3.5rem; color: #fff;">CYBER EXAM ARENA</h1>
+            </div>
+            <p style="color: var(--primary-color); font-size: 1.2rem; letter-spacing: 2px;">ENCRYPTION MCQ & PRACTICAL CTF BANK</p>
+        </header>
+
+        <div class="score-board">
+            > CURRENT SCORE: <span id="scoreDisplay">0</span> / <span id="totalDisplay">31</span>
+        </div>
+
+        <h2 class="cyber-heading">PHASE 1: THEORETICAL MCQ TEST</h2>
+        <div id="mcqContainer"></div>
+
+        <h2 class="cyber-heading" style="margin-top: 60px;">PHASE 2: PRACTICAL CRYPTO LAB</h2>
+        <p style="color: #cbd5e1; font-family: var(--font-code); margin-bottom: 20px; font-size: 1.1rem;">
+            Use your knowledge and external tools (or pen and paper) to solve these intercepted messages. Type your solutions into the hacking terminals below.
+        </p>
+        
+        <div style="text-align: right; margin-bottom: 20px;">
+            <a href="chapter_quiz_solutions.html" style="display: inline-block; background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 10px 20px; border: 1px solid #10b981; font-family: var(--font-code); text-decoration: none; transition: 0.3s;">> ACCESS MASTER KEY / SOLUTIONS</a>
+        </div>
+
+        <div class="written-grid" id="writtenContainer"></div>
+    </div>
+
+    <!-- Data and Logic -->
+    <script>
+        const mcqs = [
+            { q: "What is the main purpose of encryption?", options: ["A) To compress files", "B) To hide the meaning of data", "C) To increase RAM size", "D) To connect devices"], ans: 1 },
+            { q: "The original readable message before encryption is called:", options: ["A) Ciphertext", "B) Keyspace", "C) Plaintext", "D) Digest"], ans: 2 },
+            { q: "The unreadable message after encryption is called:", options: ["A) Ciphertext", "B) Plaintext", "C) Password", "D) Protocol"], ans: 0 },
+            { q: "Which of the following is true about symmetric encryption?", options: ["A) It uses two different keys", "B) It uses the same key for encryption and decryption", "C) It uses no key", "D) It works only on images"], ans: 1 },
+            { q: "Which algorithm is an example of asymmetric encryption?", options: ["A) AES", "B) DES", "C) RSA", "D) Caesar Cipher"], ans: 2 },
+            { q: "In public-key cryptography, the key used for encryption is usually the:", options: ["A) Private key", "B) Public key", "C) Session key", "D) Hash key"], ans: 1 },
+            { q: "What does OTP stand for?", options: ["A) One-Time Protocol", "B) One-Time Pad", "C) Only Transfer Process", "D) Open Text Password"], ans: 1 },
+            { q: "Why is One-Time Pad considered theoretically unbreakable?", options: ["A) Because it uses RSA", "B) Because it uses firewall protection", "C) Because the key is random, as long as the message, and used once", "D) Because it has only 26 keys"], ans: 2 },
+            { q: "In Caesar Cipher encryption, the formula is:", options: ["A) Plain = Cipher + Key mod 26", "B) Cipher = Plain + Key mod 26", "C) Cipher = Plain XOR Key", "D) Cipher = Plain × Key"], ans: 1 },
+            { q: "If Caesar Cipher uses key = 3, then A becomes:", options: ["A) B", "B) C", "C) D", "D) E"], ans: 2 },
+            { q: "If Caesar Cipher uses key = 3, the ciphertext of HELLO is:", options: ["A) IFMMP", "B) KHOOR", "C) LIPPS", "D) HELLO"], ans: 1 },
+            { q: "In Caesar Cipher decryption, we usually:", options: ["A) Add the key", "B) Ignore the key", "C) Subtract the key", "D) Multiply by the key"], ans: 2 },
+            { q: "Which cipher changes the order of letters without changing the letters themselves?", options: ["A) Caesar Cipher", "B) Vigenère Cipher", "C) Transposition Cipher", "D) RSA"], ans: 2 },
+            { q: "Rail Fence Cipher is a type of:", options: ["A) Substitution cipher", "B) Transposition cipher", "C) Hashing algorithm", "D) Public-key algorithm"], ans: 1 },
+            { q: "Rail Fence Cipher writes the plaintext in a:", options: ["A) Circular pattern", "B) Random table", "C) Zigzag pattern", "D) Binary pattern"], ans: 2 },
+            { q: "Columnar Transposition depends mainly on:", options: ["A) A fixed shift only", "B) A table and a key order", "C) XOR operation", "D) Public and private keys"], ans: 1 },
+            { q: "In Columnar Transposition, the columns are read based on:", options: ["A) Left to right only", "B) Random choice", "C) The order of the key", "D) The size of the message only"], ans: 2 },
+            { q: "Vigenère Cipher is stronger than Caesar Cipher because:", options: ["A) It uses no key", "B) It uses multiple shifts based on a keyword", "C) It changes numbers only", "D) It works only on long messages"], ans: 1 },
+            { q: "Vigenère Cipher is classified as a:", options: ["A) Polyalphabetic substitution cipher", "B) Transposition cipher", "C) Hash function", "D) Network protocol"], ans: 0 },
+            { q: "Which of the following is a service provided by cryptography?", options: ["A) Increasing monitor resolution", "B) Confidentiality", "C) Building networks", "D) Upgrading CPU speed"], ans: 1 },
+            { q: "Which cryptographic service ensures that a sender cannot deny sending a message?", options: ["A) Availability", "B) Confidentiality", "C) Non-repudiation", "D) Compression"], ans: 2 },
+            { q: "Which cryptographic service ensures that a message was not changed?", options: ["A) Integrity", "B) Availability", "C) Routing", "D) Topology"], ans: 0 },
+            { q: "Cryptanalysis means:", options: ["A) Creating stronger passwords only", "B) Studying methods of breaking ciphertext without knowing the key", "C) Compressing encrypted files", "D) Installing antivirus software"], ans: 1 },
+            { q: "A brute-force attack works by:", options: ["A) Guessing only one key", "B) Trying all possible keys", "C) Reading RAM directly", "D) Replacing ciphertext with plaintext"], ans: 1 },
+            { q: "Which is easier to break by brute force?", options: ["A) Caesar Cipher", "B) AES-256", "C) OTP", "D) RSA-2048"], ans: 0 },
+            { q: "Why is Caesar Cipher weak?", options: ["A) Because it uses too many keys", "B) Because it has a very small keyspace", "C) Because it uses public keys", "D) Because it is a stream cipher"], ans: 1 },
+            { q: "In substitution cipher, each plaintext letter is replaced by:", options: ["A) A number only", "B) The same letter always", "C) Another letter according to a fixed mapping", "D) A public key"], ans: 2 },
+            { q: "The main weakness of monoalphabetic substitution ciphers is:", options: ["A) They are too short", "B) They can be attacked using frequency analysis", "C) They use too much memory", "D) They require two CPUs"], ans: 1 },
+            { q: "A digital signature is mainly used for:", options: ["A) Increasing speed", "B) Authentication and integrity", "C) Deleting ciphertext", "D) Replacing encryption"], ans: 1 },
+            { q: "Which attack type assumes the attacker has only the ciphertext?", options: ["A) Known plaintext attack", "B) Chosen plaintext attack", "C) Ciphertext-only attack", "D) Chosen ciphertext attack"], ans: 2 },
+            { q: "In Vigenère Cipher decryption, the formula is:", options: ["A) P = C - K mod 26", "B) P = C + K mod 26", "C) C = P - K mod 26", "D) C = P XOR K"], ans: 0 }
+        ];
+
+        let score = 0;
+        document.getElementById('totalDisplay').innerText = mcqs.length;
+
+        const mcqContainer = document.getElementById('mcqContainer');
+        
+        mcqs.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            const qTitle = document.createElement('div');
+            qTitle.className = 'q-text';
+            qTitle.innerText = `Q${index + 1}: ${item.q}`;
+            card.appendChild(qTitle);
+
+            const optionsGrid = document.createElement('div');
+            optionsGrid.className = 'options-grid';
+
+            item.options.forEach((optText, optIndex) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = optText;
+                
+                btn.onclick = function() {
+                    // Disable all buttons in this question
+                    const allBtns = optionsGrid.getElementsByTagName('button');
+                    for(let b of allBtns) {
+                        b.disabled = true;
+                    }
+                    
+                    if(optIndex === item.ans) {
+                        btn.classList.add('correct');
+                        score++;
+                        document.getElementById('scoreDisplay').innerText = score;
+                    } else {
+                        btn.classList.add('wrong');
+                        // highlight correct one
+                        allBtns[item.ans].classList.add('correct');
+                    }
+                };
+
+                optionsGrid.appendChild(btn);
+            });
+
+            card.appendChild(optionsGrid);
+            mcqContainer.appendChild(card);
+        });
+
+        // ----------------------------------------------------
+        // Phase 2: Written Problems
+        const writtens = [
+            { id: 1, type: "Vigenère Decrypt", data: "Key: KEY\nCiphertext: MMNRIPKX" },
+            { id: 2, type: "Vigenère Encrypt", data: "Key: CODE\nPlaintext: SECUREDATA" },
+            { id: 3, type: "Vigenère Decrypt", data: "Key: CYBER\nCiphertext: AGDIPNIKP" },
+            { id: 4, type: "Caesar Encrypt", data: "Key: 3\nPlaintext: HELLO WORLD" },
+            { id: 5, type: "Caesar Decrypt", data: "Key: 5\nCiphertext: MJQQT BTWQI" },
+            { id: 6, type: "Caesar Encrypt", data: "Key: 11\nPlaintext: WE WILL MEET" },
+            { id: 7, type: "Caesar Decrypt", data: "Key: 11\nCiphertext: SPNFCP OLEX" },
+            { id: 8, type: "Rail Fence Encrypt", data: "Key (Depth): 2\nPlaintext: MEET ME AFTER THE TOGA PARTY" },
+            { id: 9, type: "Rail Fence Encrypt", data: "Key (Depth): 3\nPlaintext: DEFEND THE EAST WALL" },
+            { id: 10, type: "Rail Fence Decrypt", data: "Key (Depth): 3\nCiphertext: DNETLEEDHESWLXFTAAX" },
+            { id: 11, type: "Columnar Transposition Encrypt", data: "Key: 4312567\nPlaintext: ATTACK POSTPONED UNTILL TWO AM" },
+            { id: 12, type: "Columnar Transposition Encrypt", data: "Key: CAT\nPlaintext: HELLO WORLD" },
+            { id: 13, type: "Columnar Transposition Decrypt", data: "Key: 3214\nCiphertext: LOEWDHOLLR" },
+            { id: 14, type: "OTP Encrypt", data: "Assume A=0, B=1..., Z=25\nPlaintext: HELLO\nKey: XMCKL" },
+            { id: 15, type: "OTP Decrypt", data: "Assume A=0..., Z=25\nCiphertext: EQNVZ\nKey: XMCKL" },
+            { id: 16, type: "Shift Encrypt", data: "Key: 16\nPlaintext: HIDE THE GOLD IN BASEMENT" },
+            { id: 17, type: "Shift Decrypt", data: "Key: 11\nCiphertext: HPHTWWXPPE" },
+            { id: 18, type: "Substitution Encrypt", data: "Plain: ABCDEFGHIJKLMNOPQRSTUVWXYZ\nCipher: QWERTYUIOPASDFGHJKLZXCVBNM\nPlaintext: STUDENT" },
+            { id: 19, type: "Substitution Decrypt", data: "Plain: ABCDEFGHIJKLMNOPQRSTUVWXYZ\nCipher: MNBVCXZLKJHGFDSAPOIUYTREWQ\nCiphertext: IZYVTSZ" },
+            { id: 20, type: "Vigenère Decrypt", data: "Key: DECEPTIVE\nCiphertext: ZICVTWQNGRZGVTWAVZHCQYGLMGJ" }
+        ];
+
+        const writtenContainer = document.getElementById('writtenContainer');
+        writtens.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'written-card';
+            card.innerHTML = `
+                <h3>> Mission #${item.id} <span class="type-badge">${item.type}</span></h3>
+                <pre>${item.data}</pre>
+                <textarea placeholder="// Type your decrypted/encrypted output here..."></textarea>
+            `;
+            writtenContainer.appendChild(card);
+        });
+
+        // Matrix Background Script
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const matrixLetters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixLetters.charAt(Math.floor(Math.random() * matrixLetters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+</html>

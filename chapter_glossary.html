@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter: Cyber Dictionary & Glossary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container { max-width: 1400px; margin: 0 auto; padding: 2rem 1rem; position: relative; z-index: 1;}
+        
+        h2.cyber-heading { color: var(--primary-color); border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; font-size: 1.8rem; text-transform: uppercase; text-shadow: 0 0 5px rgba(0, 229, 255, 0.3); direction: ltr; }
+        h2.cyber-heading::before { content: '[DICT] '; color: var(--secondary-color); margin-right: 15px; font-size: 1.2rem; animation: blink 1s infinite step-start; }
+        
+        .search-wrapper { text-align: center; margin: 40px 0; position: relative; }
+        #searchBox { width: 100%; max-width: 800px; padding: 20px 30px; font-size: 1.3rem; font-family: var(--font-code); background: rgba(5, 5, 10, 0.85); color: #00e5ff; border: 2px solid rgba(0,229,255,0.3); border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.8); outline: none; transition: 0.3s; }
+        #searchBox::placeholder { color: #555; }
+        #searchBox:focus { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(0,229,255,0.4); }
+
+        .glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 25px; }
+        
+        .term-card { background: rgba(11, 15, 25, 0.95); border: 1px solid #222; border-left: 4px solid var(--primary-color); padding: 25px; transition: 0.3s; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .term-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, transparent, rgba(0,229,255,0.03)); pointer-events: none; }
+        .term-card:hover { transform: translateY(-5px); border-left-color: #ef4444; border-color: rgba(239, 68, 68, 0.5); box-shadow: 0 10px 25px rgba(239, 68, 68, 0.15); }
+        
+        .term-title { font-family: var(--font-code); color: var(--primary-color); font-size: 1.6rem; margin-bottom: 20px; display: block; border-bottom: 1px dashed rgba(0,229,255,0.3); padding-bottom: 10px; font-weight: bold; text-transform: capitalize;}
+        .term-en { font-family: var(--font-code); color: #cbd5e1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 20px; direction: ltr; text-align: left; }
+        .term-ar { font-family: 'Segoe UI', Tahoma, Verdana, sans-serif; color: #fff; font-size: 1.2rem; direction: rtl; text-align: right; line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; }
+
+        .no-results { display: none; text-align: center; font-family: var(--font-code); color: #ef4444; font-size: 1.5rem; padding: 3rem; background: rgba(239,68,68,0.1); border: 1px dashed #ef4444; margin-top: 2rem; }
+
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); padding: 10px 25px; font-family: var(--font-code); background: rgba(0, 0, 0, 0.8); transition: 0.3s; }
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Badge styling inside title */
+        .term-card:hover .term-title { color: #ef4444; border-bottom-color: rgba(239, 68, 68, 0.3); }
+        
+        .stat-banner { background: rgba(0, 0, 0, 0.7); border: 1px solid #333; padding: 15px; text-align: center; color: #888; font-family: var(--font-code); margin-bottom: 30px;}
+        #termCount { color: var(--primary-color); font-weight: bold; font-size: 1.2rem;}
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 40px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CYBER DICTIONARY" style="font-size: 4rem; color: #fff;">CYBER DICTIONARY</h1>
+            </div>
+            <p style="color: var(--primary-color); font-size: 1.5rem; letter-spacing: 2px;">THE ULTIMATE GLOSSARY CHAPETR</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: REFERENCE MATERIAL | CLEARANCE: ALL STUDENTS</div>
+        </header>
+
+        <div class="stat-banner">
+            > SYSTEM LOADED: <span id="termCount">0</span> TERMINOLOGICAL DEFINITIONS DETECTED.
+        </div>
+
+        <div class="search-wrapper">
+            <input type="text" id="searchBox" placeholder="> Search any term in English or Arabic (e.g., Malware, تشفير)...">
+        </div>
+
+        <div id="noResults" class="no-results">
+            [ ERROR ] DEFINITION NOT FOUND IN DATABASE.
+        </div>
+
+        <div class="glossary-grid" id="glossaryGrid">
+            <!-- Cards will be dynamically injected here -->
+        </div>
+    </div>
+
+    <!-- The Raw Dictionary Data -->
+    <script>
+        const rawData = `
+Computer
+English: A computer is an electronic device that takes raw data as input, processes it, and produces meaningful information as output.
+العربي: الكمبيوتر هو جهاز إلكتروني يستقبل بيانات خام كمدخلات، ويعالجها، ثم يخرج معلومات مفيدة.
+Data
+English: Data is a collection of raw facts and figures that have not yet been processed.
+العربي: البيانات هي مجموعة من الحقائق والأرقام الخام التي لم تتم معالجتها بعد.
+Information
+English: Information is processed data that has meaning and can be used effectively.
+العربي: المعلومات هي بيانات تمت معالجتها وأصبح لها معنى ويمكن الاستفادة منها.
+Input
+English: Input is the data or instructions entered into a computer for processing.
+العربي: الإدخال هو البيانات أو الأوامر التي يتم إدخالها إلى الكمبيوتر ليقوم بمعالجتها.
+Processing
+English: Processing is the operation in which the computer manipulates data according to instructions.
+العربي: المعالجة هي العملية التي يقوم فيها الكمبيوتر بالتعامل مع البيانات وتنفيذ التعليمات عليها.
+Output
+English: Output is the result produced by the computer after processing data.
+العربي: الإخراج هو النتيجة التي ينتجها الكمبيوتر بعد معالجة البيانات.
+Storage
+English: Storage is the ability of a computer to save data and information for future use.
+العربي: التخزين هو قدرة الكمبيوتر على حفظ البيانات والمعلومات لاستخدامها لاحقًا.
+Hardware
+English: Hardware refers to the physical components of a computer that can be touched.
+العربي: الهاردوير هو الأجزاء المادية الملموسة في الكمبيوتر التي يمكن لمسها.
+Software
+English: Software is the set of programs and instructions that tell the computer what to do.
+العربي: السوفتوير هو مجموعة البرامج والتعليمات التي تخبر الكمبيوتر بما يجب أن يفعله.
+Firmware
+English: Firmware is specialized software embedded in hardware devices to control their basic functions.
+العربي: الفيرموير هو نوع خاص من السوفتوير يكون مدمجًا داخل الجهاز للتحكم في وظائفه الأساسية.
+Operating System
+English: An operating system is system software that manages computer hardware and software resources and provides services for programs.
+العربي: نظام التشغيل هو برنامج أساسي يدير موارد الهاردوير والسوفتوير ويوفر خدمات لباقي البرامج.
+Device Driver
+English: A device driver is software that allows the operating system to communicate with hardware devices.
+العربي: برنامج التشغيل هو برنامج يسمح لنظام التشغيل بالتواصل مع مكونات الهاردوير.
+Application Software
+English: Application software is software designed for users to perform specific tasks, such as browsing or writing documents.
+العربي: برامج التطبيقات هي برامج مخصصة للمستخدم لتنفيذ مهام محددة مثل التصفح أو كتابة المستندات.
+Input Devices
+English: Input devices are hardware components used to enter data into the computer.
+العربي: أجهزة الإدخال هي مكونات هاردوير تُستخدم لإدخال البيانات إلى الكمبيوتر.
+Output Devices
+English: Output devices are hardware components that present processed information to the user.
+العربي: أجهزة الإخراج هي مكونات هاردوير تعرض المعلومات الناتجة بعد المعالجة للمستخدم.
+CPU (Central Processing Unit)
+English: The CPU is the main processing unit of the computer that executes instructions and controls operations.
+العربي: وحدة المعالجة المركزية هي الجزء الرئيسي في الكمبيوتر الذي ينفذ التعليمات ويتحكم في العمليات.
+ALU (Arithmetic Logic Unit)
+English: The ALU is the part of the CPU responsible for arithmetic and logical operations.
+العربي: وحدة الحساب والمنطق هي الجزء من المعالج المسؤول عن العمليات الحسابية والمنطقية.
+CU (Control Unit)
+English: The Control Unit is the part of the CPU that directs and coordinates all operations of the computer.
+العربي: وحدة التحكم هي الجزء من المعالج الذي يوجه وينظم جميع عمليات الكمبيوتر.
+RAM (Random Access Memory)
+English: RAM is a temporary memory used to store data and programs currently in use.
+العربي: الرام هي ذاكرة مؤقتة تُستخدم لتخزين البيانات والبرامج أثناء تشغيلها.
+ROM (Read-Only Memory)
+English: ROM is permanent memory that stores essential instructions needed to start the computer.
+العربي: الروم هي ذاكرة دائمة تخزن التعليمات الأساسية اللازمة لبدء تشغيل الكمبيوتر.
+HDD (Hard Disk Drive)
+English: HDD is a storage device that uses spinning disks to store data permanently.
+العربي: القرص الصلب HDD هو وحدة تخزين تستخدم أقراصًا دوارة لحفظ البيانات بشكل دائم.
+SSD (Solid State Drive)
+English: SSD is a storage device that uses flash memory to store data and is faster than HDD.
+العربي: القرص SSD هو وحدة تخزين تستخدم ذاكرة فلاش لحفظ البيانات وتكون أسرع من HDD.
+Computer Network
+English: A computer network is a set of connected computers and devices that share data and resources.
+العربي: شبكة الكمبيوتر هي مجموعة من الأجهزة وأجهزة الكمبيوتر المتصلة ببعضها لتبادل البيانات والموارد.
+Network Topology
+English: Network topology is the physical or logical arrangement of devices in a computer network.
+العربي: طوبولوجيا الشبكة هي الشكل أو الترتيب الفيزيائي أو المنطقي لتوصيل الأجهزة داخل الشبكة.
+Star Topology
+English: Star topology is a network layout where all devices are connected to a central device.
+العربي: طوبولوجيا النجمة هي شكل شبكة تكون فيه كل الأجهزة متصلة بجهاز مركزي.
+Bus Topology
+English: Bus topology is a network layout in which all devices share a single communication line.
+العربي: طوبولوجيا الناقل هي شكل شبكة تشترك فيه جميع الأجهزة في خط اتصال واحد.
+Ring Topology
+English: Ring topology is a network layout in which devices are connected in a circular form.
+العربي: طوبولوجيا الحلقة هي شكل شبكة تكون فيه الأجهزة متصلة في صورة دائرية.
+Mesh Topology
+English: Mesh topology is a network layout in which devices are interconnected with many or all other devices.
+العربي: طوبولوجيا الشبكة الكاملة هي شكل شبكة يكون فيه كل جهاز متصل بعدة أجهزة أخرى أو بكل الأجهزة.
+Tree Topology
+English: Tree topology is a hierarchical network layout that combines features of bus and star topologies.
+العربي: طوبولوجيا الشجرة هي شكل هرمي للشبكة يجمع بين خصائص الـ bus والـ star.
+Hybrid Topology
+English: Hybrid topology is a network layout that combines two or more different topologies.
+العربي: الطوبولوجيا الهجينة هي شكل شبكة يجمع بين نوعين أو أكثر من أشكال الشبكات.
+Protocol
+English: A protocol is a set of rules that governs communication between devices in a network.
+العربي: البروتوكول هو مجموعة من القواعد التي تنظم الاتصال بين الأجهزة داخل الشبكة.
+Ethernet
+English: Ethernet is a networking technology commonly used for wired local area networks.
+العربي: الإيثرنت هو تقنية شبكات تُستخدم غالبًا في الشبكات المحلية السلكية.
+IP Address
+English: An IP address is a unique numerical label assigned to a device on a network.
+العربي: عنوان IP هو رقم مميز يُعطى لكل جهاز على الشبكة.
+TCP
+English: TCP is a communication protocol that ensures reliable and ordered delivery of data.
+العربي: بروتوكول TCP هو بروتوكول اتصال يضمن وصول البيانات بشكل صحيح ومرتب.
+HTTP
+English: HTTP is the protocol used to transfer web pages over the internet.
+العربي: بروتوكول HTTP هو البروتوكول المستخدم لنقل صفحات الويب عبر الإنترنت.
+HTTPS
+English: HTTPS is the secure version of HTTP that uses encryption to protect communication.
+العربي: بروتوكول HTTPS هو النسخة الآمنة من HTTP ويستخدم التشفير لحماية الاتصال.
+FTP
+English: FTP is a protocol used to transfer files between computers over a network.
+العربي: بروتوكول FTP هو بروتوكول يُستخدم لنقل الملفات بين الأجهزة عبر الشبكة.
+DNS
+English: DNS is a system that translates domain names into IP addresses.
+العربي: نظام DNS هو نظام يحول أسماء المواقع إلى عناوين IP.
+SMTP
+English: SMTP is a protocol used to send email messages.
+العربي: بروتوكول SMTP هو بروتوكول يُستخدم لإرسال رسائل البريد الإلكتروني.
+Router
+English: A router is a networking device that forwards data between different networks.
+العربي: الراوتر هو جهاز شبكات يقوم بتوجيه البيانات بين الشبكات المختلفة.
+Switch
+English: A switch is a networking device that connects devices within the same local network.
+العربي: السويتش هو جهاز شبكات يربط الأجهزة داخل نفس الشبكة المحلية.
+Hub
+English: A hub is a simple networking device that broadcasts incoming data to all connected devices.
+العربي: الهَب هو جهاز شبكات بسيط يرسل البيانات الواردة إلى جميع الأجهزة المتصلة به.
+Firewall
+English: A firewall is a security system that monitors and controls incoming and outgoing network traffic.
+العربي: الجدار الناري هو نظام أمني يراقب ويتحكم في حركة البيانات الداخلة والخارجة من الشبكة.
+Server
+English: A server is a computer or system that provides resources or services to other devices on a network.
+العربي: الخادم هو جهاز أو نظام يقدم خدمات أو موارد لأجهزة أخرى على الشبكة.
+LAN
+English: A LAN is a Local Area Network that covers a small geographic area such as a home, school, or office.
+العربي: شبكة LAN هي شبكة محلية تغطي مساحة صغيرة مثل المنزل أو المدرسة أو المكتب.
+MAN
+English: A MAN is a Metropolitan Area Network that covers a city or a large campus.
+العربي: شبكة MAN هي شبكة تغطي مدينة أو مساحة كبيرة مثل الحرم الجامعي.
+WAN
+English: A WAN is a Wide Area Network that covers large geographic areas such as countries or the world.
+العربي: شبكة WAN هي شبكة واسعة تغطي مساحات جغرافية كبيرة مثل الدول أو العالم.
+Internet
+English: The Internet is a global network of interconnected networks that communicate using standard protocols.
+العربي: الإنترنت هو شبكة عالمية من الشبكات المترابطة التي تتواصل باستخدام بروتوكولات قياسية.
+Cybersecurity
+English: Cybersecurity is the practice of protecting systems, networks, programs, and data from digital attacks.
+العربي: الأمن السيبراني هو ممارسة حماية الأنظمة والشبكات والبرامج والبيانات من الهجمات الرقمية.
+Confidentiality
+English: Confidentiality is the protection of information from unauthorized access or disclosure.
+العربي: السرية هي حماية المعلومات من الوصول أو الكشف غير المصرح به.
+Integrity
+English: Integrity is the assurance that information remains accurate, complete, and unaltered.
+العربي: السلامة أو التكامل هي ضمان بقاء المعلومات صحيحة وكاملة وغير معدلة.
+Availability
+English: Availability is the assurance that systems and data are accessible when needed by authorized users.
+العربي: الإتاحة هي ضمان أن الأنظمة والبيانات تكون متاحة عند الحاجة للمستخدمين المصرح لهم.
+CIA Triad
+English: The CIA Triad is a security model based on Confidentiality, Integrity, and Availability.
+العربي: مثلث CIA هو نموذج أمني يعتمد على السرية والسلامة والإتاحة.
+Authentication
+English: Authentication is the process of verifying the identity of a user, device, or system.
+العربي: التوثيق أو المصادقة هي عملية التحقق من هوية المستخدم أو الجهاز أو النظام.
+Non-repudiation
+English: Non-repudiation is the assurance that a sender cannot deny sending a message.
+العربي: عدم الإنكار هو ضمان أن المرسل لا يستطيع إنكار أنه أرسل الرسالة.
+Malware
+English: Malware is malicious software designed to damage, disrupt, or gain unauthorized access to systems.
+العربي: البرمجيات الخبيثة هي برامج مصممة للإضرار بالأنظمة أو تعطيلها أو الوصول غير المصرح به إليها.
+Virus
+English: A virus is malware that attaches itself to files or programs and spreads when they are executed.
+العربي: الفيروس هو برنامج خبيث يلتصق بالملفات أو البرامج وينتشر عند تشغيلها.
+Worm
+English: A worm is malware that can spread automatically across networks without user interaction.
+العربي: الدودة هي برنامج خبيث ينتشر تلقائيًا عبر الشبكات دون تدخل المستخدم.
+Trojan
+English: A Trojan is malware that appears legitimate but hides malicious functionality.
+العربي: حصان طروادة هو برنامج خبيث يبدو كأنه برنامج طبيعي لكنه يخفي وظيفة ضارة.
+Ransomware
+English: Ransomware is malware that encrypts a victim’s files and demands payment to restore access.
+العربي: برامج الفدية هي برمجيات خبيثة تشفر ملفات الضحية وتطلب فدية لإعادة الوصول إليها.
+Spyware
+English: Spyware is malware that secretly collects information about a user or system.
+العربي: برامج التجسس هي برمجيات خبيثة تجمع المعلومات عن المستخدم أو الجهاز بشكل سري.
+Phishing
+English: Phishing is a social engineering attack that tricks users into revealing sensitive information.
+العربي: التصيد الاحتيالي هو هجوم خداعي يحاول إقناع المستخدم بكشف معلومات حساسة.
+SQL Injection
+English: SQL Injection is an attack in which malicious SQL commands are inserted into input fields to access or manipulate a database.
+العربي: حقن SQL هو هجوم يتم فيه إدخال أوامر SQL خبيثة داخل حقول الإدخال للوصول إلى قاعدة البيانات أو التلاعب بها.
+DoS Attack
+English: A Denial of Service attack is an attempt to make a service unavailable by overwhelming it with traffic or requests.
+العربي: هجوم حجب الخدمة هو محاولة لجعل الخدمة غير متاحة عن طريق إغراقها بالطلبات أو البيانات.
+DDoS Attack
+English: A Distributed Denial of Service attack is a DoS attack launched from many compromised devices at the same time.
+العربي: هجوم DDoS هو هجوم حجب خدمة يتم تنفيذه من عدد كبير من الأجهزة المخترقة في نفس الوقت.
+MITM Attack
+English: A Man-in-the-Middle attack is an attack in which the attacker intercepts communication between two parties.
+العربي: هجوم الرجل في المنتصف هو هجوم يعترض فيه المهاجم الاتصال بين طرفين.
+Vulnerability
+English: A vulnerability is a weakness in a system, network, or application that can be exploited by an attacker.
+العربي: الثغرة هي نقطة ضعف في نظام أو شبكة أو تطبيق يمكن أن يستغلها المهاجم.
+Attack Surface
+English: Attack surface is the collection of all possible points where an attacker can try to enter or exploit a system.
+العربي: سطح الهجوم هو مجموعة كل النقاط الممكنة التي قد يحاول المهاجم الدخول أو الاستغلال من خلالها.
+Cryptography
+English: Cryptography is the art and science of secret or hidden writing used to secure communication.
+العربي: علم التشفير هو فن وعلم الكتابة السرية أو المخفية المستخدمة لتأمين الاتصال.
+Secure Communication
+English: Secure communication is the exchange of information in a way that protects secrecy, authenticity, and integrity.
+العربي: الاتصال الآمن هو تبادل المعلومات بطريقة تحمي السرية والهوية وسلامة الرسالة.
+Plaintext
+English: Plaintext is the original readable message before encryption.
+العربي: النص الصريح هو الرسالة الأصلية المقروءة قبل التشفير.
+Ciphertext
+English: Ciphertext is the scrambled unreadable message produced after encryption.
+العربي: النص المشفر هو الرسالة غير المفهومة الناتجة بعد التشفير.
+Cipher
+English: A cipher is an algorithm used to transform plaintext into ciphertext and back again.
+العربي: الشفرة أو الخوارزمية هي الطريقة المستخدمة لتحويل النص الصريح إلى نص مشفر والعكس.
+Key
+English: A key is critical information used by a cryptographic algorithm to encrypt or decrypt data.
+العربي: المفتاح هو معلومة أساسية تستخدمها خوارزمية التشفير لتشفير البيانات أو فكها.
+Encryption
+English: Encryption is the process of converting plaintext into ciphertext to hide its meaning.
+العربي: التشفير هو عملية تحويل النص الصريح إلى نص مشفر لإخفاء معناه.
+Decryption
+English: Decryption is the process of converting ciphertext back into plaintext.
+العربي: فك التشفير هو عملية تحويل النص المشفر مرة أخرى إلى النص الصريح.
+Cryptanalysis
+English: Cryptanalysis is the study of methods for breaking ciphertext without knowing the key.
+العربي: تحليل الشفرات هو دراسة طرق كسر النص المشفر دون معرفة المفتاح.
+Cryptology
+English: Cryptology is the field that includes both cryptography and cryptanalysis.
+العربي: علم التعمية هو المجال الذي يجمع بين علم التشفير وتحليل الشفرات.
+Cryptosystem
+English: A cryptosystem is the complete system consisting of the algorithm, keys, and key management procedures used for cryptographic operations.
+العربي: النظام التشفيري هو النظام الكامل الذي يتكون من الخوارزمية والمفاتيح وإدارة المفاتيح المستخدمة في عمليات التشفير.
+Symmetric Algorithm
+English: A symmetric algorithm is an encryption algorithm in which the same key is used for encryption and decryption.
+العربي: الخوارزمية المتماثلة هي خوارزمية تشفير يُستخدم فيها نفس المفتاح للتشفير وفك التشفير.
+Block Cipher
+English: A block cipher encrypts data one fixed-size block at a time.
+العربي: الشفرة الكتلية هي خوارزمية تشفر البيانات على شكل كتل ثابتة الحجم.
+Stream Cipher
+English: A stream cipher encrypts data one bit or one byte at a time.
+العربي: الشفرة الانسيابية هي خوارزمية تشفر البيانات بتًا بتًا أو بايتًا بايتًا.
+Key Length
+English: Key length is the size of the key measured in bits.
+العربي: طول المفتاح هو حجم المفتاح ويُقاس بالبتات.
+Keyspace
+English: Keyspace is the total set of all possible keys that can be used in a cipher.
+العربي: فضاء المفاتيح هو مجموعة جميع المفاتيح الممكنة التي يمكن استخدامها في خوارزمية معينة.
+Brute Force Attack
+English: A brute force attack is an attack that tries all possible keys until the correct one is found.
+العربي: هجوم القوة الغاشمة هو هجوم يجرب كل المفاتيح المحتملة حتى يجد المفتاح الصحيح.
+DES
+English: DES is a symmetric block cipher with a 64-bit block size and a 56-bit key.
+العربي: DES هو خوارزمية تشفير متماثلة تعمل على كتل بحجم 64 بت ومفتاح 56 بت.
+3DES
+English: 3DES is a symmetric algorithm that applies DES three times to increase security.
+العربي: 3DES هي خوارزمية متماثلة تطبق DES ثلاث مرات لزيادة الأمان.
+AES
+English: AES is a modern symmetric block cipher with a 128-bit block size and key sizes of 128, 192, or 256 bits.
+العربي: AES هي خوارزمية تشفير متماثلة حديثة تعمل على كتل بحجم 128 بت وتستخدم مفاتيح 128 أو 192 أو 256 بت.
+IDEA
+English: IDEA is a symmetric block cipher that operates on 64-bit blocks using a 128-bit key.
+العربي: IDEA هي خوارزمية تشفير متماثلة تعمل على كتل 64 بت باستخدام مفتاح 128 بت.
+Blowfish
+English: Blowfish is a symmetric block cipher with a 64-bit block size and a key up to 448 bits.
+العربي: Blowfish هي خوارزمية تشفير متماثلة بحجم كتلة 64 بت ويمكن أن يصل مفتاحها إلى 448 بت.
+RC5
+English: RC5 is a symmetric encryption algorithm with variable block sizes and variable key lengths.
+العربي: RC5 هي خوارزمية تشفير متماثلة تدعم أحجام كتل مختلفة وأطوال مفاتيح مختلفة.
+Asymmetric Algorithm
+English: An asymmetric algorithm is an encryption algorithm that uses different keys for encryption and decryption.
+العربي: الخوارزمية غير المتماثلة هي خوارزمية تستخدم مفتاحين مختلفين للتشفير وفك التشفير.
+Public Key
+English: A public key is the key used openly for encryption or verification in public-key cryptography.
+العربي: المفتاح العام هو المفتاح الذي يُستخدم علنًا في التشفير أو التحقق في التشفير بالمفتاح العام.
+Private Key
+English: A private key is the secret key used for decryption or signing in public-key cryptography.
+العربي: المفتاح الخاص هو المفتاح السري المستخدم في فك التشفير أو التوقيع في التشفير بالمفتاح العام.
+RSA
+English: RSA is a widely used asymmetric cryptographic algorithm.
+العربي: RSA هي خوارزمية تشفير غير متماثلة مشهورة جدًا.
+DSA
+English: DSA is an asymmetric algorithm mainly used for digital signatures.
+العربي: DSA هي خوارزمية غير متماثلة تُستخدم أساسًا في التوقيعات الرقمية.
+Diffie-Hellman
+English: Diffie-Hellman is a key exchange method used to securely share cryptographic keys between two parties.
+العربي: ديفي-هيلمان هي طريقة لتبادل المفاتيح بشكل آمن بين طرفين.
+OTP (One-Time Pad)
+English: One-Time Pad is a theoretically unbreakable encryption scheme that uses a truly random key equal in length to the message and used only once.
+العربي: الـ One-Time Pad هو نظام تشفير غير قابل للكسر نظريًا، ويستخدم مفتاحًا عشوائيًا حقيقيًا بنفس طول الرسالة ويُستخدم مرة واحدة فقط.
+XOR
+English: XOR is a logical operation often used in cryptography, especially in OTP, where bits are combined according to exclusive OR rules.
+العربي: XOR هي عملية منطقية تُستخدم كثيرًا في التشفير، خاصة في OTP، حيث يتم دمج البتات وفق قواعد XOR.
+Shift Cipher
+English: Shift cipher is a substitution cipher in which each letter is shifted by a fixed number of positions in the alphabet.
+العربي: شفرة الإزاحة هي نوع من التشفير يتم فيه تحريك كل حرف بعدد ثابت من الأماكن في الأبجدية.
+Caesar Cipher
+English: Caesar cipher is a classical shift cipher named after Julius Caesar, in which each letter is shifted by a fixed value.
+العربي: شفرة قيصر هي شفرة إزاحة كلاسيكية سميت باسم يوليوس قيصر، وفيها يتم تحريك كل حرف بمقدار ثابت.
+Substitution Cipher
+English: A substitution cipher is a cipher in which each plaintext character is replaced with another character according to a fixed system.
+العربي: شفرة الاستبدال هي شفرة يتم فيها استبدال كل حرف من النص الصريح بحرف آخر وفق نظام ثابت.
+Monoalphabetic Cipher
+English: A monoalphabetic cipher is a substitution cipher in which one fixed substitution is used for the entire message.
+العربي: الشفرة الأحادية الأبجدية هي شفرة استبدال يُستخدم فيها نفس جدول التبديل الثابت طوال الرسالة.
+Rail Fence Cipher
+English: Rail Fence cipher is a transposition cipher that writes plaintext in a zigzag pattern across multiple rows and then reads it row by row.
+العربي: شفرة السور الحديدي هي شفرة تبديل تكتب النص في شكل متعرج عبر عدة صفوف ثم تقرأه صفًا صفًا.
+Transposition Cipher
+English: A transposition cipher is a cipher that rearranges the positions of characters without changing the characters themselves.
+العربي: شفرة التبديل هي شفرة تعيد ترتيب مواقع الحروف دون تغيير الحروف نفسها.
+Ciphertext-only Attack
+English: A ciphertext-only attack is a cryptanalytic attack in which the attacker has access only to the ciphertext.
+العربي: هجوم النص المشفر فقط هو هجوم تحليلي يكون لدى المهاجم فيه النص المشفر فقط.
+Known Plaintext Attack
+English: A known plaintext attack is an attack in which the attacker knows both the plaintext and its corresponding ciphertext.
+العربي: هجوم النص الصريح المعروف هو هجوم يعرف فيه المهاجم النص الأصلي والنص المشفر المقابل له.
+Chosen Plaintext Attack
+English: A chosen plaintext attack is an attack in which the attacker can choose plaintexts and obtain their ciphertexts.
+العربي: هجوم النص الصريح المختار هو هجوم يستطيع فيه المهاجم اختيار نصوص أصلية ومعرفة ناتج تشفيرها.
+Chosen Ciphertext Attack
+English: A chosen ciphertext attack is an attack in which the attacker can choose ciphertexts and obtain their decrypted plaintexts.
+العربي: هجوم النص المشفر المختار هو هجوم يستطيع فيه المهاجم اختيار نصوص مشفرة ومعرفة النصوص الأصلية الناتجة من فكها.
+Data Complexity
+English: Data complexity is the amount of data required by an attacker to perform a successful attack.
+العربي: تعقيد البيانات هو كمية البيانات التي يحتاجها المهاجم لتنفيذ هجوم ناجح.
+Processing Complexity
+English: Processing complexity is the amount of computational effort required to carry out an attack.
+العربي: تعقيد المعالجة هو مقدار الجهد الحسابي المطلوب لتنفيذ الهجوم.
+Storage Requirements
+English: Storage requirements are the amount of memory or storage needed to perform an attack.
+العربي: متطلبات التخزين هي مقدار الذاكرة أو التخزين المطلوب لتنفيذ الهجوم.
+Vigenère Cipher
+English: Vigenère Cipher is a polyalphabetic substitution cipher that uses a repeating keyword to encrypt plaintext letters with different shifts.
+العربي: شفرة فيجينير هي شفرة استبدال متعددة الأبجديات تستخدم كلمة مفتاح مكررة لتشفير حروف النص الأصلي بإزاحات مختلفة.
+Keyword
+English: A keyword is a word used as a key in some cryptographic algorithms, such as the Vigenère cipher.
+العربي: كلمة المفتاح هي كلمة تُستخدم كمفتاح في بعض خوارزميات التشفير مثل شفرة فيجينير.
+Polyalphabetic Cipher
+English: A polyalphabetic cipher is a cipher that uses multiple substitution alphabets instead of just one.
+العربي: الشفرة متعددة الأبجديات هي شفرة تستخدم أكثر من أبجدية استبدال واحدة بدلًا من أبجدية واحدة ثابتة.
+Modulo 26
+English: Modulo 26 is the arithmetic operation used in many classical ciphers to wrap values around the 26 letters of the English alphabet.
+العربي: Modulo 26 هي العملية الحسابية المستخدمة في كثير من الشفرات الكلاسيكية لإرجاع القيم داخل حدود حروف الأبجدية الإنجليزية الـ 26.
+Columnar Transposition
+English: Columnar Transposition is a transposition cipher in which plaintext is written in rows under columns and then read in a different column order based on a key.
+العربي: التبديل العمودي هو شفرة تبديل يُكتب فيها النص في صفوف تحت أعمدة، ثم تُقرأ الأعمدة بترتيب مختلف حسب المفتاح.
+Double Transposition
+English: Double Transposition is a transposition cipher in which the transposition process is applied twice to increase security.
+العربي: التبديل المزدوج هو شفرة تبديل يتم فيها تطبيق عملية التبديل مرتين لزيادة مستوى الأمان.
+Permutation Cipher
+English: A permutation cipher is a cipher that rearranges characters according to a specific pattern or order.
+العربي: شفرة الترتيب أو التبديل هي شفرة تعيد ترتيب الحروف وفق نمط أو ترتيب معين.
+Zigzag Pattern
+English: A zigzag pattern is a writing pattern used in Rail Fence cipher where letters move diagonally down and up across rows.
+العربي: النمط المتعرج هو شكل كتابة يُستخدم في Rail Fence حيث تتحرك الحروف بشكل مائل إلى أسفل ثم إلى أعلى عبر الصفوف.
+Depth
+English: In Rail Fence cipher, depth is the number of rows used to write the plaintext in zigzag form.
+العربي: في شفرة Rail Fence، العمق هو عدد الصفوف المستخدمة لكتابة النص بشكل متعرج.
+Placeholder
+English: A placeholder is an extra character added temporarily to fill empty positions in a cipher arrangement.
+العربي: الحرف البديل أو الحشو هو حرف إضافي يُضاف مؤقتًا لملء الأماكن الفارغة في ترتيب التشفير.
+Null Character
+English: A null character is a filler character added to complete a grid or pattern in some classical ciphers.
+العربي: الحرف الفارغ أو الحرف الحشو هو حرف يُضاف لإكمال الجدول أو الشكل في بعض الشفرات الكلاسيكية.
+Secure Channel
+English: A secure channel is a communication path protected against eavesdropping, tampering, and unauthorized access.
+العربي: القناة الآمنة هي مسار اتصال محمي ضد التجسس أو التعديل أو الوصول غير المصرح به.
+Insecure Channel
+English: An insecure channel is a communication path that can be monitored, altered, or intercepted by attackers.
+العربي: القناة غير الآمنة هي مسار اتصال يمكن للمهاجمين مراقبته أو اعتراضه أو التعديل عليه.
+Sender
+English: The sender is the party that creates and sends the original message.
+العربي: المرسل هو الطرف الذي ينشئ الرسالة الأصلية ويرسلها.
+Receiver
+English: The receiver is the intended party that receives the message.
+العربي: المستقبل هو الطرف المقصود الذي يستقبل الرسالة.
+Authorized Party
+English: An authorized party is a person or system that has permission to access or use certain data or services.
+العربي: الطرف المصرح له هو الشخص أو النظام الذي لديه إذن للوصول إلى بيانات أو خدمات معينة أو استخدامها.
+Unauthorized Access
+English: Unauthorized access is access to a system or data without permission.
+العربي: الوصول غير المصرح به هو الدخول إلى نظام أو بيانات دون إذن.
+Digital Signature
+English: A digital signature is a cryptographic mechanism used to verify the sender’s identity and ensure message integrity.
+العربي: التوقيع الرقمي هو آلية تشفير تُستخدم للتحقق من هوية المرسل وضمان سلامة الرسالة.
+Message Authentication
+English: Message authentication is the process of verifying that a message comes from a legitimate sender.
+العربي: مصادقة الرسالة هي عملية التحقق من أن الرسالة قادمة من مرسل شرعي.
+Message Digest
+English: A message digest is a fixed-size representation of data generated by a hash function.
+العربي: بصمة الرسالة هي تمثيل ثابت الحجم للبيانات يتم إنتاجه بواسطة دالة هاش.
+Hash Function
+English: A hash function is a mathematical function that converts input data into a fixed-size output value.
+العربي: دالة الهاش هي دالة رياضية تحول البيانات المدخلة إلى قيمة ثابتة الطول.
+Integrity Check
+English: An integrity check is a method used to verify that data has not been altered.
+العربي: فحص السلامة هو طريقة تُستخدم للتحقق من أن البيانات لم يتم تعديلها.
+Identity Verification
+English: Identity verification is the process of confirming that a user or entity is who they claim to be.
+العربي: التحقق من الهوية هو عملية التأكد من أن المستخدم أو الجهة هي فعلًا من تدعي أنها كذلك.
+Confidential Data
+English: Confidential data is sensitive information that must be protected from unauthorized disclosure.
+العربي: البيانات السرية هي معلومات حساسة يجب حمايتها من الكشف غير المصرح به.
+Key Management
+English: Key management is the process of generating, storing, distributing, updating, and protecting cryptographic keys.
+العربي: إدارة المفاتيح هي عملية إنشاء المفاتيح التشفيرية وتخزينها وتوزيعها وتحديثها وحمايتها.
+Shared Secret Key
+English: A shared secret key is a single key known only to the sender and receiver in symmetric encryption.
+العربي: المفتاح السري المشترك هو مفتاح واحد يعرفه فقط المرسل والمستقبل في التشفير المتماثل.
+Encryption Function
+English: An encryption function is the mathematical process that transforms plaintext into ciphertext.
+العربي: دالة التشفير هي العملية الرياضية التي تحول النص الصريح إلى نص مشفر.
+Decryption Function
+English: A decryption function is the mathematical process that transforms ciphertext back into plaintext.
+العربي: دالة فك التشفير هي العملية الرياضية التي تحول النص المشفر مرة أخرى إلى النص الصريح.
+Work Factor
+English: Work factor is the amount of effort or computational power required to break a cryptographic system.
+العربي: عامل الجهد هو مقدار المجهود أو القدرة الحسابية المطلوبة لكسر نظام تشفير.
+Exhaustive Search
+English: Exhaustive search is a brute-force method that checks all possible keys or solutions.
+العربي: البحث الشامل هو أسلوب قوة غاشمة يفحص جميع المفاتيح أو الحلول الممكنة.
+Frequency Analysis
+English: Frequency analysis is a cryptanalytic technique that studies how often letters or patterns appear in ciphertext.
+العربي: تحليل التكرار هو أسلوب تحليلي يدرس مدى تكرار الحروف أو الأنماط داخل النص المشفر.
+Pattern
+English: A pattern is a repeated or recognizable structure in data or ciphertext that may help in analysis.
+العربي: النمط هو بنية متكررة أو قابلة للملاحظة في البيانات أو النص المشفر قد تساعد في التحليل.
+Ciphertext-only Attack
+English: In a ciphertext-only attack, the attacker has access only to ciphertext and tries to recover the plaintext or key.
+العربي: في هجوم النص المشفر فقط، يمتلك المهاجم النص المشفر فقط ويحاول استرجاع النص الأصلي أو المفتاح.
+Known Plaintext Attack
+English: In a known plaintext attack, the attacker knows some plaintext and its matching ciphertext.
+العربي: في هجوم النص الأصلي المعروف، يعرف المهاجم جزءًا من النص الأصلي والنص المشفر المقابل له.
+Chosen Plaintext Attack
+English: In a chosen plaintext attack, the attacker can select plaintexts and observe their encrypted outputs.
+العربي: في هجوم النص الأصلي المختار، يستطيع المهاجم اختيار نصوص أصلية وملاحظة ناتج تشفيرها.
+Chosen Ciphertext Attack
+English: In a chosen ciphertext attack, the attacker can select ciphertexts and obtain the corresponding plaintexts.
+العربي: في هجوم النص المشفر المختار، يستطيع المهاجم اختيار نصوص مشفرة والحصول على النصوص الأصلية المقابلة لها.
+Chosen Text Attack
+English: A chosen text attack is a general attack model in which the attacker can choose plaintexts, ciphertexts, or both.
+العربي: هجوم النص المختار هو نموذج عام من الهجوم يستطيع فيه المهاجم اختيار النصوص الأصلية أو المشفرة أو كليهما.
+Key Strength
+English: Key strength refers to how resistant a key is to attacks, especially brute-force attacks, and is often related to key length.
+العربي: قوة المفتاح تشير إلى مدى مقاومة المفتاح للهجمات، خصوصًا هجمات القوة الغاشمة، وغالبًا ترتبط بطول المفتاح.
+Key Size
+English: Key size is the number of bits used in a cryptographic key.
+العربي: حجم المفتاح هو عدد البتات المستخدمة في المفتاح التشفيري.
+40-bit Key
+English: A 40-bit key is a cryptographic key made of 40 bits, giving 2^40 possible keys.
+العربي: مفتاح 40 بت هو مفتاح تشفيري مكون من 40 بت، ويوفر 2^40 مفتاحًا ممكنًا.
+128-bit Key
+English: A 128-bit key is a cryptographic key made of 128 bits, giving 2^128 possible keys.
+العربي: مفتاح 128 بت هو مفتاح تشفيري مكون من 128 بت، ويوفر 2^128 مفتاحًا ممكنًا.
+Key Exchange
+English: Key exchange is the process of securely sharing cryptographic keys between communicating parties.
+العربي: تبادل المفاتيح هو عملية مشاركة المفاتيح التشفيرية بشكل آمن بين الأطراف المتواصلة.
+Public-Key Cryptography
+English: Public-key cryptography is a cryptographic system that uses a public key for encryption and a private key for decryption.
+العربي: التشفير بالمفتاح العام هو نظام تشفير يستخدم مفتاحًا عامًا للتشفير ومفتاحًا خاصًا لفك التشفير.
+Private-Key Cryptography
+English: Private-key cryptography is another term for symmetric cryptography, where the same secret key is used for encryption and decryption.
+العربي: التشفير بالمفتاح الخاص هو اسم آخر للتشفير المتماثل، حيث يُستخدم نفس المفتاح السري للتشفير وفك التشفير.
+Secret Writing
+English: Secret writing refers to writing messages in a hidden or protected form so unauthorized people cannot understand them.
+العربي: الكتابة السرية تعني كتابة الرسائل في صورة مخفية أو محمية بحيث لا يستطيع غير المصرح لهم فهمها.
+Hidden Writing
+English: Hidden writing is another description of cryptography, where the real meaning of the message is concealed.
+العربي: الكتابة المخفية هي وصف آخر للتشفير، حيث يتم إخفاء المعنى الحقيقي للرسالة.
+Ultra-Secure Channel
+English: An ultra-secure channel is a communication channel designed for extremely sensitive information with maximum protection.
+العربي: القناة فائقة الأمان هي قناة اتصال مخصصة للمعلومات شديدة الحساسية مع أعلى مستوى من الحماية.
+Low-Bandwidth Channel
+English: A low-bandwidth channel is a communication channel that can carry only a limited amount of data over time.
+العربي: القناة منخفضة النطاق هي قناة اتصال تستطيع نقل كمية محدودة فقط من البيانات مع الزمن.
+Random Key
+English: A random key is a key generated without predictable patterns.
+العربي: المفتاح العشوائي هو مفتاح يتم إنشاؤه دون نمط متوقع أو معروف.
+Truly Random
+English: Truly random means generated in a way that is completely unpredictable and not based on a repeatable pattern.
+العربي: العشوائية الحقيقية تعني أن الشيء تم توليده بطريقة غير قابلة للتوقع تمامًا وليست مبنية على نمط متكرر.
+One-Time Use
+English: One-time use means a cryptographic key is used only once and never reused.
+العربي: الاستخدام لمرة واحدة يعني أن المفتاح التشفيري يُستخدم مرة واحدة فقط ولا يُعاد استخدامه.
+Unbreakable Encryption
+English: Unbreakable encryption is encryption that cannot be practically or theoretically broken under its ideal conditions.
+العربي: التشفير غير القابل للكسر هو التشفير الذي لا يمكن كسره عمليًا أو نظريًا تحت شروطه المثالية.
+Ciphertext-only Attack Resistance
+English: Ciphertext-only attack resistance means that encryption remains secure even if the attacker only has access to ciphertext.
+العربي: مقاومة هجوم النص المشفر فقط تعني أن التشفير يظل آمنًا حتى لو كان لدى المهاجم النص المشفر فقط.
+Classical Cipher
+English: A classical cipher is an old or traditional encryption method developed before modern computer-based cryptography.
+العربي: الشفرة الكلاسيكية هي طريقة تشفير قديمة أو تقليدية ظهرت قبل التشفير الحديث المعتمد على الحاسوب.
+Encryption Scheme
+English: An encryption scheme is the overall method or design used to encrypt and decrypt messages.
+العربي: مخطط التشفير هو الطريقة أو التصميم العام المستخدم لتشفير الرسائل وفكها.
+Shift Value
+English: A shift value is the fixed number of alphabet positions by which letters are moved in a shift cipher.
+العربي: قيمة الإزاحة هي العدد الثابت من أماكن الأبجدية التي يتم تحريك الحروف بها في شفرة الإزاحة.
+Inverse Permutation
+English: An inverse permutation is the reverse mapping used to restore original positions or symbols in decryption.
+العربي: التبديل العكسي هو الترتيب العكسي المستخدم لإرجاع المواقع أو الرموز الأصلية أثناء فك التشفير.
+Permutation
+English: A permutation is an arrangement or rearrangement of elements in a particular order.
+العربي: التبديل أو الترتيب هو تنظيم أو إعادة تنظيم العناصر بترتيب معين.
+Monoalphabetic Substitution
+English: Monoalphabetic substitution is a substitution method where each letter always maps to the same replacement letter.
+العربي: الاستبدال الأحادي الأبجدية هو أسلوب استبدال يتم فيه تحويل كل حرف دائمًا إلى نفس الحرف البديل طوال الرسالة.
+Cipher Model
+English: A cipher model is a conceptual representation of how plaintext, key, encryption, ciphertext, and decryption are related.
+العربي: نموذج الشفرة هو تمثيل مفاهيمي يوضح العلاقة بين النص الأصلي والمفتاح والتشفير والنص المشفر وفك التشفير.
+Sender Authentication
+English: Sender authentication is the process of verifying that the sender of a message is genuine.
+العربي: مصادقة المرسل هي عملية التحقق من أن مرسل الرسالة حقيقي.
+Recipient
+English: A recipient is the person or system intended to receive a message.
+العربي: المستلم هو الشخص أو النظام المقصود باستلام الرسالة.
+Intended Receiver
+English: The intended receiver is the specific person or system for whom the message is meant.
+العربي: المستلم المقصود هو الشخص أو النظام المحدد الذي أُرسلت إليه الرسالة.
+Intended Sender
+English: The intended sender is the actual legitimate originator of the message.
+العربي: المرسل المقصود هو المصدر الحقيقي والشرعي للرسالة.
+Message Alteration
+English: Message alteration is any unauthorized modification of a message during storage or transmission.
+العربي: تعديل الرسالة هو أي تغيير غير مصرح به في الرسالة أثناء التخزين أو الإرسال.
+Transmission
+English: Transmission is the act of sending data from one place or device to another.
+العربي: الإرسال هو عملية نقل البيانات من مكان أو جهاز إلى آخر.
+Secure Transaction
+English: A secure transaction is an exchange of information or value that is protected against interception, tampering, and fraud.
+العربي: المعاملة الآمنة هي عملية تبادل معلومات أو قيمة تكون محمية ضد الاعتراض أو التعديل أو الاحتيال.
+Business Transaction
+English: A business transaction is an exchange of goods, services, money, or information between parties in a commercial setting.
+العربي: المعاملة التجارية هي تبادل السلع أو الخدمات أو الأموال أو المعلومات بين أطراف في بيئة تجارية.
+War-Time Communication
+English: War-time communication is secure communication used in military or conflict situations where secrecy is critical.
+العربي: الاتصال وقت الحرب هو اتصال آمن يُستخدم في الظروف العسكرية أو أثناء الصراعات حيث تكون السرية شديدة الأهمية.
+Authorized Access
+English: Authorized access is access to systems or data granted through proper permission.
+العربي: الوصول المصرح به هو الوصول إلى الأنظمة أو البيانات من خلال إذن صحيح.
+Codebreaking
+English: Codebreaking is another term for cryptanalysis, which means trying to recover hidden information without the key.
+العربي: كسر الشفرة هو اسم آخر لتحليل الشفرات، ويعني محاولة استرجاع المعلومات المخفية دون معرفة المفتاح.
+Security Level
+English: Security level is the degree of protection provided by a system against attacks.
+العربي: مستوى الأمان هو درجة الحماية التي يوفرها النظام ضد الهجمات.
+Constant Stream of Information
+English: A constant stream of information is data that flows continuously over time rather than as a single fixed block.
+العربي: التدفق المستمر للمعلومات هو بيانات تتدفق باستمرار مع الزمن بدلًا من أن تكون كتلة واحدة ثابتة.
+Single Message
+English: A single message is one standalone block or unit of data sent at one time.
+العربي: الرسالة الواحدة هي كتلة أو وحدة بيانات مستقلة يتم إرسالها مرة واحدة.
+Block Size
+English: Block size is the number of bits processed together as one unit in a block cipher.
+العربي: حجم الكتلة هو عدد البتات التي تُعالج معًا كوحدة واحدة في الشفرة الكتلية.
+Variable Key Size
+English: Variable key size means that an algorithm can use keys of different lengths.
+العربي: حجم المفتاح المتغير يعني أن الخوارزمية يمكنها استخدام مفاتيح بأطوال مختلفة.
+Security Doubling
+English: Security doubling means that each extra bit added to the key doubles the number of possible keys.
+العربي: تضاعف الأمان يعني أن كل بت إضافي يُضاف إلى المفتاح يضاعف عدد المفاتيح الممكنة.`;
+
+        // Parse Text -> Objects
+        const lines = rawData.trim().split('\n').filter(l => l.trim() !== '');
+        const glossaryDict = [];
+        let currentObj = {};
+        
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i];
+            if (line.startsWith("English:")) {
+                currentObj.en = line.replace("English:", "").trim();
+            } else if (line.startsWith("العربي:")) {
+                currentObj.ar = line.replace("العربي:", "").trim();
+                // Push and reset
+                if (currentObj.name && currentObj.en) {
+                    glossaryDict.push({...currentObj});
+                }
+                currentObj = {};
+            } else {
+                currentObj.name = line;
+            }
+        }
+
+        // Sort Alphabetically
+        glossaryDict.sort((a, b) => a.name.localeCompare(b.name));
+
+        const grid = document.getElementById('glossaryGrid');
+        const countSpan = document.getElementById('termCount');
+        countSpan.innerText = glossaryDict.length;
+
+        // Render Cards
+        glossaryDict.forEach(term => {
+            const card = document.createElement('div');
+            card.className = "term-card";
+            card.setAttribute('data-search', `${term.name.toLowerCase()} ${term.en.toLowerCase()} ${term.ar}`);
+            
+            card.innerHTML = `
+                <div class="term-title">${term.name}</div>
+                <div class="term-en">${term.en}</div>
+                <div class="term-ar">${term.ar}</div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Search Function
+        const searchBox = document.getElementById('searchBox');
+        searchBox.addEventListener('keyup', function() {
+            const filter = this.value.toLowerCase();
+            const cards = document.getElementsByClassName('term-card');
+            let hasResults = false;
+
+            for (let i = 0; i < cards.length; i++) {
+                let searchableContent = cards[i].getAttribute('data-search');
+                if (searchableContent.includes(filter)) {
+                    cards[i].style.display = "";
+                    hasResults = true;
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+
+            document.getElementById('noResults').style.display = hasResults ? "none" : "block";
+        });
+
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const matrixLetters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixLetters.charAt(Math.floor(Math.random() * matrixLetters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+</html>

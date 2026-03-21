@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter: Cyber Solutions & Diagnostics</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: var(--font-code);
+            background: #050810;
+            color: #fff;
+            margin: 0;
+        }
+
+        .content-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 2px solid rgba(0, 229, 255, 0.4);
+            padding-bottom: 15px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        .cyber-heading::before {
+            content: 'SYSTEM.RESOLVE()';
+            color: #10b981;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1.5s infinite step-start;
+        }
+
+        .solution-card {
+            background: rgba(10, 15, 25, 0.95);
+            border: 1px solid #222;
+            border-left: 5px solid #10b981;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #10b981, transparent);
+        }
+
+        .solution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .solution-title {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .solution-type {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            padding: 5px 15px;
+            font-size: 0.9rem;
+            border: 1px solid #10b981;
+            letter-spacing: 1px;
+        }
+
+        .prompt-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 20px;
+            border-left: 3px solid #ef4444;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .prompt-box span {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .svg-container {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            margin: 25px 0;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        /* Table Styles */
+        .crypto-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .crypto-table th {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            padding: 12px;
+            border: 1px solid #333;
+        }
+
+        .crypto-table td {
+            padding: 12px;
+            border: 1px dashed #333;
+            color: #cbd5e1;
+        }
+
+        .crypto-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .crypto-table td.highlight {
+            color: #00e5ff;
+            font-weight: bold;
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        .crypto-table td.ans-highlight {
+            color: #10b981;
+            font-weight: bold;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Step Boxes */
+        .step-block {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 2px solid var(--primary-color);
+        }
+
+        .step-title {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-title svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            fill: var(--primary-color);
+        }
+
+        .math-box {
+            display: inline-block;
+            background: #000;
+            padding: 10px 20px;
+            border: 1px solid #333;
+            color: #facc15;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+
+        /* Final Answer */
+        .final-answer-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            padding: 20px 30px;
+            margin-top: 30px;
+        }
+
+        .final-answer-box span {
+            color: #10b981;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .final-answer-box .the-answer {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 3px;
+            word-break: break-all;
+        }
+
+        .ar-desc {
+            font-family: 'Segoe UI', sans-serif;
+            direction: rtl;
+            text-align: right;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* Specific Visualizers */
+        .grid-visualizer {
+            display: inline-grid;
+            gap: 5px;
+            background: #000;
+            padding: 15px;
+            border: 1px solid #333;
+        }
+
+        .grid-cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .grid-cell.active {
+            background: rgba(0, 229, 255, 0.15);
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+        }
+
+        .grid-cell.rail {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .grid-cell.empty {
+            background: transparent;
+            color: #333;
+            border: 1px dashed #222;
+        }
+
+        .grid-header {
+            background: #222;
+            color: #10b981;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 25px;
+            background: #000;
+            border: 1px solid #10b981;
+            color: #10b981;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            margin-bottom: 40px;
+        }
+
+        .btn-back:hover {
+            background: #10b981;
+            color: #000;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-back svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            fill: currentColor;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
+
+    <div class="content-container">
+        <a href="chapter_quiz.html" class="btn-back">
+            <svg viewBox="0 0 24 24">
+                <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+            </svg>
+            BACK TO QUIZ ARENA
+        </a>
+
+        <header style="text-align: center; margin-bottom: 50px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="MASTER KEY: RESOLVED"
+                    style="font-size: 4rem; color: #fff; margin-bottom: 10px;">MASTER KEY: RESOLVED</h1>
+            </div>
+
+        </header>
+
+
+        <!-- VIGENERE SECTION -->
+        <h2 class="cyber-heading">I. Vigenère Cipher Operations</h2>
+
+        <!-- Mission 1 -->
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #1</div>
+                <div class="solution-type">Vigenère / Decrypt</div>
+            </div>
+            <div class="prompt-box">
+                Key: <span>KEY</span> <br> Ciphertext: <span>MMNRIPKX</span>
+            </div>
+            <div class="ar-desc">
+                بما أن العملية هي فك تشفير، القانون المستخدم هو الطرح الجبري مع مراعاة التفاف الـ Modulo 26.
+            </div>
+            <div class="step-block">
+                <div class="step-title">Formula Applied</div>
+                <div class="math-box">Plaintext = (Cipher - Key) mod 26</div>
+            </div>
+
+            <table class="crypto-table">
+                <tr>
+                    <th>Index</th>
+                    <th>Cipher (C)</th>
+                    <th>Num(C)</th>
+                    <th>Key (K)</th>
+                    <th>Num(K)</th>
+                    <th>C - K</th>
+                    <th>Modulo 26</th>
+                    <th class="ans-highlight">Plain (P)</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td class="highlight">M</td>
+                    <td>12</td>
+                    <td>K</td>
+                    <td>10</td>
+                    <td>12 - 10 = 2</td>
+                    <td>2</td>
+                    <td class="ans-highlight">C</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="highlight">M</td>
+                    <td>12</td>
+                    <td>E</td>
+                    <td>4</td>
+                    <td>12 - 4 = 8</td>
+                    <td>8</td>
+                    <td class="ans-highlight">I</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="highlight">N</td>
+                    <td>13</td>
+                    <td>Y</td>
+                    <td>24</td>
+                    <td>13 - 24 = -11</td>
+                    <td>-11 + 26 = 15</td>
+                    <td class="ans-highlight">P</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="highlight">R</td>
+                    <td>17</td>
+                    <td>K</td>
+                    <td>10</td>
+                    <td>17 - 10 = 7</td>
+                    <td>7</td>
+                    <td class="ans-highlight">H</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td class="highlight">I</td>
+                    <td>8</td>
+                    <td>E</td>
+                    <td>4</td>
+                    <td>8 - 4 = 4</td>
+                    <td>4</td>
+                    <td class="ans-highlight">E</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td class="highlight">P</td>
+                    <td>15</td>
+                    <td>Y</td>
+                    <td>24</td>
+                    <td>15 - 24 = -9</td>
+                    <td>-9 + 26 = 17</td>
+                    <td class="ans-highlight">R</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td class="highlight">K</td>
+                    <td>10</td>
+                    <td>K</td>
+                    <td>10</td>
+                    <td>10 - 10 = 0</td>
+                    <td>0</td>
+                    <td class="ans-highlight">A</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td class="highlight">X</td>
+                    <td>23</td>
+                    <td>E</td>
+                    <td>4</td>
+                    <td>23 - 4 = 19</td>
+                    <td>19</td>
+                    <td class="ans-highlight">T</td>
+                </tr>
+            </table>
+
+            <div class="final-answer-box">
+                <span>[ EXTRACTED PLAINTEXT ]</span>
+                <div class="the-answer">CIPHERAT</div>
+            </div>
+        </div>
+
+        <!-- Mission 2 -->
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #2</div>
+                <div class="solution-type">Vigenère / Encrypt</div>
+            </div>
+            <div class="prompt-box">
+                Key: <span>CODE</span> <br> Plaintext: <span>SECUREDATA</span>
+            </div>
+            <div class="step-block">
+                <div class="step-title">Formula Applied</div>
+                <div class="math-box">Ciphertext = (Plain + Key) mod 26</div>
+            </div>
+
+            <table class="crypto-table">
+                <tr>
+                    <th>Index</th>
+                    <th>Plain (P)</th>
+                    <th>Num(P)</th>
+                    <th>Key (K)</th>
+                    <th>Num(K)</th>
+                    <th>P + K</th>
+                    <th>Modulo 26</th>
+                    <th class="ans-highlight">Cipher (C)</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>S</td>
+                    <td>18</td>
+                    <td>C</td>
+                    <td>2</td>
+                    <td>20</td>
+                    <td>20</td>
+                    <td class="ans-highlight">U</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>E</td>
+                    <td>4</td>
+                    <td>O</td>
+                    <td>14</td>
+                    <td>18</td>
+                    <td>18</td>
+                    <td class="ans-highlight">S</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>C</td>
+                    <td>2</td>
+                    <td>D</td>
+                    <td>3</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td class="ans-highlight">F</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>U</td>
+                    <td>20</td>
+                    <td>E</td>
+                    <td>4</td>
+                    <td>24</td>
+                    <td>24</td>
+                    <td class="ans-highlight">Y</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>R</td>
+                    <td>17</td>
+                    <td>C</td>
+                    <td>2</td>
+                    <td>19</td>
+                    <td>19</td>
+                    <td class="ans-highlight">T</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>E</td>
+                    <td>4</td>
+                    <td>O</td>
+                    <td>14</td>
+                    <td>18</td>
+                    <td>18</td>
+                    <td class="ans-highlight">S</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>D</td>
+                    <td>3</td>
+                    <td>D</td>
+                    <td>3</td>
+                    <td>6</td>
+                    <td>6</td>
+                    <td class="ans-highlight">G</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>A</td>
+                    <td>0</td>
+                    <td>E</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>4</td>
+                    <td class="ans-highlight">E</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>T</td>
+                    <td>19</td>
+                    <td>C</td>
+                    <td>2</td>
+                    <td>21</td>
+                    <td>21</td>
+                    <td class="ans-highlight">V</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>A</td>
+                    <td>0</td>
+                    <td>O</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td class="ans-highlight">O</td>
+                </tr>
+            </table>
+
+            <div class="final-answer-box">
+                <span>[ GENERATED CIPHERTEXT ]</span>
+                <div class="the-answer">USFYTSGEVO</div>
+            </div>
+        </div>
+
+        <!-- CAESAR SECTION -->
+        <h2 class="cyber-heading" style="margin-top:80px;">II. Caesar & Shift Cipher Mechanics</h2>
+
+        <div class="ar-desc">
+            تشفير قيصر يعتمد على حلقة دائرية (Circular Shift) للأبجدية. قمنا بتمثيل حركة الإزاحة باستخدام الأسهم لتوضيح
+            كيف يتحول الحرف رياضياً.
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #4 & #5</div>
+                <div class="solution-type">Caesar Cipher Visualized</div>
+            </div>
+            <div class="prompt-box">
+                Q4: Encrypt | Key: 3 | Plaintext: <span>HELLO WORLD</span><br>
+                Q5: Decrypt | Key: 5 | Ciphertext: <span>MJQQT BTWQI</span>
+            </div>
+
+            <!-- SVG Caesar Shift Visuals -->
+            <div class="svg-container">
+                <h3 style="color:var(--primary-color); margin-top:0;">Q4: Shift Right by 3 (+3) Mapping</h3>
+                <svg width="600" height="120" viewBox="0 0 600 120">
+                    <!-- Plaintext Letters -->
+                    <text x="50" y="40" fill="#fff" font-size="24" font-family="monospace">H</text>
+                    <text x="150" y="40" fill="#fff" font-size="24" font-family="monospace">E</text>
+                    <text x="250" y="40" fill="#fff" font-size="24" font-family="monospace">L</text>
+                    <text x="350" y="40" fill="#fff" font-size="24" font-family="monospace">L</text>
+                    <text x="450" y="40" fill="#fff" font-size="24" font-family="monospace">O</text>
+
+                    <!-- Arrows -->
+                    <path d="M 58 50 L 58 90" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)" />
+                    <path d="M 158 50 L 158 90" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)" />
+                    <path d="M 258 50 L 258 90" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)" />
+                    <path d="M 358 50 L 358 90" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)" />
+                    <path d="M 458 50 L 458 90" stroke="#00e5ff" stroke-width="2" marker-end="url(#arrow)" />
+
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6"
+                            orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#00e5ff" />
+                        </marker>
+                    </defs>
+
+                    <!-- Shift Texts -->
+                    <text x="65" y="75" fill="#00e5ff" font-size="12">+3</text>
+                    <text x="165" y="75" fill="#00e5ff" font-size="12">+3</text>
+                    <text x="265" y="75" fill="#00e5ff" font-size="12">+3</text>
+
+                    <!-- Ciphertext Letters -->
+                    <text x="50" y="110" fill="#10b981" font-size="24" font-weight="bold"
+                        font-family="monospace">K</text>
+                    <text x="150" y="110" fill="#10b981" font-size="24" font-weight="bold"
+                        font-family="monospace">H</text>
+                    <text x="250" y="110" fill="#10b981" font-size="24" font-weight="bold"
+                        font-family="monospace">O</text>
+                    <text x="350" y="110" fill="#10b981" font-size="24" font-weight="bold"
+                        font-family="monospace">O</text>
+                    <text x="450" y="110" fill="#10b981" font-size="24" font-weight="bold"
+                        font-family="monospace">R</text>
+                </svg>
+            </div>
+
+            <div class="final-answer-box">
+                <span>[ Q4/Q5 OUTPUT ]</span>
+                <div class="the-answer">Q4 = KHOOR ZRUOG <br><br> Q5 = HELLO WORLD</div>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #6 & #7 (Key 11)</div>
+                <div class="solution-type">Caesar Math Breakdown</div>
+            </div>
+            <div class="prompt-box">
+                Q6: Encrypt | Key: 11 | Plain: <span>WE WILL MEET</span><br>
+                Q7: Decrypt | Key: 11 | Cipher: <span>SPNFCP OLEX</span>
+            </div>
+
+            <div class="step-block">
+                <div class="step-title">Breaking down Q7 (Decrypt -11): The Modulo Wrap</div>
+                <p>في فك التشفير نقوم بالطرح. إذا كان الناتج بالسالب، نقوم بإضافة 26 ليعود داخل الدائرة الأبجدية.</p>
+                <div class="math-box">Example F(5): 5 - 11 = -6. &nbsp;&nbsp;&nbsp; -6 + 26 = 20 (U).</div>
+                <table class="crypto-table" style="margin-top:15px;">
+                    <tr>
+                        <th>C</th>
+                        <td>S(18)</td>
+                        <td>P(15)</td>
+                        <td>N(13)</td>
+                        <td>F(5)</td>
+                        <td>C(2)</td>
+                        <td>P(15)</td>
+                        <td>O(14)</td>
+                        <td>L(11)</td>
+                        <td>E(4)</td>
+                        <td>X(23)</td>
+                    </tr>
+                    <tr>
+                        <th>-11</th>
+                        <td>7</td>
+                        <td>4</td>
+                        <td>2</td>
+                        <td>-6/20</td>
+                        <td>-9/17</td>
+                        <td>4</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>-7/19</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <th>P</th>
+                        <td class="ans-highlight">H</td>
+                        <td class="ans-highlight">E</td>
+                        <td class="ans-highlight">C</td>
+                        <td class="ans-highlight">U</td>
+                        <td class="ans-highlight">R</td>
+                        <td class="ans-highlight">E</td>
+                        <td class="ans-highlight">D</td>
+                        <td class="ans-highlight">A</td>
+                        <td class="ans-highlight">T</td>
+                        <td class="ans-highlight">M</td>
+                    </tr>
+                </table>
+                <p style="color:#ef4444; font-size:0.9rem;">*Note: The plaintext decoded to "SECURE DATM". The original
+                    user prompt had 'X' which decrypts to 'M'. If 'A' was intended, the cipher letter should have been
+                    'L'.</p>
+            </div>
+
+            <div class="final-answer-box">
+                <span>[ Q6/Q7 OUTPUT ]</span>
+                <div class="the-answer">Q6 = HP HTWW XPPE <br><br> Q7 = SECURE DATM</div>
+            </div>
+        </div>
+
+        <!-- RAIL FENCE SECTION -->
+        <h2 class="cyber-heading" style="margin-top:80px;">III. Transposition: Rail Fence Matrices</h2>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #9</div>
+                <div class="solution-type">Rail Fence / Depth 3</div>
+            </div>
+            <div class="prompt-box">
+                Key (Depth): <span>3</span> <br> Plaintext: <span>DEFEND THE EAST WALL</span>
+            </div>
+            <div class="ar-desc">
+                التشفير بطريقة السور المتعرج (Zigzag). نزيل المسافات فيصبح طول النص 17 حرفاً. يتم رسم 3 صفوف (قضبان)،
+                ويتحرك النص من الأعلى للأسفل، ثم يعود للأعلى وهكذا.
+            </div>
+
+            <div class="svg-container" style="background:#050505;">
+                <h3 style="color:#ef4444;">Visual Zigzag Mapping</h3>
+                <div
+                    style="font-family: monospace; font-size: 1.5rem; letter-spacing: 15px; color: #fff; line-height: 2;">
+                    <span style="color:#00e5ff">D</span>.....<span style="color:#00e5ff">N</span>.....<span
+                        style="color:#00e5ff">E</span>.....<span style="color:#00e5ff">T</span>.....<span
+                        style="color:#00e5ff">L</span>
+                    .<span style="color:#10b981">E</span>...<span style="color:#10b981">E</span>.<span
+                        style="color:#10b981">D</span>...<span style="color:#10b981">H</span>.<span
+                        style="color:#10b981">E</span>...<span style="color:#10b981">S</span>.<span
+                        style="color:#10b981">W</span>...<span style="color:#10b981">L</span>.
+                    ..<span style="color:#facc15">F</span>.....<span style="color:#facc15">T</span>.....<span
+                        style="color:#facc15">A</span>.....<span style="color:#facc15">A</span>..
+                </div>
+                <div style="margin-top: 20px; color:#cbd5e1; font-family:var(--font-code);">
+                    Row 1 = D N E T L <br> Row 2 = E E D H E S W L <br> Row 3 = F T A A <br><br>
+                    <strong>Read Horizontally: DNETLEEDHESWLFTAA</strong>
+                </div>
+            </div>
+
+            <div class="final-answer-box">
+                <span>[ EXTRACTED CIPHERTEXT ]</span>
+                <div class="the-answer">DNETLEEDHESWLFTAA</div>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #10</div>
+                <div class="solution-type">Rail Fence Decryption</div>
+            </div>
+            <div class="prompt-box">
+                Key (Depth): <span>3</span> <br> Ciphertext: <span>DNETLEEDHESWLXFTAAX</span> (19 Chars)
+            </div>
+            <div class="ar-desc">
+                لفك شفرة Rail Fence، يجب أن نحدد أولاً <strong>مقاس</strong> كل صف (كم حرفاً يستوعب). النص 19 حرف.
+                بتمثيل دورة الـ Zigzag نجد أن:
+                <br> - الصف الأول يحتوي 5 حروف (الأول والثالث... إلخ).
+                <br> - الصف الأخير يحتوي صعوداً ونزولاً 5 حروف.
+                <br> - الصف الأوسط يحمل الباقي (9 حروف).
+            </div>
+
+            <div class="step-block">
+                <div class="grid-visualizer" style="grid-template-columns: repeat(19, 40px);">
+                    <div class="grid-cell rail">D</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">N</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">E</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">T</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">L</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">E</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">E</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">D</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">H</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">E</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">S</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">W</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">L</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell active">X</div>
+                    <div class="grid-cell empty"></div>
+
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">F</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">T</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">A</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">A</div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell empty"></div>
+                    <div class="grid-cell rail">X</div>
+                </div>
+            </div>
+
+            <div class="final-answer-box">
+                <span>[ RECONSTRUCTED PLAINTEXT ]</span>
+                <div class="the-answer">DEFEND THE EAST WALL XX</div>
+            </div>
+        </div>
+
+        <!-- COLUMNAR SECTION -->
+        <h2 class="cyber-heading" style="margin-top:80px;">IV. Columnar Transposition Box Grids</h2>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #11</div>
+                <div class="solution-type">Columnar Encrypt</div>
+            </div>
+            <div class="prompt-box">
+                Key: <span>4 3 1 2 5 6 7</span> <br> Plaintext: <span>ATTACK POSTPONED UNTILL TWO AM</span> (26 Chars)
+            </div>
+
+            <div class="ar-desc">
+                الحل يتطلب تشكيل النص على هيئة مصفوفة (Matrix)، عرضها يعتمد على طول المفتاح (7 أعمدة). وعدد الصفوف هو
+                طول الكلمة تقسيم العرض.
+                ثم نقوم بقراءة الأعمدة حسب ترتيب أرقام المفتاح تصاعدياً: (1 ثم 2 ثم 3...). قمنا بإضافة حرف X لملء الجدول
+                الأخير.
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <div class="grid-visualizer" style="grid-template-columns: repeat(7, 50px);">
+                    <!-- Header with Key -->
+                    <div class="grid-cell grid-header">4</div>
+                    <div class="grid-cell grid-header">3</div>
+                    <div class="grid-cell grid-header" style="background:#ef4444;color:#fff;">1</div>
+                    <div class="grid-cell grid-header">2</div>
+                    <div class="grid-cell grid-header">5</div>
+                    <div class="grid-cell grid-header">6</div>
+                    <div class="grid-cell grid-header">7</div>
+                    <!-- Row 1 -->
+                    <div class="grid-cell">A</div>
+                    <div class="grid-cell">T</div>
+                    <div class="grid-cell active">T</div>
+                    <div class="grid-cell">A</div>
+                    <div class="grid-cell">C</div>
+                    <div class="grid-cell">K</div>
+                    <div class="grid-cell">P</div>
+                    <!-- Row 2 -->
+                    <div class="grid-cell">O</div>
+                    <div class="grid-cell">S</div>
+                    <div class="grid-cell active">T</div>
+                    <div class="grid-cell">P</div>
+                    <div class="grid-cell">O</div>
+                    <div class="grid-cell">N</div>
+                    <div class="grid-cell">E</div>
+                    <!-- Row 3 -->
+                    <div class="grid-cell">D</div>
+                    <div class="grid-cell">U</div>
+                    <div class="grid-cell active">N</div>
+                    <div class="grid-cell">T</div>
+                    <div class="grid-cell">I</div>
+                    <div class="grid-cell">L</div>
+                    <div class="grid-cell">L</div>
+                    <!-- Row 4 -->
+                    <div class="grid-cell">T</div>
+                    <div class="grid-cell">W</div>
+                    <div class="grid-cell active">O</div>
+                    <div class="grid-cell">A</div>
+                    <div class="grid-cell">M</div>
+                    <div class="grid-cell" style="color:#666;">X</div>
+                    <div class="grid-cell" style="color:#666;">X</div>
+                </div>
+            </div>
+
+            <div class="step-block">
+                <p>1st Read (Col 3): <span style="color:#00e5ff;">TTNO</span></p>
+                <p>2nd Read (Col 4): <span style="color:#00e5ff;">APTA</span></p>
+                <p>3rd Read (Col 2): <span style="color:#00e5ff;">TSUW</span> ... etc.</p>
+            </div>
+
+            <div class="final-answer-box">
+                <span>[ EXTRACTED BLOCKS ]</span>
+                <div class="the-answer">TTNO APTA TSUW AODT COIM KNLX PELX</div>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #12</div>
+                <div class="solution-type">Columnar Encrypt (Word Key)</div>
+            </div>
+            <div class="prompt-box">
+                Key: <span>CAT</span> <br> Plaintext: <span>HELLO WORLD</span>
+            </div>
+            <div class="ar-desc">
+                إذا كان المفتاح كلمة، نحول حروفه إلى أرقام بناءً على ترتيبها الأبجدي. A=1, C=2, T=3.
+            </div>
+            <div style="text-align: center; margin: 30px 0;">
+                <div class="grid-visualizer" style="grid-template-columns: repeat(3, 50px);">
+                    <!-- Header -->
+                    <div class="grid-cell grid-header">C(2)</div>
+                    <div class="grid-cell grid-header" style="background:#ef4444;color:#fff;">A(1)</div>
+                    <div class="grid-cell grid-header">T(3)</div>
+                    <div class="grid-cell">H</div>
+                    <div class="grid-cell active">E</div>
+                    <div class="grid-cell">L</div>
+                    <div class="grid-cell">L</div>
+                    <div class="grid-cell active">O</div>
+                    <div class="grid-cell">W</div>
+                    <div class="grid-cell">O</div>
+                    <div class="grid-cell active">R</div>
+                    <div class="grid-cell">L</div>
+                    <div class="grid-cell">D</div>
+                    <div class="grid-cell active" style="color:#666;">X</div>
+                    <div class="grid-cell" style="color:#666;">X</div>
+                </div>
+            </div>
+            <div class="final-answer-box">
+                <span>[ EXTRACTED BLOCKS ]</span>
+                <div class="the-answer">EORX HLOD LWLX</div>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #13</div>
+                <div class="solution-type">Columnar Decrypt</div>
+            </div>
+            <div class="prompt-box">
+                Key: <span>3 2 1 4</span> <br> Ciphertext: <span>LOEWDHOLLR</span> (10 Chars)
+            </div>
+            <div class="ar-desc">
+                لفك التشفير، يجب معرفة <strong>سعة كل عمود</strong>. لدينا 10 حروف و 4 أعمدة. 10 ÷ 4 = 2 و الباقي 2.
+                يعني أول عمودين سيحتويان على 3 حروف، والباقي حرفين. نقوم بملء كل عمود حسب ترتيب قراءته (1 ثم 2...).
+            </div>
+            <div class="step-block" style="display:flex; justify-content: space-around; font-family:var(--font-code);">
+                <div>
+                    <h4 style="color:#ef4444;">1. Column Distribution</h4>
+                    Col 1 gets 3 letters <br>
+                    Col 2 gets 3 letters <br>
+                    Col 3 gets 2 letters <br>
+                    Col 4 gets 2 letters
+                </div>
+                <div>
+                    <h4 style="color:#ef4444;">2. Fill via Key (3 2 1 4)</h4>
+                    "1" is Col 3 -> <strong>LO</strong><br>
+                    "2" is Col 2 -> <strong>EWD</strong><br>
+                    "3" is Col 1 -> <strong>HOL</strong><br>
+                    "4" is Col 4 -> <strong>LR</strong>
+                </div>
+            </div>
+            <div class="final-answer-box">
+                <span>[ READ HORIZONTALLY ]</span>
+                <div class="the-answer">HELLO WORLD</div>
+            </div>
+        </div>
+
+        <!-- OTP & SUBSTITUTION SECTION -->
+        <h2 class="cyber-heading" style="margin-top:80px;">V. OTP, Shift & Substitution</h2>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #14 & #15</div>
+                <div class="solution-type">One-Time Pad (OTP)</div>
+            </div>
+            <div class="prompt-box">
+                Q14 Encrypt | Plaintext: <span>HELLO</span> | Key: <span>XMCKL</span><br>
+                Q15 Decrypt | Ciphertext: <span>EQNVZ</span> | Key: <span>XMCKL</span>
+            </div>
+            <div class="step-block">
+                <div class="step-title">Formula Applied (A=0 ... Z=25)</div>
+                <table class="crypto-table" style="margin-top:15px;">
+                    <tr>
+                        <th>Plain (P)</th>
+                        <td>H(7)</td>
+                        <td>E(4)</td>
+                        <td>L(11)</td>
+                        <td>L(11)</td>
+                        <td>O(14)</td>
+                    </tr>
+                    <tr>
+                        <th>Key (K)</th>
+                        <td>X(23)</td>
+                        <td>M(12)</td>
+                        <td>C(2)</td>
+                        <td>K(10)</td>
+                        <td>L(11)</td>
+                    </tr>
+                    <tr>
+                        <th>P + K</th>
+                        <td>30</td>
+                        <td>16</td>
+                        <td>13</td>
+                        <td>21</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <th>Cipher (Mod 26)</th>
+                        <td class="ans-highlight">E(4)</td>
+                        <td class="ans-highlight">Q(16)</td>
+                        <td class="ans-highlight">N(13)</td>
+                        <td class="ans-highlight">V(21)</td>
+                        <td class="ans-highlight">Z(25)</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="final-answer-box">
+                <span>[ OTP OUTPUT ]</span>
+                <div class="the-answer">Q14 = EQNVZ <br><br> Q15 = HELLO</div>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #18 & #19</div>
+                <div class="solution-type">Literal Substitution Math</div>
+            </div>
+            <div class="prompt-box">
+                Q18 Plain: <span>ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br>
+                Q18 Cipher: <span>QWERTYUIOPASDFGHJKLZXCVBNM</span> -> Encrypt(STUDENT)<br><br>
+                Q19 Plain: <span>ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br>
+                Q19 Cipher: <span>MNBVCXZLKJHGFDSAPOIUYTREWQ</span> -> Decrypt(IZYVTSZ)
+            </div>
+            <div class="ar-desc">
+                الحل يعتمد فقط على رسم خط رأسي مباشر للبحث بين سطر الـ Plain وسطر الـ Cipher، عملية إحلال مباشر دون جمع
+                رياضي.
+            </div>
+            <div class="svg-container">
+                <div style="font-family: monospace; font-size: 1.2rem; color:#fff; word-spacing: 5px;">
+                    P: A B C D <span style="color:#00e5ff">E</span> F G H I j k l m n o p q r <span
+                        style="color:#00e5ff">S T U</span> v w x y z<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↓
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    ↓ ↓ ↓ <br>
+                    C: Q W E R <span style="color:#10b981">T</span> Y U I O P A S D F G H J K <span
+                        style="color:#10b981">L Z X</span> C V B N M
+                </div>
+            </div>
+            <div class="final-answer-box">
+                <span>[ MATCHED STRINGS ]</span>
+                <div class="the-answer">Q18 = LZNX RZF <br><br> Q19 = STUDENT</div>
+            </div>
+        </div>
+
+        <div class="solution-card">
+            <div class="solution-header">
+                <div class="solution-title">Mission #20</div>
+                <div class="solution-type">Vigenère Decrypt Mastery</div>
+            </div>
+            <div class="prompt-box">
+                Key: <span>DECEPTIVE</span> <br> Ciphertext: <span>ZICVTWQNGRZGVTWAVZHCQYGLMGJ</span>
+            </div>
+            <div class="ar-desc">
+                بنفس نظام الجدول الأصلي (الطرح من المفتاح)، نحصل على الجملة الكلاسيكية للهاكرز.
+            </div>
+            <div class="final-answer-box">
+                <span>[ EXTRACTED PLAINTEXT ]</span>
+                <div class="the-answer">WEAREDISCOVEREDSAVEYOURSELF</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: Cryptography Basics Part II (Detailed)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; z-index: 1; position: relative; }
+        .section-panel { background: rgba(5, 5, 10, 0.85); border: 1px solid var(--secondary-color); padding: 2.5rem; margin-bottom: 3rem; position: relative; box-shadow: 0 0 15px rgba(0, 0, 0, 0.9); animation: fadeIn 0.5s ease forwards; opacity: 0; backdrop-filter: blur(5px); }
+        .section-panel:hover { border-color: var(--primary-color); box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1); }
+        
+        h2.cyber-heading { color: var(--primary-color); border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; font-size: 1.8rem; text-transform: uppercase; text-shadow: 0 0 5px rgba(0, 229, 255, 0.3); direction: ltr; }
+        h2.cyber-heading::before { content: '[CH.05] '; color: var(--secondary-color); margin-right: 15px; font-size: 1.2rem; animation: blink 1s infinite step-start; }
+        
+        h3.sub-heading { color: var(--primary-color); margin-top: 40px; margin-bottom: 15px; font-size: 1.4rem; border-left: 3px solid var(--primary-color); padding-left: 10px; direction: rtl; text-align: right; }
+        
+        .badge { display: inline-block; padding: 4px 10px; background: rgba(0, 229, 255, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 2px; font-size: 0.6em; margin-left: 15px; font-weight: bold; vertical-align: middle; }
+        
+        /* Typography Elements */
+        .en-def { direction: ltr; text-align: left; font-family: var(--font-code); color: #00e5ff; line-height: 1.5; padding: 15px 20px; border-left: 3px solid #00e5ff; background: rgba(0, 229, 255, 0.05); margin-bottom: 15px; font-size: 1.05rem; }
+        .ar-text { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #cbd5e1; margin: 0 0 25px 0; padding: 15px 20px; border-right: 3px solid var(--primary-color); background: rgba(0, 0, 0, 0.3); line-height: 1.8; font-size: 1.1rem; }
+        
+        /* Utility Colors */
+        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
+        .eng-red { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
+        .eng-purple { font-family: var(--font-code); color: #a855f7; font-weight: bold; }
+        .eng-orange { font-family: var(--font-code); color: #f97316; font-weight: bold; }
+        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
+        .eng-yellow { font-family: var(--font-code); color: #eab308; font-weight: bold; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; direction: rtl; }
+        
+        .code-box { background: rgba(0, 0, 0, 0.6); border: 1px dashed var(--secondary-color); padding: 20px; direction: ltr; text-align: left; font-family: var(--font-code); margin-bottom: 20px; overflow-x: auto; font-size: 1.1rem; color: #fff;}
+        .accent-box { border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.05); padding: 15px;}
+
+        ul.cyber-list { list-style-type: none; padding-right: 20px; text-align: right; direction: rtl; margin-bottom: 20px;}
+        ul.cyber-list li { margin-bottom: 15px; position: relative; color: #cbd5e1; font-size: 1.1rem;}
+        ul.cyber-list li::before { content: '>'; color: var(--primary-color); position: absolute; right: -25px; font-weight: bold; font-family: var(--font-code);}
+
+        .cyber-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: var(--font-code); background: rgba(0,0,0,0.6); direction: rtl; text-align:right;}
+        .cyber-table th, .cyber-table td { border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px; font-size: 1.1rem; }
+        .cyber-table th { background: rgba(0, 229, 255, 0.1); color: var(--primary-color); font-weight: bold; text-align:center;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); padding: 10px 25px; font-family: var(--font-code); background: rgba(0, 0, 0, 0.8); transition: 0.3s; }
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CHAPTER 5" style="font-size: 4rem; color: #fff;">CHAPTER 5</h1>
+            </div>
+            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">CRYPTOGRAPHY BASICS (PART II)</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: ATTACK VECTORS | CLEARANCE: RED TEAM</div>
+        </header>
+
+        <!-- 1. Intro -->
+        <div class="section-panel" style="animation-delay: 0.1s; border-color: #00e5ff;">
+            <h2 class="cyber-heading" style="color: #00e5ff;">1. Alice, Bob & Oscar <span class="badge">INTRODUCTION</span></h2>
+            
+            <div class="ar-text">
+                في عالم التشفير فيه 3 شخصيات مشهورة جداً ولازم تحفظهم:<br>
+                - <span class="eng-word">Alice:</span> المرسل (Sender).<br>
+                - <span class="eng-word">Bob:</span> المستقبل (Receiver).<br>
+                - <span class="eng-red">Oscar:</span> المتنصت أو الهاكر (Attacker) المتربص في النص.<br><br>
+                <b>إيه الهدف الرئيسي من التشفير كله؟</b><br>
+                إن <span class="eng-word">Alice</span> عايزة تبعت رسالة لـ <span class="eng-word">Bob</span> عبر قناة اتصال <b>غير آمنة (Insecure Channel)</b> زي الإنترنت أو التليفون. ولازم Oscar لما يبص للرسالة في النص، مايفهمش فيها أي حاجة!
+            </div>
+            <div class="en-def" style="text-align:center;">
+                "Cryptography protects communication over an insecure channel."
+            </div>
+        </div>
+
+        <!-- 2. Cryptanalysis & Attacks -->
+        <div class="section-panel" style="animation-delay: 0.2s; border-color: #ef4444;">
+            <h2 class="cyber-heading" style="color: #ef4444; border-bottom-color:rgba(239,68,68,0.3);">2. Cryptanalysis & Attacks <span class="badge" style="color:#ef4444; border-color:#ef4444; background:rgba(239,68,68,0.1);">BREAKING THE CODE</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#ef4444;">
+                الـ <b>Cryptanalysis (تحليل الشفرات)</b> هو علم استرجاع الرسالة الواضحة (Plaintext) <b>من غير الوصول للمفتاح!</b><br>
+                الهدف الأساسي للمهاجم مش مجرد فك رسالة واحدة، لكن <b>استرجاع المفتاح (The Key)</b> عشان يقدر يقرأ كل الرسايل المتشفرة الجاية بدون تعب.<br>
+                ودي قاعدة مهمة: "الأمان بيكمن في <u>سرية المفتاح</u> مش في سرية الخوارزمية".
+            </div>
+
+            <h3 class="sub-heading" style="color:#ef4444; border-right-color:#ef4444;">مقاييس التعقيد للهجوم (Complexity Measures)</h3>
+            <div class="ar-text" style="background:none; border:none; padding-bottom:0px;">لو بنقيم هجوم الهاكر عشان نعرف هياخد وقت وجهد قد إيه، بنقيس 3 حاجات أساسية:</div>
+            <ul class="cyber-list">
+                <li><span class="eng-red">1. Data Complexity:</span> كمية الداتا اللي الهاكر محتاجها عشان يبدأ هجومه (مثلاً محتاج يجمع 1000 رسالة مشفرة عشان يقدر يحللها).</li>
+                <li><span class="eng-red">2. Processing complexity (Work factor):</span> الوقت اللي محتاجه الهاكر للتنفيذ (مثلاً هجوم محتاج سنين من الحسابات على سوبر كمبيوتر).</li>
+                <li><span class="eng-red">3. Storage Requirements:</span> حجم الذاكرة المطلوب للهجوم (مثلاً الهجوم بيحتاج Rules وجداول Database ضخمة جداً).</li>
+            </ul>
+            <div class="code-box" style="text-align:center; color:#ef4444; border-color:#ef4444;">
+                Attack Complexity = Data + Time + Storage
+                <br><br>
+                <span style="font-size:0.8em; color:#888;">* أحياناً المهاجم بيعمل (Trade-off): يوفر وقت بس يسحب ذاكرة أكتر، أو يقلل الداتا لكن يكتر الحسابات!</span>
+            </div>
+
+            <h3 class="sub-heading" style="color:#f97316; border-right-color:#f97316;">طريقتين للهجوم (Brute Force vs Cryptanalytic)</h3>
+            <div class="ar-text" style="background:none; border:none;">
+                <b>1) الهجوم العمياء (Brute-Force Attack):</b><br>
+                ده بيجرب كل مفتاح ممكن لحد ما يخبط في صح. لو المفتاح <code>32-bit</code> ممكن يتكسر بسرعة. لو <code>56-bit</code> الكمبيوتر بياخد 24 ساعة. بس لو المفتاح <code>128-bit</code>، مستحيل يتكسر وبياخد وقت أكبر من عمر الكون! <br><i>(نظرياً ممكن الكسر، عملياً مستحيل للأرقام الكبيرة).</i><br><br>
+                <b>2) التحليل الذكي (Cryptanalytic Attack):</b><br>
+                ده هجوم بيعتمد على الثغرات وخصائص اللغة. (مثلاً: المهاجم عارف إن الحرف <span class="eng-word">"E"</span> ومن بعدها <span class="eng-word">"THE"</span> هما الأكثر تكراراً في الإنجليزي، فبيدوّر على أكتر رمز متكرر في الشفرة ويفترضه "E").
+            </div>
+
+            <h3 class="sub-heading" style="color:#ef4444; border-right-color:#ef4444;">الـ 5 أنواع الرئيسية للهجمات (من الأسهل للأخطر!)</h3>
+            <table class="cyber-table">
+                <thead>
+                    <tr>
+                        <th style="color:#ef4444;">Attack Type</th>
+                        <th style="color:#ef4444;">التعريف (المهاجم يمتلك ماذا؟)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="eng-word">Ciphertext-only</td>
+                        <td>(أصعب حالة) المهاجم معاه النسخة المتشفرة بس وبيحاول يستنتج منها الـ Plaintext إحصائياً.</td>
+                    </tr>
+                    <tr>
+                        <td class="eng-yellow">Known Plaintext</td>
+                        <td>المهاجم معاه "رسالة أصلية" و "نسختها المتشفرة"، وبيحاول يستنتج <b>المفتاح</b>.</td>
+                    </tr>
+                    <tr>
+                        <td class="eng-orange">Chosen Plaintext</td>
+                        <td>(خطير جداً) المهاجم بيختار رسالة معينة ويدخلها السيستم يشفّرها، عشان يدرس المخرجات (تحكم في الـ Input).</td>
+                    </tr>
+                    <tr>
+                        <td class="eng-red">Chosen Ciphertext</td>
+                        <td> المهاجم بيختار رسالة مشفرة ويفك تشفيرها من السيستم للوصول لطبيعة النظام.</td>
+                    </tr>
+                    <tr>
+                        <td class="eng-purple">Chosen Text</td>
+                        <td>حالة أعم.. الهاكر بيتحكم ويجرّب سواء الـ Plaintext أو الـ Ciphertext بحرية كاملة.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3. Shift / Caesar Cipher -->
+        <div class="section-panel" style="animation-delay: 0.3s; border-color: #a855f7;">
+            <h2 class="cyber-heading" style="color: #a855f7; border-bottom-color: rgba(168,85,247,0.3);">3. Shift Cipher & Caesar Cipher <span class="badge" style="color:#a855f7; border-color:#a855f7; background:rgba(168,85,247,0.1);">MOD 26</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                <b>الـ Shift Cipher:</b> هو تحريك الحروف مسافة ثابتة عددها <code>K</code>. بنحول الحروف لأرقام من A=0 لحد Z=25.<br>
+                <div style="direction:ltr; padding:10px 0;">
+                    <b>Encryption:</b> <code>Ek(x) = (x + K) mod 26</code><br>
+                    <b>Decryption:</b> <code>Dk(y) = (y - K) mod 26</code>
+                </div>
+            </div>
+            
+            <h3 class="sub-heading" style="color:#a855f7; border-right-color:#a855f7;">أمثلة صريحة بالحل (Shift Examples)</h3>
+            
+            <div class="grid-2">
+                <div class="code-box">
+                    <span style="color:#888;">// Example 1: Plaintext "student", K = 11</span><br>
+                    <span style="color:#ccc;">(s=18, t=19, u=20, d=3, e=4, n=13, t=19)</span><br><br>
+                    18 + 11 = 29 mod 26 = 3  -> <b>D</b><br>
+                    19 + 11 = 30 mod 26 = 4  -> <b>E</b><br>
+                    20 + 11 = 31 mod 26 = 5  -> <b>F</b><br>
+                    03 + 11 = 14 mod 26 = 14 -> <b>O</b><br>
+                    04 + 11 = 15 mod 26 = 15 -> <b>P</b><br>
+                    13 + 11 = 24 mod 26 = 24 -> <b>Y</b><br>
+                    19 + 11 = 30 mod 26 = 4  -> <b>E</b><br><br>
+                    <span style="color:#0f0;">Result: DEFOPYE</span>
+                </div>
+                <div class="code-box">
+                    <span style="color:#888;">// Example 2: Plaintext "we will meet", K = 11</span><br><br>
+                    w(22) + 11 = 33 mod 26 = 7  -> <b>h</b><br>
+                    e(4) + 11 = 15 mod 26 = 15  -> <b>p</b><br>
+                    w(22) + 11 = 33 mod 26 = 7  -> <b>h</b><br>
+                    i(8) + 11 = 19 mod 26 = 19  -> <b>t</b><br>
+                    l(11) + 11 = 22 mod 26 = 22 -> <b>w</b><br>
+                    l(11) + 11 = 22 mod 26 = 22 -> <b>w</b><br>
+                    ...<br><br>
+                    <span style="color:#0f0;">Result: hphtwwxppe</span>
+                </div>
+            </div>
+
+            <div class="ar-text" style="background:rgba(168, 85, 247, 0.05); border-right-color:#a855f7;">
+                <b>شفرة قيصر (Caesar Cipher):</b><br>
+                هي التطبيق الأشهر تاريخياً للـ Shift Cipher. (نفس المعادلة بالظبط <span class="eng-word">Encrypt = plus n</span> و <span class="eng-word">Decrypt = minus n</span>).<br><br>
+                <div style="direction:ltr; padding: 10px; border:1px dashed #555; background:#000; display:inline-block; text-align:left;">
+                    Plaintext: <b>ATTACKATONCE</b><br>
+                    Shift: <b>4</b><br>
+                    Ciphertext: <b class="eng-red">EXXEGOEXSRGI</b>
+                </div>
+            </div>
+
+            <div class="ar-text accent-box" style="border-right: none; text-align:right;">
+                <span class="eng-red">لماذا ה־ Shift/Caesar سهل الكسر ב־ Brute-Force؟</span><br>
+                لأن الـ <span class="eng-code">Key Space</span> صغير جداً (26 مفتاح بالظبط). המهاجم هيجرب من 0 لـ 25 وهيجيب النص الصح من غير تفكير. الجملة دي للحفظ: 
+                <br><i>"Caesar cipher is easy to break by brute force because the key space is only 26."</i>
+            </div>
+        </div>
+
+        <!-- 4. Substitution Cipher -->
+        <div class="section-panel" style="animation-delay: 0.4s; border-color: #f97316;">
+            <h2 class="cyber-heading" style="color: #f97316; border-bottom-color: rgba(249, 115, 22, 0.3);">4. Substitution Cipher <span class="badge" style="color:#f97316; border-color:#f97316; background:rgba(249, 115, 22, 0.1);">MONOALPHABETIC</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#f97316;">
+                في الـ Substitution، إحنا مش بنزق الحروف بمسافة ثابتة، إحنا <b>بنخلط الأبجدية كلياً (Random Shuffle)</b> وكل حرف يبقى له حرف عشوائي بديل طول الرسالة (عشان كدة اسمه Monoalphabetic).<br><br>
+                <b>نظرة رياضية:</b><br>
+                المفتاح هو (Permutation <code>&pi;</code>) بيعبر عن التشفير (استبدال). وفك التشفير بيتم باستخدام العكس (Inverse Permutation <code>&pi;<sup>-1</sup></code>). يعني هو عبارة عن <b>Table Lookup / Replacement</b> مش عملية حسابية.
+            </div>
+
+            <h3 class="sub-heading" style="color:#f97316; border-right-color:#f97316;">أمثلة (Substitution Examples)</h3>
+
+            <div class="code-box">
+                <span style="color:#888;">// Alphabet:   a b c d e f g h i j k l m n o p q r s t u v w x y z</span><br>
+                <span style="color:#888;">// Cipher Key: D K V Q F I B J W P E S C X H T M Y A U O L R G Z N</span><br><br>
+                Plain: i f w e w i s h t o r e p l a c e l e t t e r s<br>
+                Ciphr: W I R F R W A J U H Y F T S D V F S F U U F Y A
+            </div>
+
+            <div class="code-box">
+                <span style="color:#888;">// Example 2: Lookup Table Provided for "student"</span><br>
+                s(->V) t(->M) u(->U) d(->A) e(->H) n(->S) t(->M)<br>
+                Plaintext:  student<br>
+                Ciphertext: VMUAHSM
+            </div>
+
+            <div class="ar-text" style="background:rgba(249, 115, 22, 0.05); border-right-color:#f97316;">
+                <b>Cryptanalysis of Substitution Cipher:</b><br>
+                هل ينفع يتكسر بالـ Brute-Force؟ <b>لا!</b> لأن الـ Key Space هنا هو مضروب 26 (<span class="eng-word">26! combinations</span>) وده رقم خيالي!<br>
+                <b>أمال بيتكسر إزاي؟</b> بيتم اختراقه عن طريق <b>Frequency Analysis (تحليل التردد والتكرار)</b> لأن کل حرف أصلي بـيتم استبداله دائماً بنفس الحرف في الشفرة، ولأن أنماط الإنجليزي متوقعة (زي كلمات THE وحرف E المتكرر).
+            </div>
+        </div>
+
+        <!-- 5. Rail Fence Cipher (Decryption Details) -->
+        <div class="section-panel" style="animation-delay: 0.5s; border-color: #10b981;">
+            <h2 class="cyber-heading" style="color: #10b981; border-bottom-color: rgba(16, 185, 129, 0.3);">5. Rail Fence Cipher (Deep Dive) <span class="badge" style="color:#10b981; border-color:#10b981; background:rgba(16, 185, 129, 0.1);">TRANSPOSITION</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#10b981;">
+                زي ما درسنا، التشفير ده <span class="eng-green">Transposition</span>، يعني <b>لا يغير الحروف</b>، لكن بيغير ترتيبها (بيكتب بشكل الزجزاج <code>diagonally down and up</code>).
+                <br>المفتاح هنا عبارة عن عدد صحيح بيمثل عدد السطور (<span class="eng-word">Key = number of rows</span>).
+                <br><br><b>طريقة التشفير المعتمدة (Encryption):</b> اكتب في شكل زجزاج، وبعدين اِقرأ وِصُف الحروف <b>صف بـ صف (Row by Row)</b>.
+            </div>
+
+            <h3 class="sub-heading" style="color:#10b981; border-right-color:#10b981;">أمثلة התشفير (Encryption)</h3>
+            
+            <div class="code-box">
+                <span style="color:#ccc;">1) Plaintext: "defend the east wall", Key = 2</span><br>
+                d - f - n - t - e - a - t - w - l - l<br>
+                - e - e - d - h - e - s - - a - l -<br>
+                <span style="color:#0f0;">Ciphertext: DFNTEATALEEDHESWL</span>
+            </div>
+
+            <div class="ar-text" style="background:none; border:none; padding-bottom:0;">
+                <span class="eng-orange">Nulls / Fillers:</span> لو الرسالة خلصت والزجزاج لسه مقفلش الشكل الهرمي بتاعه سليم، بنستعين بحروف حشو زي (X أو Z) ملهاش معنى عشان تملى الفراغات (كـ Placeholders).<br>
+                مثال مع Key=3 (هنستخدم الـ X كـ Null filler):
+            </div>
+
+            <div class="code-box">
+                <span style="color:#ccc;">2) Plaintext: "defend the east wall", Key = 3</span><br>
+                d - - - n - - - t - - - e - - - d - - - h - - - e - - - s... (Zigzag applied)<br>
+                <span style="color:#888;">// Added X X at the end to complete the shape</span><br>
+                <span style="color:#0f0;">Ciphertext: DNETLEEDHESWLXFTAAX</span>
+            </div>
+
+            <h3 class="sub-heading" style="color:#f97316; border-right-color:#f97316;">إزاي نفك تشفيرها (Decryption Steps)</h3>
+            <div class="ar-text" style="background:rgba(16, 185, 129, 0.05); border-right-color:#10b981;">
+                الفك هنا محتاج تركيز ورسمة جدول (Reconstructing the grid) مش تعويضة مباشرة:<br>
+                1. <b>الـ Grid:</b> اعمل شبكة عدد العواميد = طول الرسالة، وعدد الصفوف = Key.<br>
+                2. <b>مسار الـ Dashes:</b> امسك القلم وحدد المسار الزجزاجي وهمياً بعلامات شرط (-).<br>
+                3. <b>املى الحروف (Row by Row):</b> امسك الرسالة المشفّرة وابدأ فرغها سطر سطر في أماكن الـ Dashes اللي إنت حددتها فقط.<br>
+                4. <b>اقرأ الرسالة (Diagonal):</b> عشان تطلع الجملة الصافية، امشى ورا الزجزاج واقرا حرف ورا حرف!
+            </div>
+
+            <div class="code-box">
+                <span style="color:#ccc;">Example: Ciphertext = "TEKOOHRACIRMNREATANFTETYTGHH", Key = 4</span><br>
+                1. Length = 28. Draw a 4x28 grid.<br>
+                2. Draw dashes in a zigzag format.<br>
+                3. Fill 'T','E','K'... etc row by row into the dashes.<br>
+                4. Read diagonally along the zigzag.<br><br>
+                <span style="color:#0f0;">Result Plaintext: THEY ARE ATTACKING FROM THE NORTH</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const letters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+</html>

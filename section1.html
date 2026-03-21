@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 1: Basics of Encryption</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(0, 10, 0, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.2), inset 0 0 10px rgba(0, 255, 65, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: #0ff;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[SEC.01] ';
+            color: var(--primary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cyber-table th,
+        .cyber-table td {
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 255, 65, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px dashed rgba(0, 255, 65, 0.4);
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .flow-path {
+            stroke-dasharray: 10;
+            animation: dash 1s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 255, 65, 0.2);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #b3b3b3;
+            margin: 15px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 255, 65, 0.02);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            padding: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(0, 255, 65, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .highlight {
+            color: #0ff;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .svg-glow {
+            filter: drop-shadow(0 0 8px rgba(0, 255, 65, 0.6));
+        }
+
+        .svg-glow-blue {
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+        }
+
+        .svg-glow-red {
+            filter: drop-shadow(0 0 8px rgba(255, 0, 85, 0.6));
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">
+            < RETURN TO MAIN INTERFACE</a>
+
+                <header
+                    style="text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+                    <div class="glitch-wrapper">
+                        <h1 class="glitch" data-text="SECTION 1" style="font-size: 4rem; color: #fff;">SECTION 1</h1>
+                    </div>
+                    <p style="color: #0ff; font-size: 1.8rem; letter-spacing: 2px;">THE CORE OF CYBERSECURITY:
+                        ENCRYPTION</p>
+                    <div style="margin-top:20px; font-family:var(--font-code); color:#666;">AUTHORIZATION LEVEL: MAX |
+                        CLEARANCE: HACKER</div>
+                </header>
+
+                <!-- INTRO -->
+                <div class="section-panel" style="animation-delay: 0.1s;">
+                    <h2 class="cyber-heading">What is Encryption? <span class="badge">SECURE COMMS</span></h2>
+                    <div class="ar-text">
+                        إحنا لحد دلوقتي اتكلمنا عن الكمبيوتر والشبكات، وإن الأنظمة دي كلها ممكن تتهاجم. طيب السؤال
+                        المهم: لو أنا بعت رسالة على الإنترنت.. إزاي أتأكد إن محدش في النص يقدر يقرأها؟<br><br>
+                        هنا بقى يظهر مفهوم خطير جداً في السايبر سيكيوريتي اسمه: <b>Encryption (التشفير)</b>.<br><br>
+                        التشفير ببساطة هو: <b>تحويل البيانات من شكل مفهوم لشكل معقد وغير مفهوم لأي حد غير الشخص المسموح
+                            له.</b><br><br>
+                        أنت عندك عمليتين في قمة الأهمية هنا:<br>
+                        - <b>Encryption:</b> تحويل الرسالة لشكل مش مفهوم بنسميه (Cipher Text).<br>
+                        - <b>Decryption:</b> إرجاع الرسالة المعقدة لشكلها الأصلي المفهوم (Plain Text) باستخدام المفتاح
+                        (Key).
+                    </div>
+
+                    <div class="svg-container">
+                        <svg width="800" height="200" viewBox="0 0 800 200">
+                            <rect x="50" y="50" width="180" height="100" fill="#111" stroke="#0f0" stroke-width="2"
+                                rx="5" class="svg-glow" />
+                            <text x="140" y="90" fill="#0f0" font-family="monospace" font-size="16"
+                                text-anchor="middle">PLAIN TEXT</text>
+                            <text x="140" y="120" fill="#ccc" font-family="monospace" font-size="13"
+                                text-anchor="middle">"meet me after class"</text>
+
+                            <!-- Lock / Key Process Node -->
+                            <circle cx="400" cy="100" r="40" fill="#111" stroke="#ffaa00" stroke-width="2" />
+                            <text x="400" y="90" fill="#ffaa00" font-family="monospace" font-size="20"
+                                font-weight="bold" text-anchor="middle">KEY</text>
+                            <text x="400" y="120" fill="#aaa" font-family="monospace" font-size="12"
+                                text-anchor="middle">Algorithm</text>
+
+                            <rect x="570" y="50" width="180" height="100" fill="#111" stroke="#ff0055" stroke-width="2"
+                                rx="5" class="svg-glow-red" />
+                            <text x="660" y="90" fill="#ff0055" font-family="monospace" font-size="16"
+                                text-anchor="middle">CIPHER TEXT</text>
+                            <text x="660" y="120" fill="#ccc" font-family="monospace" font-size="13"
+                                text-anchor="middle">"phhw ph diwhu fodvv"</text>
+
+                            <!-- Flow lines -->
+                            <path d="M 230 100 L 360 100" stroke="#ffaa00" stroke-width="3" fill="none"
+                                class="flow-path" />
+                            <polygon points="360,100 350,95 350,105" fill="#ffaa00" />
+
+                            <path d="M 440 100 L 570 100" stroke="#ff0055" stroke-width="3" fill="none"
+                                class="flow-path" />
+                            <polygon points="570,100 560,95 560,105" fill="#ff0055" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- WHY IT MATTERS -->
+                <div class="section-panel" style="animation-delay: 0.2s; border-color: #ff0055;">
+                    <h2 class="cyber-heading" style="color: #ff0055;">Why Encryption Matters <span class="badge"
+                            style="border-color:#ff0055; color:#ff0055;">THREAT: SNIFFING</span></h2>
+                    <div class="ar-text" style="border-right-color:#ff0055;">
+                        طب ليه التشفير مهم أصلاً؟ لأن الإنترنت كله مبني في الأساس على تبادل الداتا في الهوا
+                        والأسلاك.<br>
+                        كمثال؛ لما تبعت رسالة على الواتساب، أو تدخل الباسوورد بتاعك في موقع، أو تدفع حاجة أونلاين
+                        بالفيزا.. كل البيانات الخطيرة دي بتتحرك على الشبكة.<br><br>
+                        لو الداتا دي اتنقلت من غير تشفير، أي هاكر قاعد معاك على نفس الشبكة بيقدر يعمل هجمة اسمها:
+                        <b>Sniffing (التشمم أو التنصت)</b>!<br>
+                        يعني يعترض البيانات وهي طايرة في الهوا ويقرأها بكل سهولة. عشان كدا التشفير هو الحيطة السد
+                        المنيعة لحماية الباسووردات والفلوس والمحادثات.
+                    </div>
+                </div>
+
+                <!-- CAESAR CIPHER -->
+                <div class="section-panel" style="animation-delay: 0.3s; background: rgba(10, 10, 0, 0.85);">
+                    <h2 class="cyber-heading" style="color: #ffaa00; border-bottom-color:#ffaa00;">Caesar Cipher <span
+                            class="badge" style="border-color:#ffaa00; color:#ffaa00;">CLASSICAL CRYPTOGRAPHY</span>
+                    </h2>
+                    <div class="ar-text" style="border-right-color:#ffaa00;">
+                        خلينا نرجع بالزمن ونبدأ بأبسط وأقدم طريقة تشفير في التاريخ تقريباً: <b>شفرة قيصر (Caesar
+                            Cipher)</b>.<br>
+                        اسمها طلع من يوليوس قيصر، الإمبراطور الروماني اللي كان بيبعت بيها رسايله السرية للجيش وقت
+                        الحرب.<br><br>
+                        الفكرة هنا تافهة جداً: بدل ما نكتب الحروف زي ما هي، هنزّق كل حرف كام خطوة لقدام في الحروف
+                        الأبجدية، الخطوات دي هي الـ Key بتاعنا.<br>
+                        يعني لو المفتاح = 3.. كل حرف هيتحرك 3 حروف لقدام.
+                        <br><br>
+                        <b>طريقة الحل رياضياً:</b> بنحول الحروف الإنجليزية لأرقام من 0 لـ 25 (زي العيل اللي بياخد أبجدية
+                        بالظبط A=0, B=1 .. Z=25). وبعدين نمسك رقم كل حرف في الرسالة ونجيب المعادلة دي:
+                        <div
+                            style="direction:ltr; text-align:left; font-family: var(--font-code); color:var(--primary-color); background:rgba(0,0,0,0.5); padding:10px; margin:15px 0;">
+                            Cipher = (Plain + Key) % 26</div>
+                        ولو الرقم الناتج طلع أكبر من 25، علامة الموديولاس (%) بتخلينا نطرح 26 عشان الاستيكة تلف ونرجع
+                        للحروف من الأول تاني!
+                    </div>
+
+                    <h3 class="sub-heading"
+                        style="color:#ffaa00; border-right:3px solid #ffaa00; border-left:none; padding-right:10px;">
+                        مثال حي لفك الشفرة (Encryption Example)</h3>
+                    <div class="ar-text" style="background: none; border: none;">
+                        <b>Plain Text:</b> HELLO <br>
+                        <b>Key:</b> 3<br>
+                        لو حركنا كل حرف 3 خطوات لقدام:<br>
+                        H → I → J → K<br>
+                        E → F → G → H<br>
+                        L → M → N → O<br>
+                        L → O<br>
+                        O → P → Q → R<br><br>
+                        <b>الناتج النهائي (Cipher text):</b> KHOOR
+                    </div>
+
+                    <h3 class="sub-heading"
+                        style="color:#0f0; border-right:3px solid #0f0; border-left:none; padding-right:10px;">إزاي نفك
+                        التشفير؟ (Decryption in Caesar)</h3>
+                    <div class="ar-text" style="background: none; border-right-color:#0f0;">
+                        دلوقتي إحنا شفنا إزاي بنشفر باستخدام قيصر. طيب لو حد ادانا <b>Cipher Text</b> أصلاً وعايزين
+                        نرجعه لأصله؟<br>
+                        بنعمل نفس الفكرة بالظبط، بس بنمشي بالعكس! بدل ما كنا "بنجمع" المفتاح، دلوقتي هنطرحه.<br><br>
+                        <b>المعادلة العكسية للفك (Decryption):</b>
+                        <div
+                            style="direction:ltr; text-align:left; font-family: var(--font-code); color:#0f0; background:rgba(0,0,0,0.5); padding:10px; margin:15px 0;">
+                            Plain = (Cipher - Key) % 26</div>
+                        لو جربنا على نفس المثال اللي فوق (KHOOR) بمفتاح 3، هنرجع بضهرنا:<br>
+                        K → H | H → E | O → L | O → L | R → O <br>
+                        يبقى النتيجة ترجع: <b>HELLO</b>.<br><br>
+                        <b style="color:#0ff;">تريكة امتحانات خطيرة مابتتفوتش:</b><br>
+                        لو بعد ما تطرح لقيت الرقم طلع أقل من صفر (يعني بالسالب)، تقوم مزود عليه 26 وتكمل عادي.<br>
+                        مثال: تخيل حرف B (رقمه 1) والمفتاح 3.<br>
+                        1 - 3 = -2 <br>
+                        الـ سالب 2 دي ملهاش حرف، فنقوم قايلين: -2 + 26 = 24 (والرقم ده بتاع حرف Y).
+                    </div>
+
+                    <!-- Weakness -->
+                    <div class="ar-text"
+                        style="border-right-color:#ff0055; background:rgba(255,0,85,0.05); margin-top:30px;">
+                        <b>طب إيه نقطة الضعف في قيصر دي؟ (Weakness of Caesar)</b><br>
+                        المشكلة إن الشفرة دي ضعيفة لأقصى درجة، لأن عدد المفاتيح المحتملة كلها هما 26 مفتاح بس (على عدد
+                        الحروف)!<br>
+                        فلو هاكر عاوز يكسرها، يقدر يعمل هجمة اسمها <b>Brute Force Attack (هجوم القوة الغاشمة)</b>፣ واللي
+                        معناها إنه بيقعد يجرب كل الـ 26 احتمال ورا بعض في ثواني لحد ما الرسالة تتفك وتتقري عادي جداً.
+                    </div>
+                </div>
+
+                <!-- COLUMNAR TRANSPOSITION -->
+                <div class="section-panel" style="animation-delay: 0.4s;">
+                    <h2 class="cyber-heading">Columnar Transposition <span class="badge">REARRANGING CIPHER</span></h2>
+                    <div class="ar-text">
+                        طب هل التشفير كله قايم على إننا بنغير شكل الحروف، زي قيصر ما غير הH بقت K؟<br>
+                        لا طبعاً! في مدرسة تانية في التشفير اسمها <b>Transposition Cipher (تشفير النقل)</b>، ومن أشهرها
+                        <b>Columnar Transposition</b>.<br><br>
+                        أهم نقطة تركز فيها: <b>الحروف هنا مابتتغيرش زي ما هي، إحنا بس بنلخبط ترتيبها بجدول.</b><br>
+                        الفكرة باختصار إننا بنكتب الرسالة بتاعتنا صف صف جوا جدول، بس لما نيجي نقرأها وناخد التشفير..
+                        بنقرأها بالأعمدة! مش أي أعمدة والسلام، بنقرأها بترتيب أرقام سرية (المفتاح).
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="stat-card" style="border-top: 2px solid #0ff;">
+                            <h3 style="color:#0ff; font-family:var(--font-code);">1. Numeric Key</h3>
+                            <div class="ar-text" style="background:none; border:none; padding:10px 0;">
+                                المفتاح بييجي كأرقام جاهزة زي مثلاً: 4312567 ده معناه إن الجدول هيكون 7 أعمدة. بنقرأ
+                                العمود رقم 1 الأول وبعده رقم 2 وهكذا مش بنقرأ حسب مكانهم في الجدول!
+                            </div>
+                        </div>
+                        <div class="stat-card" style="border-top: 2px solid #0f0;">
+                            <h3 style="color:#0f0; font-family:var(--font-code);">2. Word Key</h3>
+                            <div class="ar-text" style="background:none; border:none; padding:10px 0;">
+                                لو المفتاح كلمة زي CAT، بنرتب حروف الكلمة أبجدياً عشان نحولها أرقام. (A تاخد 1, C تاخد
+                                2, T تاخد 3)، يبقى المفتاح اللي هنرص عليه الأعمدة هو 213.
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="sub-heading" style="margin-top:40px;">نطبق بمثال المحاضرة عشان نفهم (Let's Hack it)</h3>
+                    <div class="ar-text">
+                        <b>Plain Text:</b> attack postponed untill two am<br>
+                        <b>Key:</b> 4312567<br><br>
+                        نشيل المسافات الأول: attackpostponeduntilltwoam<br>
+                        نكتب الشفرة على الـ 7 أعمدة صف بصف، ولو في أماكن لسة فاضية في الصف الأخير بنحط أي حرف وهمي وليكن
+                        x عشان نقفل الجدول بشكل مظبوط.
+                    </div>
+
+                    <!-- Visualization of the Table -->
+                    <div class="svg-container" style="flex-direction:column;">
+                        <table class="cyber-table" style="max-width:500px;">
+                            <thead>
+                                <tr>
+                                    <th style="color:#ffcc00;">4</th>
+                                    <th style="color:#ffcc00;">3</th>
+                                    <th style="color:#ff0055; font-size:1.3em;">1</th>
+                                    <th style="color:#ffcc00;">2</th>
+                                    <th style="color:#ffcc00;">5</th>
+                                    <th style="color:#ffcc00;">6</th>
+                                    <th style="color:#ffcc00;">7</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>a</td>
+                                    <td>t</td>
+                                    <td style="color:#ff0055;">t</td>
+                                    <td>a</td>
+                                    <td>c</td>
+                                    <td>k</td>
+                                    <td>p</td>
+                                </tr>
+                                <tr>
+                                    <td>o</td>
+                                    <td>s</td>
+                                    <td style="color:#ff0055;">t</td>
+                                    <td>p</td>
+                                    <td>o</td>
+                                    <td>n</td>
+                                    <td>e</td>
+                                </tr>
+                                <tr>
+                                    <td>d</td>
+                                    <td>u</td>
+                                    <td style="color:#ff0055;">n</td>
+                                    <td>t</td>
+                                    <td>i</td>
+                                    <td>l</td>
+                                    <td>l</td>
+                                </tr>
+                                <tr>
+                                    <td>t</td>
+                                    <td>w</td>
+                                    <td style="color:#ff0055;">o</td>
+                                    <td>a</td>
+                                    <td>m</td>
+                                    <td>x</td>
+                                    <td>x</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="font-family:var(--font-code); color:#aaa; margin-top:20px; text-align:center;">
+                            <span style="color:#0f0;">Step 1: Read Column "1" first -> ttno</span><br>
+                            <span style="color:#ccc;">Step 2: Read Column "2" -> apta</span><br>
+                            <span style="color:#ccc;">Step 3: Read Column "3" -> tsuw ... and so on.</span><br><br>
+                            <span style="color:#0ff; font-weight:bold;">Final Cipher Text:</span> ttno apta tsuw aodt
+                            coim knlx pelx
+                        </div>
+                    </div>
+
+                    <h3 class="sub-heading"
+                        style="color:#0f0; border-right:3px solid #0f0; border-left:none; padding-right:10px;">فك
+                        التشفير في الـ Columnar (Decryption)</h3>
+                    <div class="ar-text" style="border-right-color:#0f0;">
+                        في الـ Columnar الموضوع مختلف حبتين تلاتة! إحنا متفقين إننا مش بنغير الحروف نفسها، إحنا بس بنغير
+                        "ترتيبها". فعملية فك التشفير هنا هي ببساطة إننا نعيد بناء الجدول من تاني وناخد منه الكلام
+                        معدول.<br><br>
+                        <b>خطوات الفك في اللذيذ:</b><br>
+                        1️⃣ <b>نعرف عدد الأعمدة:</b> نجيبه من الـ Key بتاعنا. مثلاً لو المفتاح (4312567)، ده معناه إننا
+                        عندنا 7 أعمدة.<br>
+                        2️⃣ <b>نحسب عدد الصفوف:</b> نجيبه من قسمة طول رسالة الـ Cipher Text على عدد الأعمدة.<br>
+                        3️⃣ <b>نملى الأعمدة المقلوبة:</b> نبدأ نمسك رسالة الشفرة ونرصها فوق بعضها في العمود اللي فوقه
+                        رقم (1)، ولما يخلص نرص الجزء اللي بعده في العمود رقم (2)، وبعده (3) وهكذا لحد ما نملى الجدول كله
+                        بطريقة رأسية.<br>
+                        4️⃣ <b>جمع الرسالة:</b> بعد ما تملى كل الأعمدة وتخلص، ترجع تقرأ الجدول "صف بصف بشكل أفقي من
+                        الشمال لليمين" عادي جداً، عشان ترجعلك الكلمة المفهومة الـ Plain Text وتنور الشاشة!
+                    </div>
+
+                    <div class="ar-text" style="background:rgba(255,255,0,0.05); border-right-color:#ffcc00;">
+                        <b>ليه الـ Columnar أضعف من التشفير الحديث اللي بنستخدمه دلوقتي؟</b><br>
+                        صحيح هو ملخبط، بس لسة بيحتفظ بنفس الحروف، وفيه أنماط (Patterns) واضحة جداً للكمبيوتر، لو الهاكر
+                        فضل يجرب تخمين طول المفتاح وشكل الجدول، هيكسره. بس رغم ده، الطريقة دي هي الأساس اللي اتعلمنا منه
+                        إزاي التشفير شغال ومهدت الطريق للـ RSA والبلوك تشين وتشفير الإند-تو-إند اللي موجود في برامج
+                        الشات بتاعتك دلوقتي!
+                    </div>
+                </div>
+
+    </div>
+
+    <!-- Matrix Code locally -->
+    <script>
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Pure binary matrix mode 
+        const letters = "01";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                // Flashing bits logic
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+
+</html>
