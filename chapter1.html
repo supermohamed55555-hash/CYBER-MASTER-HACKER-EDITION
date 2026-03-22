@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 1: Intro to Computers & Networks - Deep Dive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
         .content-container {
@@ -14,7 +17,7 @@
             z-index: 1;
             position: relative;
         }
-        
+
         .section-panel {
             background: rgba(0, 10, 0, 0.85);
             border: 1px solid var(--secondary-color);
@@ -26,12 +29,12 @@
             opacity: 0;
             backdrop-filter: blur(5px);
         }
-        
+
         .section-panel:hover {
             border-color: var(--primary-color);
             box-shadow: 0 0 15px rgba(0, 255, 65, 0.2), inset 0 0 10px rgba(0, 255, 65, 0.1);
         }
-        
+
         h2.cyber-heading {
             color: #0ff;
             border-bottom: 1px solid rgba(0, 255, 65, 0.3);
@@ -43,7 +46,7 @@
             text-transform: uppercase;
             text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
         }
-        
+
         h2.cyber-heading::before {
             content: '[SYSTEM] ';
             color: var(--primary-color);
@@ -51,7 +54,7 @@
             font-size: 1.2rem;
             animation: blink 1s infinite step-start;
         }
-        
+
         h3.sub-heading {
             color: var(--primary-color);
             margin-top: 30px;
@@ -66,26 +69,27 @@
             border-collapse: collapse;
             margin: 20px 0;
             font-family: var(--font-code);
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
         }
-        
-        .cyber-table th, .cyber-table td {
+
+        .cyber-table th,
+        .cyber-table td {
             border: 1px solid rgba(0, 255, 65, 0.3);
             padding: 15px;
             text-align: left;
         }
-        
+
         .cyber-table th {
             background: rgba(0, 255, 65, 0.1);
             color: var(--primary-color);
             font-weight: bold;
             text-transform: uppercase;
         }
-        
+
         .cyber-table tr:hover {
             background: rgba(0, 255, 65, 0.05);
         }
-        
+
         .svg-container {
             display: flex;
             justify-content: center;
@@ -102,21 +106,30 @@
             stroke-dasharray: 10;
             animation: dash 1s linear infinite;
         }
-        
+
         .flow-path-fast {
             stroke-dasharray: 8;
             animation: dash 0.5s linear infinite;
         }
-        
+
         @keyframes dash {
-            to { stroke-dashoffset: -20; }
+            to {
+                stroke-dashoffset: -20;
+            }
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .badge {
             display: inline-block;
             padding: 4px 10px;
@@ -129,7 +142,7 @@
             font-weight: bold;
             vertical-align: middle;
         }
-        
+
         .ar-text {
             direction: rtl;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -141,7 +154,7 @@
             line-height: 1.8;
             font-size: 1.1rem;
         }
-        
+
         .en-text {
             color: #ddd;
             margin: 15px 0;
@@ -149,10 +162,19 @@
             font-weight: 500;
             line-height: 1.6;
         }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
         .stat-card {
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid #333;
@@ -165,7 +187,10 @@
         .stat-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 2px; height: 100%;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
             background: var(--primary-color);
             opacity: 0.5;
         }
@@ -176,13 +201,16 @@
             box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1);
         }
 
-        .stat-card:hover::before { opacity: 1; box-shadow: 0 0 10px var(--primary-color); }
+        .stat-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
 
         ul.cyber-list {
             list-style-type: none;
             padding-left: 0;
         }
-        
+
         ul.cyber-list li {
             position: relative;
             padding-left: 25px;
@@ -199,12 +227,12 @@
             font-family: var(--font-code);
             font-size: 0.9em;
         }
-        
+
         .highlight {
             color: #0ff;
             font-weight: bold;
         }
-        
+
         .back-btn {
             display: inline-block;
             margin-bottom: 30px;
@@ -214,29 +242,115 @@
             padding: 10px 25px;
             transition: all 0.3s;
             font-family: var(--font-code);
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-        
+
         .back-btn:hover {
             background: var(--primary-color);
             color: #000;
             box-shadow: 0 0 15px var(--primary-color);
         }
 
-        .svg-glow { filter: drop-shadow(0 0 8px rgba(0, 255, 65, 0.6)); }
-        .svg-glow-blue { filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6)); }
-        .svg-glow-red { filter: drop-shadow(0 0 8px rgba(255, 0, 85, 0.6)); }
+        .svg-glow {
+            filter: drop-shadow(0 0 8px rgba(0, 255, 65, 0.6));
+        }
+
+        .svg-glow-blue {
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+        }
+
+        .svg-glow-red {
+            filter: drop-shadow(0 0 8px rgba(255, 0, 85, 0.6));
+        }
 
         @media (max-width: 900px) {
-            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 1rem 0.5rem;
+            }
+
+            .section-panel {
+                padding: 1.5rem;
+            }
+
+            h2.cyber-heading {
+                font-size: 1.3rem;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            h2.cyber-heading::before {
+                margin-bottom: 5px;
+            }
+
+            header h1.glitch {
+                font-size: 2.2rem !important;
+            }
+
+            header p {
+                font-size: 1rem !important;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .svg-container {
+                overflow-x: auto;
+                padding: 10px;
+            }
+
+            .svg-container svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .cyber-table {
+                display: block;
+                overflow-x: auto;
+                font-size: 0.85rem;
+            }
+
+            .cyber-table th,
+            .cyber-table td {
+                padding: 10px;
+            }
+
+            .ar-text {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+
+            .en-text {
+                font-size: 1rem;
+            }
+
+            h2.glitch[data-text="[CORE MODULE SUMMARY]"] {
+                font-size: 1.5rem !important;
+                word-wrap: break-word;
+            }
         }
     </style>
 </head>
+
 <body>
-    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
-    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+    <canvas id="matrixCanvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
 
     <div class="content-container">
         <a href="index.html" class="back-btn">RETURN TO ROOT DIRECTORY</a>
@@ -245,47 +359,60 @@
             <div class="glitch-wrapper">
                 <h1 class="glitch" data-text="CHAPTER 1" style="font-size: 4rem; color: #fff;">CHAPTER 1</h1>
             </div>
-            <p style="color: #0ff; font-size: 1.8rem; letter-spacing: 2px;">Advanced Introduction to Computer Systems & Networks</p>
-            <div style="margin-top:20px; font-family:var(--font-code); color:#666;">AUTHORIZATION LEVEL: MAXIMUM | DECRYPTION: COMPLETE</div>
+            <p style="color: #0ff; font-size: 1.8rem; letter-spacing: 2px;">Advanced Introduction to Computer Systems &
+                Networks</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#666;">AUTHORIZATION LEVEL: MAXIMUM |
+                DECRYPTION: COMPLETE</div>
         </header>
 
         <!-- SECTION 1: IPO CYCLE -->
         <div class="section-panel" style="animation-delay: 0.1s;">
             <h2 class="cyber-heading">1. What is a Computer? <span class="badge">IPO + STORAGE CYCLE</span></h2>
-            <p class="en-text">A computer is a complex electronic machine designed to process raw data at exceptionally high speeds through a specific cycle: receiving data via input devices, processing it mathematically and logically in the CPU, temporarily or permanently storing it, and retrieving structured information via output devices.</p>
-            <div class="ar-text">بص يا سيدي، الكمبيوتر ده عبارة عن مكنة ذكية جداً. كل مهمتها إنها تاخد منك "بيانات خام" أو (Data) من الكيبورد والماوس، وتدخلها على المطبخ بتاعها عشان تفهمها وتطبخها بسرعة رهيبة (Processing)، وبعدين ياما تخزنها في التلاجة بتاعتها أو الهارد (Storage)، ياما تطلعها إخراج (Output) للباشا على الشاشة أو الطباعة كمعلومة ليها معنى وتقدر تفهمها! اللفة دي كلها بنسميها دورة الـ IPO.</div>
-            
+            <p class="en-text">A computer is a complex electronic machine designed to process raw data at exceptionally
+                high speeds through a specific cycle: receiving data via input devices, processing it mathematically and
+                logically in the CPU, temporarily or permanently storing it, and retrieving structured information via
+                output devices.</p>
+            <div class="ar-text">ببساطة، الكمبيوتر هو نظام إلكتروني متكامل؛ وظيفته الأساسية هي استقبال بيانات المدخلات (Data) ومعالجتها في وحدة المعالجة المركزية (Processing)، ثم حفظها في وحدات التخزين (Storage)، لينتهي الأمر بعرضها كمعلومات مفيدة (Output) للمستخدم. هذه العملية المستمرة تُعرف تقنياً بدورة الـ IPO.</div>
+
             <div class="svg-container">
                 <svg width="800" height="250" viewBox="0 0 800 250">
                     <!-- Storage Node -->
-                    <rect x="340" y="160" width="120" height="60" rx="5" fill="#111" stroke="#ffaa00" stroke-width="2" style="filter: drop-shadow(0 0 8px rgba(255, 170, 0, 0.5));"/>
-                    <text x="400" y="195" fill="#ffaa00" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">STORAGE</text>
+                    <rect x="340" y="160" width="120" height="60" rx="5" fill="#111" stroke="#ffaa00" stroke-width="2"
+                        style="filter: drop-shadow(0 0 8px rgba(255, 170, 0, 0.5));" />
+                    <text x="400" y="195" fill="#ffaa00" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">STORAGE</text>
 
                     <!-- Input Node -->
-                    <rect x="50" y="40" width="120" height="60" rx="5" fill="#111" stroke="#0f0" stroke-width="2" class="svg-glow"/>
-                    <text x="110" y="75" fill="#0f0" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">INPUT</text>
-                    
+                    <rect x="50" y="40" width="120" height="60" rx="5" fill="#111" stroke="#0f0" stroke-width="2"
+                        class="svg-glow" />
+                    <text x="110" y="75" fill="#0f0" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">INPUT</text>
+
                     <!-- Process Node -->
-                    <rect x="340" y="40" width="120" height="60" rx="5" fill="#111" stroke="#0ff" stroke-width="2" class="svg-glow-blue"/>
-                    <text x="400" y="75" fill="#0ff" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">PROCESS</text>
+                    <rect x="340" y="40" width="120" height="60" rx="5" fill="#111" stroke="#0ff" stroke-width="2"
+                        class="svg-glow-blue" />
+                    <text x="400" y="75" fill="#0ff" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">PROCESS</text>
 
                     <!-- Output Node -->
-                    <rect x="630" y="40" width="120" height="60" rx="5" fill="#111" stroke="#ff0055" stroke-width="2" class="svg-glow-red"/>
-                    <text x="690" y="75" fill="#ff0055" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">OUTPUT</text>
+                    <rect x="630" y="40" width="120" height="60" rx="5" fill="#111" stroke="#ff0055" stroke-width="2"
+                        class="svg-glow-red" />
+                    <text x="690" y="75" fill="#ff0055" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">OUTPUT</text>
 
                     <!-- Arrows Input -> Process -->
-                    <path d="M 170 60 L 330 60" stroke="#0f0" stroke-width="3" fill="none" class="flow-path-fast"/>
+                    <path d="M 170 60 L 330 60" stroke="#0f0" stroke-width="3" fill="none" class="flow-path-fast" />
                     <polygon points="330,60 320,55 320,65" fill="#0f0" />
-                    
+
                     <!-- Arrows Process -> Output -->
-                    <path d="M 460 60 L 620 60" stroke="#0ff" stroke-width="3" fill="none" class="flow-path-fast"/>
+                    <path d="M 460 60 L 620 60" stroke="#0ff" stroke-width="3" fill="none" class="flow-path-fast" />
                     <polygon points="620,60 610,55 610,65" fill="#0ff" />
 
                     <!-- Arrows Process <-> Storage -->
-                    <path d="M 380 100 L 380 150" stroke="#ffaa00" stroke-width="3" fill="none" class="flow-path"/>
+                    <path d="M 380 100 L 380 150" stroke="#ffaa00" stroke-width="3" fill="none" class="flow-path" />
                     <polygon points="380,150 375,140 385,140" fill="#ffaa00" />
-                    
-                    <path d="M 420 150 L 420 100" stroke="#0ff" stroke-width="3" fill="none" class="flow-path"/>
+
+                    <path d="M 420 150 L 420 100" stroke="#0ff" stroke-width="3" fill="none" class="flow-path" />
                     <polygon points="420,100 415,110 425,110" fill="#0ff" />
 
                     <!-- Sub Labels -->
@@ -300,30 +427,36 @@
         <!-- SECTION 2: DATA VS INFO & BINARY -->
         <div class="section-panel" style="animation-delay: 0.2s;">
             <h2 class="cyber-heading">2. Data vs Information <span class="badge">BINARY TRANSLATION</span></h2>
-            <p class="en-text">At the core, computers only understand binary signals (voltage levels representing 0s and 1s). Raw binary data is meaningless until it is parsed and processed into a format humans or other systems can comprehend.</p>
-            <div class="ar-text">الكمبيوتر في الأصل مابيعرفش يقرأ عربي ولا إنجليزي، هو بيفهم لغة واحدة بس: كهربا شغالة (1) وكهربا فاصلة (0). دي بنسميها الـ Data. الداتا دي وهي مرمية كده ملهاش أي تلاتين لزمة أو معنى لحد ما الكمبيوتر يجمعها ويعالجها ويطلعلك بيها أحلى معلومة (Information) زي جملة مفيدة، صورة، أو حتى لعبة بتلعبها!</div>
-            
+            <p class="en-text">At the core, computers only understand binary signals (voltage levels representing 0s and
+                1s). Raw binary data is meaningless until it is parsed and processed into a format humans or other
+                systems can comprehend.</p>
+            <div class="ar-text">يعمل الكمبيوتر بلغة الإشارات الكهربائية (Binary)، حيث يترجم القيم الرقمية (0 و 1) إلى بيانات (Data) في حالتها الأولية. وبمجرد معالجة هذه البيانات وتنظيمها، تتحول إلى معلومات (Information) ذات معنى وسياق، مثل النصوص، الصور، والبرمجيات التي نتعامل معها يومياً.</div>
+
             <div class="grid-2">
                 <div class="stat-card" style="border-left: 3px solid #ff0055;">
-                    <h3 style="color: #ff0055; margin-bottom: 15px; font-family: var(--font-code);">RAW DATA (بيانات خام)</h3>
+                    <h3 style="color: #ff0055; margin-bottom: 15px; font-family: var(--font-code);">RAW DATA (بيانات
+                        خام)</h3>
                     <ul class="cyber-list">
                         <li>Unstructured and unorganized facts.</li>
                         <li>Base level records.</li>
                         <li>Requires processing to gain context.</li>
                     </ul>
-                    <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.5); font-family: var(--font-code); color: #ccc;">
+                    <div
+                        style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.5); font-family: var(--font-code); color: #ccc;">
                         Example: 01000001 01000010 01000011<br>
                         (Just a sequence of bits)
                     </div>
                 </div>
                 <div class="stat-card" style="border-left: 3px solid #00ff41;">
-                    <h3 style="color: #00ff41; margin-bottom: 15px; font-family: var(--font-code);">INFORMATION (معلومات)</h3>
+                    <h3 style="color: #00ff41; margin-bottom: 15px; font-family: var(--font-code);">INFORMATION
+                        (معلومات)</h3>
                     <ul class="cyber-list">
                         <li>Data that has been processed.</li>
                         <li>Structured, context-rich, and meaningful.</li>
                         <li>Used for decision making.</li>
                     </ul>
-                    <div style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.5); font-family: var(--font-code); color: #ccc;">
+                    <div
+                        style="margin-top: 15px; padding: 10px; background: rgba(0,0,0,0.5); font-family: var(--font-code); color: #ccc;">
                         Example: "ABC"<br>
                         (Decoded string via ASCII Table)
                     </div>
@@ -333,14 +466,18 @@
             <!-- ASCII Translation SVG -->
             <div class="svg-container" style="margin-top: 30px; padding: 20px;">
                 <svg width="600" height="120" viewBox="0 0 600 120">
-                    <rect x="20" y="30" width="180" height="60" fill="#111" stroke="#ff0055" rx="4"/>
-                    <text x="110" y="65" fill="#ff0055" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">01000001</text>
-                    
-                    <path d="M 210 60 L 390 60" stroke="#0ff" stroke-width="2" stroke-dasharray="5" class="flow-path-fast" fill="none"/>
-                    <text x="300" y="50" fill="#0ff" font-family="sans-serif" font-size="12" text-anchor="middle">CPU Processing / ASCII Decode</text>
-                    
-                    <rect x="400" y="30" width="180" height="60" fill="#111" stroke="#0f0" rx="4"/>
-                    <text x="490" y="70" fill="#0f0" font-family="monospace" font-size="24" font-weight="bold" text-anchor="middle">Letter 'A'</text>
+                    <rect x="20" y="30" width="180" height="60" fill="#111" stroke="#ff0055" rx="4" />
+                    <text x="110" y="65" fill="#ff0055" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">01000001</text>
+
+                    <path d="M 210 60 L 390 60" stroke="#0ff" stroke-width="2" stroke-dasharray="5"
+                        class="flow-path-fast" fill="none" />
+                    <text x="300" y="50" fill="#0ff" font-family="sans-serif" font-size="12" text-anchor="middle">CPU
+                        Processing / ASCII Decode</text>
+
+                    <rect x="400" y="30" width="180" height="60" fill="#111" stroke="#0f0" rx="4" />
+                    <text x="490" y="70" fill="#0f0" font-family="monospace" font-size="24" font-weight="bold"
+                        text-anchor="middle">Letter 'A'</text>
                 </svg>
             </div>
         </div>
@@ -348,90 +485,114 @@
         <!-- SECTION 3: SYSTEM COMPONENTS & CPU -->
         <div class="section-panel" style="animation-delay: 0.3s;">
             <h2 class="cyber-heading">3. Hardware Architecture & CPU Analysis <span class="badge">HARDWARE</span></h2>
-            <div class="ar-text">من الآخر كده، الجهاز اللي قدامك ده روح وجسد! الجسد هو الـ (Hardware)، أي حتة حديدة تقدر تلمسها بإيدك، بس من غير الروح هي مجرد خردة! الروح بقى هي الـ (Software)، البرامج والأوامر والتعليمات اللي بتشغل الحديد ده وتخليه ينطق.</div>
-            
+            <div class="ar-text">يتكون الحاسوب من شقين متكاملين: الكيان المادي (Hardware) وهو كافة القطع الإلكترونية الملموسة، والكيان البرمجي (Software) وهو الأوامر والبرمجيات التي تدير هذه المكونات المادية وتجعلها قادرة على أداء مهامها.</div>
+
             <h3 class="sub-heading">Functional Hardware Categories</h3>
             <div class="grid-3" style="margin-bottom: 30px;">
                 <div class="stat-card">
                     <h3 style="color:#0ff; border-bottom:1px solid #333; padding-bottom:10px;">Input Devices</h3>
-                    <p style="color:#ccc; font-size:0.95rem; margin-top:10px;">Mechanisms to feed data. Keyboard translates keystrokes to signals. Scanners digitize optical physical layers. Microphones sample analog audio to digital waves.</p>
+                    <p style="color:#ccc; font-size:0.95rem; margin-top:10px;">Mechanisms to feed data. Keyboard
+                        translates keystrokes to signals. Scanners digitize optical physical layers. Microphones sample
+                        analog audio to digital waves.</p>
                 </div>
                 <div class="stat-card">
                     <h3 style="color:#ff0055; border-bottom:1px solid #333; padding-bottom:10px;">Output Devices</h3>
-                    <p style="color:#ccc; font-size:0.95rem; margin-top:10px;">Monitors render graphical matrices (pixels). Printers output physical documents. Speakers convert digital algorithms back to analog sound waves.</p>
+                    <p style="color:#ccc; font-size:0.95rem; margin-top:10px;">Monitors render graphical matrices
+                        (pixels). Printers output physical documents. Speakers convert digital algorithms back to analog
+                        sound waves.</p>
                 </div>
                 <div class="stat-card">
                     <h3 style="color:#ffaa00; border-bottom:1px solid #333; padding-bottom:10px;">Storage Media</h3>
-                    <p style="color:#ccc; font-size:0.95rem; margin-top:10px;">HDD (Magnetic platters - Slow), SSD (NAND Flash Memory - Extremely Fast, no moving parts). Ensures non-volatile data persistence.</p>
+                    <p style="color:#ccc; font-size:0.95rem; margin-top:10px;">HDD (Magnetic platters - Slow), SSD (NAND
+                        Flash Memory - Extremely Fast, no moving parts). Ensures non-volatile data persistence.</p>
                 </div>
             </div>
 
             <h3 class="sub-heading">Central Processing Unit (CPU) Microarchitecture</h3>
-            <p class="en-text">The CPU is fundamentally divided into critical logic gates and memory registers that manage the entire system's operations continuously through the Fetch-Decode-Execute cycle.</p>
-            
+            <p class="en-text">The CPU is fundamentally divided into critical logic gates and memory registers that
+                manage the entire system's operations continuously through the Fetch-Decode-Execute cycle.</p>
+
             <!-- Highly detailed CPU SVG -->
             <div class="svg-container">
                 <svg width="800" height="400" viewBox="0 0 800 400">
                     <!-- Main Motherboard backplate -->
-                    <rect x="50" y="20" width="700" height="360" fill="#0a0a0a" stroke="#333" stroke-width="2" rx="10"/>
-                    
+                    <rect x="50" y="20" width="700" height="360" fill="#0a0a0a" stroke="#333" stroke-width="2"
+                        rx="10" />
+
                     <!-- CPU Socket / Chip -->
-                    <rect x="80" y="50" width="300" height="300" fill="#111" stroke="#0ff" stroke-width="2" rx="5" class="svg-glow-blue"/>
-                    <text x="230" y="80" fill="#0ff" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle">CPU Core (المعالج)</text>
-                    
+                    <rect x="80" y="50" width="300" height="300" fill="#111" stroke="#0ff" stroke-width="2" rx="5"
+                        class="svg-glow-blue" />
+                    <text x="230" y="80" fill="#0ff" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle">CPU Core (المعالج)</text>
+
                     <!-- Inside CPU: CU -->
-                    <rect x="100" y="110" width="260" height="60" fill="#1a1a1a" stroke="#ff0055" stroke-width="1" rx="3"/>
-                    <text x="230" y="135" fill="#ff0055" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle">Control Unit (CU)</text>
-                    <text x="230" y="155" fill="#888" font-size="11" text-anchor="middle">Orchestrates fetching & decoding instructions</text>
+                    <rect x="100" y="110" width="260" height="60" fill="#1a1a1a" stroke="#ff0055" stroke-width="1"
+                        rx="3" />
+                    <text x="230" y="135" fill="#ff0055" font-family="monospace" font-size="14" font-weight="bold"
+                        text-anchor="middle">Control Unit (CU)</text>
+                    <text x="230" y="155" fill="#888" font-size="11" text-anchor="middle">Orchestrates fetching &
+                        decoding instructions</text>
 
                     <!-- Inside CPU: ALU -->
-                    <rect x="100" y="190" width="260" height="60" fill="#1a1a1a" stroke="#0f0" stroke-width="1" rx="3"/>
-                    <text x="230" y="215" fill="#0f0" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle">Arithmetic Logic Unit (ALU)</text>
-                    <text x="230" y="235" fill="#888" font-size="11" text-anchor="middle">Mathematical computations & logic comparisons</text>
+                    <rect x="100" y="190" width="260" height="60" fill="#1a1a1a" stroke="#0f0" stroke-width="1"
+                        rx="3" />
+                    <text x="230" y="215" fill="#0f0" font-family="monospace" font-size="14" font-weight="bold"
+                        text-anchor="middle">Arithmetic Logic Unit (ALU)</text>
+                    <text x="230" y="235" fill="#888" font-size="11" text-anchor="middle">Mathematical computations &
+                        logic comparisons</text>
 
                     <!-- Inside CPU: Registers / Cache -->
-                    <rect x="100" y="270" width="260" height="50" fill="#1a1a1a" stroke="#ffaa00" stroke-width="1" rx="3"/>
-                    <text x="230" y="295" fill="#ffaa00" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle">Registers & CPU Cache</text>
-                    <text x="230" y="310" fill="#888" font-size="11" text-anchor="middle">Ultra-fast temporary memory (L1/L2/L3)</text>
+                    <rect x="100" y="270" width="260" height="50" fill="#1a1a1a" stroke="#ffaa00" stroke-width="1"
+                        rx="3" />
+                    <text x="230" y="295" fill="#ffaa00" font-family="monospace" font-size="14" font-weight="bold"
+                        text-anchor="middle">Registers & CPU Cache</text>
+                    <text x="230" y="310" fill="#888" font-size="11" text-anchor="middle">Ultra-fast temporary memory
+                        (L1/L2/L3)</text>
 
                     <!-- System Bus -->
-                    <rect x="420" y="50" width="40" height="300" fill="#111" stroke="#555" rx="3"/>
-                    <text x="440" y="200" fill="#aaa" font-family="monospace" font-size="14" text-anchor="middle" transform="rotate(-90 440,200)">SYSTEM BUS (Data/Address)</text>
+                    <rect x="420" y="50" width="40" height="300" fill="#111" stroke="#555" rx="3" />
+                    <text x="440" y="200" fill="#aaa" font-family="monospace" font-size="14" text-anchor="middle"
+                        transform="rotate(-90 440,200)">SYSTEM BUS (Data/Address)</text>
 
                     <!-- Connections to Bus -->
-                    <path d="M 380 140 L 420 140" stroke="#ff0055" stroke-width="3" class="flow-path"/>
-                    <path d="M 380 220 L 420 220" stroke="#0f0" stroke-width="3" class="flow-path"/>
-                    <path d="M 380 295 L 420 295" stroke="#ffaa00" stroke-width="3" class="flow-path"/>
+                    <path d="M 380 140 L 420 140" stroke="#ff0055" stroke-width="3" class="flow-path" />
+                    <path d="M 380 220 L 420 220" stroke="#0f0" stroke-width="3" class="flow-path" />
+                    <path d="M 380 295 L 420 295" stroke="#ffaa00" stroke-width="3" class="flow-path" />
 
                     <!-- Main Memory (RAM) -->
-                    <rect x="500" y="80" width="200" height="80" fill="#111" stroke="#fff" stroke-width="2" rx="5"/>
-                    <text x="600" y="115" fill="#fff" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">RAM Memory</text>
-                    <text x="600" y="140" fill="#888" font-size="11" text-anchor="middle">Volatile: Wipes on power off. Extremely fast.</text>
-                    <path d="M 460 120 L 500 120" stroke="#fff" stroke-width="3" class="flow-path"/>
+                    <rect x="500" y="80" width="200" height="80" fill="#111" stroke="#fff" stroke-width="2" rx="5" />
+                    <text x="600" y="115" fill="#fff" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">RAM Memory</text>
+                    <text x="600" y="140" fill="#888" font-size="11" text-anchor="middle">Volatile: Wipes on power off.
+                        Extremely fast.</text>
+                    <path d="M 460 120 L 500 120" stroke="#fff" stroke-width="3" class="flow-path" />
 
                     <!-- ROM Memory -->
-                    <rect x="500" y="230" width="200" height="80" fill="#111" stroke="#0ff" stroke-width="2" rx="5"/>
-                    <text x="600" y="265" fill="#0ff" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">ROM (Firmware)</text>
-                    <text x="600" y="290" fill="#888" font-size="11" text-anchor="middle">Non-Volatile: Fixed boot instructions (BIOS)</text>
-                    <path d="M 460 270 L 500 270" stroke="#0ff" stroke-width="3" stroke-dasharray="0" fill="none"/>
+                    <rect x="500" y="230" width="200" height="80" fill="#111" stroke="#0ff" stroke-width="2" rx="5" />
+                    <text x="600" y="265" fill="#0ff" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">ROM (Firmware)</text>
+                    <text x="600" y="290" fill="#888" font-size="11" text-anchor="middle">Non-Volatile: Fixed boot
+                        instructions (BIOS)</text>
+                    <path d="M 460 270 L 500 270" stroke="#0ff" stroke-width="3" stroke-dasharray="0" fill="none" />
                 </svg>
             </div>
-            
+
             <div class="ar-text">
-                <b>دماغ الكمبيوتر متقسمة لإيه؟ (CPU):</b><br>
-                - <b>وحدة الحساب والمنطق (ALU):</b> دي الآلة الحاسبة بتاعته اللي بتيجي تضرب وتطرح وتقارن كل حاجة ببعضها!<br>
-                - <b>وحدة التحكم (CU):</b> ده الباشا.. المايسترو اللي بينظم المرور وبيقول لمين يعمل إيه ودوره إمتى.<br>
-                - <b>المسجلات (Registers):</b> دي جيوب صغيرة متخيطة جوه الدماغ نفسها! بيحط فيها الملاحظات السريعة عشان المعالج مايعطلش.<br>
+                <b>مكونات المعالج المركزية (CPU):</b><br>
+                - <b>وحدة الحساب والمنطق (ALU):</b> المحرك الأساسي المسؤول عن كافة العمليات الرياضية والمقارنات المنطقية.<br>
+                - <b>وحدة التحكم (CU):</b> المنظم الذي ينسق تدفق البيانات ويدير تنفيذ الأوامر بدقة.<br>
+                - <b>المسجلات (Registers):</b> وحدات تخزين فائقة السرعة داخل المعالج، تُستخدم كذاكرة مؤقتة لحظية لضمان استمرارية العمل بدون تأخير.<br>
                 <br>
-                <b>خناقة الـ RAM والـ ROM:</b><br>
-                الـ <b>RAM</b> دي الذاكرة "الصحاب فرفوشة"، سريعة جداً وشايلة كل حاجة فاتحها دلوقتي وتواكب سرعة المعالج، بس لو الفيشة اتهزت والكهربا قطعت.. بتنسى كل حاجة فوراً! أما الـ <b>ROM</b> فدي الذاكرة "الجدعة الأصيلة"، شايلة أوامر تشغيل اللوحة الأم ومش بتتمسح أبداً حتى لو فصلت الكهربا.
+                <b>الفرق بين ذاكرة الـ RAM والـ ROM:</b><br>
+                تُعد الـ <b>RAM</b> ذاكرة مؤقتة سريعة تواكب سرعة المعالج في تنفيذ المهام الحالية، ولكنها تفقد بياناتها عند انقطاع الطاقة. بينما الـ <b>ROM</b> هي ذاكرة ثابتة تحتفظ بتعليمات الإقلاع الأساسية للوحة الأم ولا تتأثر بانقطاع التيار الكهربائي.
             </div>
         </div>
 
         <!-- SECTION 4: SOFTWARE DYNAMICS & HISTORY -->
         <div class="section-panel" style="animation-delay: 0.4s;">
-            <h2 class="cyber-heading">4. Software Layering & Computer Evolution <span class="badge">SYSTEM INTERFACE</span></h2>
-            
+            <h2 class="cyber-heading">4. Software Layering & Computer Evolution <span class="badge">SYSTEM
+                    INTERFACE</span></h2>
+
             <h3 class="sub-heading">Software Architecture Layers</h3>
             <table class="cyber-table">
                 <tr>
@@ -441,7 +602,8 @@
                 </tr>
                 <tr>
                     <td class="highlight">Operating System (OS)</td>
-                    <td>The core system managing resources, memory, and act as a bridge between the user and hardware logic.</td>
+                    <td>The core system managing resources, memory, and act as a bridge between the user and hardware
+                        logic.</td>
                     <td>Windows, Linux (Kernel), macOS, UNIX</td>
                 </tr>
                 <tr>
@@ -451,7 +613,8 @@
                 </tr>
                 <tr>
                     <td class="highlight">Application Software</td>
-                    <td>Programs targeted towards end-user productivity and functionality. Built targeting specific OS APIs.</td>
+                    <td>Programs targeted towards end-user productivity and functionality. Built targeting specific OS
+                        APIs.</td>
                     <td>Chrome, VS Code, Games, Word</td>
                 </tr>
                 <tr>
@@ -462,60 +625,83 @@
             </table>
 
             <h3 class="sub-heading" style="margin-top: 50px;">The Generations of Computing</h3>
-            <div class="ar-text">رحلة الكمبيوتر دي درامية جداً وحكاية تتدرس! الأجهزة ماطلعتش سمارت ومفرفرة كده في يوم وليلة، دي بدأت بحاجات بحجم أوضة كاملة بتسحب كهربا حارة جداً وتولع في المكان، وكل جيل كان بيصغر في الحجم ويبقى أذكى بفضل اكتشافات خطيرة زي الترانزستور والشرائح الصغيرة، لحد ما وصلنا لآلة كوكب كامل في جيبك!</div>
-            
+            <div class="ar-text">تطور الحواسيب هو نتاج رحلة تقنية طويلة؛ حيث بدأت الأجهزة كآلات عملاقة تشغل غرفاً كاملة وتستهلك طاقة هائلة. ومع توالي الأجيال، أصبحت أصغر حجماً وأكثر كفاءة بفضل ابتكارات ثورية مثل الترانزستور والدوائر المتكاملة، وصولاً إلى معالجات اليوم التي تضع قدرات هائلة في راحة يدك.
+            </div>
+
             <div class="svg-container">
                 <svg width="900" height="150" viewBox="0 0 900 150">
-                    <line x1="50" y1="75" x2="850" y2="75" stroke="#333" stroke-width="4"/>
-                    
+                    <line x1="50" y1="75" x2="850" y2="75" stroke="#333" stroke-width="4" />
+
                     <!-- 1st Gen -->
-                    <circle cx="100" cy="75" r="15" fill="#222" stroke="#ff0055" stroke-width="3"/>
-                    <text x="100" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">1st GEN</text>
-                    <text x="100" y="115" fill="#ff0055" font-size="14" font-weight="bold" text-anchor="middle">VACUUM TUBES</text>
+                    <circle cx="100" cy="75" r="15" fill="#222" stroke="#ff0055" stroke-width="3" />
+                    <text x="100" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">1st
+                        GEN</text>
+                    <text x="100" y="115" fill="#ff0055" font-size="14" font-weight="bold" text-anchor="middle">VACUUM
+                        TUBES</text>
                     <text x="100" y="135" fill="#888" font-size="11" text-anchor="middle">1940s-50s: Huge, ENIAC.</text>
 
                     <!-- 2nd Gen -->
-                    <circle cx="280" cy="75" r="15" fill="#222" stroke="#ffaa00" stroke-width="3"/>
-                    <text x="280" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">2nd GEN</text>
-                    <text x="280" y="115" fill="#ffaa00" font-size="14" font-weight="bold" text-anchor="middle">TRANSISTORS</text>
-                    <text x="280" y="135" fill="#888" font-size="11" text-anchor="middle">1950s-60s: Fast switching.</text>
+                    <circle cx="280" cy="75" r="15" fill="#222" stroke="#ffaa00" stroke-width="3" />
+                    <text x="280" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">2nd
+                        GEN</text>
+                    <text x="280" y="115" fill="#ffaa00" font-size="14" font-weight="bold"
+                        text-anchor="middle">TRANSISTORS</text>
+                    <text x="280" y="135" fill="#888" font-size="11" text-anchor="middle">1950s-60s: Fast
+                        switching.</text>
 
                     <!-- 3rd Gen -->
-                    <circle cx="460" cy="75" r="15" fill="#222" stroke="#0ff" stroke-width="3"/>
-                    <text x="460" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">3rd GEN</text>
-                    <text x="460" y="115" fill="#0ff" font-size="14" font-weight="bold" text-anchor="middle">INTEGRATED CIRCUITS</text>
-                    <text x="460" y="135" fill="#888" font-size="11" text-anchor="middle">1960s-70s: Silicon chips.</text>
+                    <circle cx="460" cy="75" r="15" fill="#222" stroke="#0ff" stroke-width="3" />
+                    <text x="460" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">3rd
+                        GEN</text>
+                    <text x="460" y="115" fill="#0ff" font-size="14" font-weight="bold" text-anchor="middle">INTEGRATED
+                        CIRCUITS</text>
+                    <text x="460" y="135" fill="#888" font-size="11" text-anchor="middle">1960s-70s: Silicon
+                        chips.</text>
 
                     <!-- 4th Gen -->
-                    <circle cx="640" cy="75" r="15" fill="#222" stroke="#0f0" stroke-width="3"/>
-                    <text x="640" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">4th GEN</text>
-                    <text x="640" y="115" fill="#0f0" font-size="14" font-weight="bold" text-anchor="middle">MICROPROCESSORS</text>
-                    <text x="640" y="135" fill="#888" font-size="11" text-anchor="middle">1971-Now: Billions of transistors.</text>
-                    
+                    <circle cx="640" cy="75" r="15" fill="#222" stroke="#0f0" stroke-width="3" />
+                    <text x="640" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">4th
+                        GEN</text>
+                    <text x="640" y="115" fill="#0f0" font-size="14" font-weight="bold"
+                        text-anchor="middle">MICROPROCESSORS</text>
+                    <text x="640" y="135" fill="#888" font-size="11" text-anchor="middle">1971-Now: Billions of
+                        transistors.</text>
+
                     <!-- 5th Gen -->
-                    <circle cx="820" cy="75" r="15" fill="#111" stroke="#a020f0" stroke-width="4" style="filter: drop-shadow(0 0 10px #a020f0);"/>
-                    <text x="820" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">5th GEN (FUTURE)</text>
-                    <text x="820" y="115" fill="#a020f0" font-size="14" font-weight="bold" text-anchor="middle">AI & QUANTUM</text>
-                    <text x="820" y="135" fill="#888" font-size="11" text-anchor="middle">Now-Future: Sentient logic.</text>
+                    <circle cx="820" cy="75" r="15" fill="#111" stroke="#a020f0" stroke-width="4"
+                        style="filter: drop-shadow(0 0 10px #a020f0);" />
+                    <text x="820" y="40" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">5th GEN
+                        (FUTURE)</text>
+                    <text x="820" y="115" fill="#a020f0" font-size="14" font-weight="bold" text-anchor="middle">AI &
+                        QUANTUM</text>
+                    <text x="820" y="135" fill="#888" font-size="11" text-anchor="middle">Now-Future: Sentient
+                        logic.</text>
                 </svg>
             </div>
         </div>
 
         <!-- SECTION 5: THE FUTURE HORIZON -->
         <div class="section-panel" style="border-color: #a020f0;">
-            <h2 class="cyber-heading" style="color:#a020f0; border-bottom-color:#a020f0;">5. The Imminent Horizon <span class="badge" style="background:rgba(160,32,240,0.2); color:#a020f0; border-color:#a020f0;">FUTURISTIC CONCEPTS</span></h2>
+            <h2 class="cyber-heading" style="color:#a020f0; border-bottom-color:#a020f0;">5. The Imminent Horizon <span
+                    class="badge"
+                    style="background:rgba(160,32,240,0.2); color:#a020f0; border-color:#a020f0;">FUTURISTIC
+                    CONCEPTS</span></h2>
             <div class="grid-3">
                 <div class="stat-card" style="border-top: 2px solid #a020f0;">
                     <h3 style="color:#fff;">Artificial Intelligence</h3>
-                    <p style="color:#aaa; font-size:0.9rem; margin-top:10px;">Machines simulating human logic via deep neural networks and Machine Learning. Capable of self-learning. (الذكاء الاصطناعي.. الآلات بدأت تفكر لوحدها وعايزة تنافسنا!)</p>
+                    <p style="color:#aaa; font-size:0.9rem; margin-top:10px;">Machines simulating human logic via deep
+                        neural networks and Machine Learning. Capable of self-learning. (الذكاء الاصطناعي: تكنولوجيا تمكن الآلات من محاكاة القدرات العقلية البشرية والتعلم الذاتي من البيانات).</p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #0ff;">
                     <h3 style="color:#fff;">Quantum Computing</h3>
-                    <p style="color:#aaa; font-size:0.9rem; margin-top:10px;">Replaces binary bits (0 or 1) with Qubits (0, 1, or both simultaneously via superposition). Solves complex encryption in seconds. (الكمبيوتر الكمومي.. بيحل أعقد المشاكل في ثواني!)</p>
+                    <p style="color:#aaa; font-size:0.9rem; margin-top:10px;">Replaces binary bits (0 or 1) with Qubits
+                        (0, 1, or both simultaneously via superposition). Solves complex encryption in seconds.
+                        (الحوسبة الكمومية: نمط ثوري من الحوسبة يعتمد على فيزياء الكم لمعالجة البيانات المعقدة بسرعات خيالية).</p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #ff0055;">
                     <h3 style="color:#fff;">Nanotechnology</h3>
-                    <p style="color:#aaa; font-size:0.9rem; margin-top:10px;">Engineering computational elements at atomic scales. Overcoming the limits of Moore's Law. (النانو تكنولوجي.. هندسة على مستوى الذرة يعني تصغير مابعده تصغير!)</p>
+                    <p style="color:#aaa; font-size:0.9rem; margin-top:10px;">Engineering computational elements at
+                        atomic scales. Overcoming the limits of Moore's Law. (تقنية النانو: هندسة المواد على مستوى الذرة، مما يسمح بصناعة معالجات ومكونات دقيقة جداً تفوق المألوف).</p>
                 </div>
             </div>
         </div>
@@ -524,7 +710,8 @@
         <!-- PART 2: NETWORKS SECTION -->
         <header style="text-align: center; margin: 80px 0 50px 0; border-top: 1px dotted #333; padding-top: 50px;">
             <div class="glitch-wrapper">
-                <h2 class="glitch" data-text="PART 2: NETWORK INFRASTRUCTURE" style="font-size: 3.5rem; color: #fff;">PART 2: NETWORK INFRASTRUCTURE</h2>
+                <h2 class="glitch" data-text="PART 2: NETWORK INFRASTRUCTURE" style="font-size: 3.5rem; color: #fff;">
+                    PART 2: NETWORK INFRASTRUCTURE</h2>
             </div>
             <p style="color: #0f0; font-size: 1.5rem; margin-top: 15px;">The arteries of modern data transmission</p>
         </header>
@@ -533,11 +720,14 @@
             <h2 class="cyber-heading">6. Defining The Network Base <span class="badge">NETWORK BASICS</span></h2>
             <div class="ar-text">
                 تعالى بقى ندخل في الشريان الرئيسي للتكنولوچيا.<br>
-                <b>يعني إيه شبكة (Network)؟</b> ببساطة، شوية أجهزة كمبيوتر متوصلة ببعض (سواء بكابلات أو واي فاي) عشان يكلموا بعض ويشاركوا الداتا.<br>
+                <b>يعني إيه شبكة (Network)؟</b> ببساطة، شوية أجهزة كمبيوتر متوصلة ببعض (سواء بكابلات أو واي فاي) عشان
+                يكلموا بعض ويشاركوا الداتا.<br>
                 <br>
                 <b>طب إحنا بنوجع دماغنا ونعمل شبكة ليه؟ (Reasons):</b><br>
-                - <b>مشاركة الموارد (Resource Sharing):</b> زي إننا كلنا في الشركة نطبع على برينتر واحدة بدل ما نشتري لكل واحد جهاز.<br>
-                - <b>مشاركة البيانات (Data Sharing):</b> ننقل الفايلات وسيرفرات الداتا بسرعة بين بعض بدل ما نقعد نلف بفلاشة من مكتب لمكتب!<br>
+                - <b>مشاركة الموارد (Resource Sharing):</b> زي إننا كلنا في الشركة نطبع على برينتر واحدة بدل ما نشتري
+                لكل واحد جهاز.<br>
+                - <b>مشاركة البيانات (Data Sharing):</b> ننقل الفايلات وسيرفرات الداتا بسرعة بين بعض بدل ما نقعد نلف
+                بفلاشة من مكتب لمكتب!<br>
                 - <b>التواصل (Communication):</b> الشات ومكالمات الفيديو والإيميلات اللي مشغلة الشركات.
             </div>
 
@@ -545,40 +735,55 @@
             <div class="svg-container">
                 <svg width="800" height="220" viewBox="0 0 800 220">
                     <!-- LAN -->
-                    <circle cx="150" cy="120" r="50" fill="rgba(0,255,65,0.1)" stroke="#0f0" stroke-dasharray="4" stroke-width="2"/>
-                    <rect x="130" y="100" width="40" height="40" fill="#222" stroke="#0f0"/>
-                    <circle cx="150" cy="120" r="10" fill="#0f0"/>
-                    <text x="150" y="50" fill="#0f0" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle">LAN</text>
-                    <text x="150" y="195" fill="#aaa" font-size="12" text-anchor="middle">Local Area Network (Home/Office)</text>
+                    <circle cx="150" cy="120" r="50" fill="rgba(0,255,65,0.1)" stroke="#0f0" stroke-dasharray="4"
+                        stroke-width="2" />
+                    <rect x="130" y="100" width="40" height="40" fill="#222" stroke="#0f0" />
+                    <circle cx="150" cy="120" r="10" fill="#0f0" />
+                    <text x="150" y="50" fill="#0f0" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle">LAN</text>
+                    <text x="150" y="195" fill="#aaa" font-size="12" text-anchor="middle">Local Area Network
+                        (Home/Office)</text>
 
-                    <path d="M 210 120 C 260 120, 300 120, 310 120" stroke="#888" stroke-width="2" stroke-dasharray="5" fill="none"/>
+                    <path d="M 210 120 C 260 120, 300 120, 310 120" stroke="#888" stroke-width="2" stroke-dasharray="5"
+                        fill="none" />
 
                     <!-- MAN -->
-                    <circle cx="400" cy="120" r="80" fill="rgba(0,255,255,0.1)" stroke="#0ff" stroke-dasharray="8" stroke-width="2"/>
-                    <circle cx="360" cy="90" r="10" fill="#0ff"/>
-                    <circle cx="440" cy="150" r="10" fill="#0ff"/>
-                    <circle cx="400" cy="120" r="15" fill="#222" stroke="#0ff" stroke-width="2"/>
-                    <text x="400" y="25" fill="#0ff" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle">MAN</text>
-                    <text x="400" y="220" fill="#aaa" font-size="12" text-anchor="middle">Metropolitan (City-Wide connections)</text>
+                    <circle cx="400" cy="120" r="80" fill="rgba(0,255,255,0.1)" stroke="#0ff" stroke-dasharray="8"
+                        stroke-width="2" />
+                    <circle cx="360" cy="90" r="10" fill="#0ff" />
+                    <circle cx="440" cy="150" r="10" fill="#0ff" />
+                    <circle cx="400" cy="120" r="15" fill="#222" stroke="#0ff" stroke-width="2" />
+                    <text x="400" y="25" fill="#0ff" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle">MAN</text>
+                    <text x="400" y="220" fill="#aaa" font-size="12" text-anchor="middle">Metropolitan (City-Wide
+                        connections)</text>
 
-                    <path d="M 490 120 C 530 120, 560 120, 570 120" stroke="#888" stroke-width="2" stroke-dasharray="5" fill="none"/>
+                    <path d="M 490 120 C 530 120, 560 120, 570 120" stroke="#888" stroke-width="2" stroke-dasharray="5"
+                        fill="none" />
 
                     <!-- WAN -->
-                    <circle cx="680" cy="120" r="100" fill="rgba(255,0,85,0.1)" stroke="#ff0055" stroke-dasharray="2" stroke-width="2"/>
-                    <circle cx="680" cy="120" r="30" fill="none" stroke="#ff0055" stroke-width="1"/>
-                    <circle cx="680" cy="120" r="50" fill="none" stroke="#ff0055" stroke-width="1"/>
-                    <text x="680" y="10" fill="#ff0055" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle">WAN & INTERNET</text>
-                    <text x="680" y="235" fill="#aaa" font-size="12" text-anchor="middle">Wide Area Network (Global/Internet)</text>
+                    <circle cx="680" cy="120" r="100" fill="rgba(255,0,85,0.1)" stroke="#ff0055" stroke-dasharray="2"
+                        stroke-width="2" />
+                    <circle cx="680" cy="120" r="30" fill="none" stroke="#ff0055" stroke-width="1" />
+                    <circle cx="680" cy="120" r="50" fill="none" stroke="#ff0055" stroke-width="1" />
+                    <text x="680" y="10" fill="#ff0055" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle">WAN & INTERNET</text>
+                    <text x="680" y="235" fill="#aaa" font-size="12" text-anchor="middle">Wide Area Network
+                        (Global/Internet)</text>
                 </svg>
             </div>
-            <div style="text-align:center; color:#ccc; font-style:italic;">The Internet forms the ultimate WAN by interconnecting all routers globally utilizing TCP/IP logic.</div>
+            <div style="text-align:center; color:#ccc; font-style:italic;">The Internet forms the ultimate WAN by
+                interconnecting all routers globally utilizing TCP/IP logic.</div>
         </div>
 
         <!-- SECTION 7: TOPOLOGIES -->
         <div class="section-panel" style="animation-delay: 0.2s;">
-            <h2 class="cyber-heading">7. Network Topologies Architecture <span class="badge">PHYSICAL & LOGICAL LAYOUT</span></h2>
-            <p class="en-text">A network topology maps the geometry of node connectivity. The physical topology refers to physical wire placements, while logical topology defines how data essentially transits regardless of physical design.</p>
-            <div class="ar-text">الـ Topology ببساطة هي "رصة الأجهزة"! إزاي هنوصلهم ببعض هندسياً. كل رصة أو شكل ليه مميزاته الخطيرة، وعيوبه اللي ممكن توقع الشبكة كلها في لحظة (بنسميها نقطة الفشل).</div>
+            <h2 class="cyber-heading">7. Network Topologies Architecture <span class="badge">PHYSICAL & LOGICAL
+                    LAYOUT</span></h2>
+            <p class="en-text">A network topology maps the geometry of node connectivity. The physical topology refers
+                to physical wire placements, while logical topology defines how data essentially transits regardless of
+                physical design.</p>
+            <div class="ar-text">يصف مصطلح الـ Topology الهيكل الهندسي للشبكة وكيفية ترابط العقد ببعضها البعض. لكل تصميم سمات تقنية محددة، ويؤثر اختيار النوع المناسب على كفاءة نقل البيانات واستمرارية الشبكة عند حدوث أعطال مفاجئة.</div>
 
             <div class="grid-3">
                 <!-- STAR TOPOLOGY -->
@@ -587,22 +792,23 @@
                     <div style="height:140px; text-align:center;">
                         <svg width="120" height="120" viewBox="0 0 120 120">
                             <!-- Center Switch -->
-                            <rect x="50" y="50" width="20" height="20" fill="#222" stroke="#0f0" stroke-width="2" class="svg-glow"/>
+                            <rect x="50" y="50" width="20" height="20" fill="#222" stroke="#0f0" stroke-width="2"
+                                class="svg-glow" />
                             <text x="60" y="45" fill="#0f0" font-size="10" text-anchor="middle">SWITCH</text>
-                            
+
                             <!-- Nodes -->
-                            <circle cx="60" cy="10" r="8" fill="#aaa"/>
-                            <circle cx="110" cy="60" r="8" fill="#aaa"/>
-                            <circle cx="60" cy="110" r="8" fill="#aaa"/>
-                            <circle cx="10" cy="60" r="8" fill="#aaa"/>
-                            <circle cx="25" cy="25" r="8" fill="#aaa"/>
-                            
+                            <circle cx="60" cy="10" r="8" fill="#aaa" />
+                            <circle cx="110" cy="60" r="8" fill="#aaa" />
+                            <circle cx="60" cy="110" r="8" fill="#aaa" />
+                            <circle cx="10" cy="60" r="8" fill="#aaa" />
+                            <circle cx="25" cy="25" r="8" fill="#aaa" />
+
                             <!-- Links -->
-                            <line x1="60" y1="50" x2="60" y2="18" stroke="#0f0" class="flow-path"/>
-                            <line x1="70" y1="60" x2="102" y2="60" stroke="#0f0" class="flow-path"/>
-                            <line x1="60" y1="70" x2="60" y2="102" stroke="#0f0" class="flow-path"/>
-                            <line x1="50" y1="60" x2="18" y2="60" stroke="#0f0" class="flow-path"/>
-                            <line x1="50" y1="50" x2="31" y2="31" stroke="#0f0" class="flow-path"/>
+                            <line x1="60" y1="50" x2="60" y2="18" stroke="#0f0" class="flow-path" />
+                            <line x1="70" y1="60" x2="102" y2="60" stroke="#0f0" class="flow-path" />
+                            <line x1="60" y1="70" x2="60" y2="102" stroke="#0f0" class="flow-path" />
+                            <line x1="50" y1="60" x2="18" y2="60" stroke="#0f0" class="flow-path" />
+                            <line x1="50" y1="50" x2="31" y2="31" stroke="#0f0" class="flow-path" />
                         </svg>
                     </div>
                     <ul class="cyber-list" style="margin-top:10px; font-size:0.85rem;">
@@ -618,21 +824,22 @@
                     <div style="height:140px; text-align:center;">
                         <svg width="120" height="120" viewBox="0 0 120 120">
                             <!-- Backbone line -->
-                            <line x1="10" y1="60" x2="110" y2="60" stroke="#0ff" stroke-width="4" class="svg-glow-blue"/>
-                            
+                            <line x1="10" y1="60" x2="110" y2="60" stroke="#0ff" stroke-width="4"
+                                class="svg-glow-blue" />
+
                             <!-- Nodes and drops -->
-                            <circle cx="25" cy="25" r="8" fill="#aaa"/>
-                            <line x1="25" y1="33" x2="25" y2="60" stroke="#0ff" class="flow-path"/>
-                            
-                            <circle cx="60" cy="95" r="8" fill="#aaa"/>
-                            <line x1="60" y1="87" x2="60" y2="60" stroke="#0ff" class="flow-path"/>
-                            
-                            <circle cx="95" cy="25" r="8" fill="#aaa"/>
-                            <line x1="95" y1="33" x2="95" y2="60" stroke="#0ff" class="flow-path"/>
+                            <circle cx="25" cy="25" r="8" fill="#aaa" />
+                            <line x1="25" y1="33" x2="25" y2="60" stroke="#0ff" class="flow-path" />
+
+                            <circle cx="60" cy="95" r="8" fill="#aaa" />
+                            <line x1="60" y1="87" x2="60" y2="60" stroke="#0ff" class="flow-path" />
+
+                            <circle cx="95" cy="25" r="8" fill="#aaa" />
+                            <line x1="95" y1="33" x2="95" y2="60" stroke="#0ff" class="flow-path" />
 
                             <!-- Terminators -->
-                            <rect x="5" y="55" width="5" height="10" fill="#fff"/>
-                            <rect x="110" y="55" width="5" height="10" fill="#fff"/>
+                            <rect x="5" y="55" width="5" height="10" fill="#fff" />
+                            <rect x="110" y="55" width="5" height="10" fill="#fff" />
                         </svg>
                     </div>
                     <ul class="cyber-list" style="margin-top:10px; font-size:0.85rem;">
@@ -648,13 +855,14 @@
                     <div style="height:140px; text-align:center;">
                         <svg width="120" height="120" viewBox="0 0 120 120">
                             <!-- Ring path -->
-                            <circle cx="60" cy="60" r="35" fill="none" stroke="#ffaa00" stroke-width="2" class="flow-path"/>
-                            
+                            <circle cx="60" cy="60" r="35" fill="none" stroke="#ffaa00" stroke-width="2"
+                                class="flow-path" />
+
                             <!-- Nodes -->
-                            <circle cx="60" cy="25" r="10" fill="#222" stroke="#ffaa00"/>
-                            <circle cx="95" cy="60" r="10" fill="#222" stroke="#ffaa00"/>
-                            <circle cx="60" cy="95" r="10" fill="#222" stroke="#ffaa00"/>
-                            <circle cx="25" cy="60" r="10" fill="#222" stroke="#ffaa00"/>
+                            <circle cx="60" cy="25" r="10" fill="#222" stroke="#ffaa00" />
+                            <circle cx="95" cy="60" r="10" fill="#222" stroke="#ffaa00" />
+                            <circle cx="60" cy="95" r="10" fill="#222" stroke="#ffaa00" />
+                            <circle cx="25" cy="60" r="10" fill="#222" stroke="#ffaa00" />
                         </svg>
                     </div>
                     <ul class="cyber-list" style="margin-top:10px; font-size:0.85rem;">
@@ -663,26 +871,30 @@
                         <li style="color:#ff0055;">CON: One broken node breaks the entire loop chain.</li>
                     </ul>
                 </div>
-                
+
                 <!-- MESH TOPOLOGY -->
                 <div class="stat-card">
                     <h3 style="color:#ff0055; margin-bottom:15px; text-align:center;">🕸️ MESH TOPOLOGY</h3>
                     <div style="height:140px; text-align:center;">
                         <svg width="120" height="120" viewBox="0 0 120 120">
-                            <circle cx="60" cy="20" r="8" fill="#aaa"/>
-                            <circle cx="100" cy="50" r="8" fill="#aaa"/>
-                            <circle cx="85" cy="95" r="8" fill="#aaa"/>
-                            <circle cx="35" cy="95" r="8" fill="#aaa"/>
-                            <circle cx="20" cy="50" r="8" fill="#aaa"/>
+                            <circle cx="60" cy="20" r="8" fill="#aaa" />
+                            <circle cx="100" cy="50" r="8" fill="#aaa" />
+                            <circle cx="85" cy="95" r="8" fill="#aaa" />
+                            <circle cx="35" cy="95" r="8" fill="#aaa" />
+                            <circle cx="20" cy="50" r="8" fill="#aaa" />
 
                             <!-- interconnects -->
                             <g stroke="#ff0055" stroke-width="1" opacity="0.8">
-                                <line x1="60" y1="20" x2="100" y2="50"/> <line x1="60" y1="20" x2="85" y2="95"/> 
-                                <line x1="60" y1="20" x2="35" y2="95"/> <line x1="60" y1="20" x2="20" y2="50"/>
-                                <line x1="100" y1="50" x2="85" y2="95"/> <line x1="100" y1="50" x2="35" y2="95"/>
-                                <line x1="100" y1="50" x2="20" y2="50"/>
-                                <line x1="85" y1="95" x2="35" y2="95"/> <line x1="85" y1="95" x2="20" y2="50"/>
-                                <line x1="35" y1="95" x2="20" y2="50"/>
+                                <line x1="60" y1="20" x2="100" y2="50" />
+                                <line x1="60" y1="20" x2="85" y2="95" />
+                                <line x1="60" y1="20" x2="35" y2="95" />
+                                <line x1="60" y1="20" x2="20" y2="50" />
+                                <line x1="100" y1="50" x2="85" y2="95" />
+                                <line x1="100" y1="50" x2="35" y2="95" />
+                                <line x1="100" y1="50" x2="20" y2="50" />
+                                <line x1="85" y1="95" x2="35" y2="95" />
+                                <line x1="85" y1="95" x2="20" y2="50" />
+                                <line x1="35" y1="95" x2="20" y2="50" />
                             </g>
                         </svg>
                     </div>
@@ -697,8 +909,8 @@
                 <div class="stat-card" style="grid-column: span 2;">
                     <h3 style="color:#a020f0; margin-bottom:15px;">🌳 TREE & 🔀 HYBRID</h3>
                     <div class="ar-text" style="border-right-color:#a020f0; background:none;">
-                        - <b>Tree Topology:</b> دي بقى شجرة العيلة! مكس محترم بين طابور الـ Bus ومركزية الـ Star. كابل رئيسي بيتفرع منه شبكات صغيرة. منظمة ورايقة جداً.<br><br>
-                        - <b>Hybrid Topology:</b> الكوكتيل! بتعجن أكتر من شبكة مع بعض. ده اللي بيحصل فعلياً في الشركات الكبيرة، تلاقي قسم شغال Star وقسم تاني شغال Ring حسب أهمية الداتا وميزانية الشركة.
+                        - <b>التصميم الشجري (Tree Topology):</b> معمارية هرمية تدمج بين خصائص الـ Bus والـ Star، حيث تتفرع منها شبكات فرعية لسهولة الإدارة والتوسع.<br><br>
+                        - <b>التصميم الهجين (Hybrid Topology):</b> دمج نموذجين أو أكثر من الـ Topologies، وهو التصميم الشائع في المؤسسات الكبرى لتلبية احتياجات تقنية متنوعة في آن واحد.
                     </div>
                 </div>
             </div>
@@ -706,65 +918,84 @@
 
         <!-- SECTION 8: PROTOCOLS & NETWORK HARDWARE -->
         <div class="section-panel" style="animation-delay: 0.3s;">
-            <h2 class="cyber-heading">8. Network Protocols & Components <span class="badge">LOGIC RULES & GEAR</span></h2>
-            <p class="en-text">Protocols are standardized rigid sets of rules detailing precisely how data must be packaged, addressed, and routed across chaotic physical connections to ensure safe and interpretable delivery at the destination.</p>
-            
+            <h2 class="cyber-heading">8. Network Protocols & Components <span class="badge">LOGIC RULES & GEAR</span>
+            </h2>
+            <p class="en-text">Protocols are standardized rigid sets of rules detailing precisely how data must be
+                packaged, addressed, and routed across chaotic physical connections to ensure safe and interpretable
+                delivery at the destination.</p>
+
             <h3 class="sub-heading">Dominant Internet Protocols</h3>
             <div class="svg-container">
                 <svg width="800" height="250" viewBox="0 0 800 250">
                     <!-- Application Layer Protocols -->
-                    <rect x="50" y="30" width="700" height="40" fill="#222" stroke="#ff0055" stroke-width="2"/>
-                    <text x="150" y="55" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Application Layer (HTTP, FTP, SMTP, DNS)</text>
-                    <text x="500" y="55" fill="#ff0055" font-family="sans-serif" font-size="12">Web browsers, Emails, Name translating</text>
+                    <rect x="50" y="30" width="700" height="40" fill="#222" stroke="#ff0055" stroke-width="2" />
+                    <text x="150" y="55" fill="#fff" font-family="monospace" font-size="14"
+                        font-weight="bold">Application Layer (HTTP, FTP, SMTP, DNS)</text>
+                    <text x="500" y="55" fill="#ff0055" font-family="sans-serif" font-size="12">Web browsers, Emails,
+                        Name translating</text>
 
                     <!-- Transport Layer Protocols -->
-                    <rect x="50" y="80" width="700" height="40" fill="#222" stroke="#0ff" stroke-width="2"/>
-                    <text x="150" y="105" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Transport Layer (TCP, UDP)</text>
-                    <text x="500" y="105" fill="#0ff" font-family="sans-serif" font-size="12">Reliability (TCP) vs Speed without checks (UDP)</text>
+                    <rect x="50" y="80" width="700" height="40" fill="#222" stroke="#0ff" stroke-width="2" />
+                    <text x="150" y="105" fill="#fff" font-family="monospace" font-size="14"
+                        font-weight="bold">Transport Layer (TCP, UDP)</text>
+                    <text x="500" y="105" fill="#0ff" font-family="sans-serif" font-size="12">Reliability (TCP) vs Speed
+                        without checks (UDP)</text>
 
                     <!-- Network Layer Protocols -->
-                    <rect x="50" y="130" width="700" height="40" fill="#222" stroke="#0f0" stroke-width="2"/>
-                    <text x="150" y="155" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Network Layer (IP / IPv4 / IPv6)</text>
-                    <text x="500" y="155" fill="#0f0" font-family="sans-serif" font-size="12">Logical addressing & routing across networks</text>
+                    <rect x="50" y="130" width="700" height="40" fill="#222" stroke="#0f0" stroke-width="2" />
+                    <text x="150" y="155" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Network
+                        Layer (IP / IPv4 / IPv6)</text>
+                    <text x="500" y="155" fill="#0f0" font-family="sans-serif" font-size="12">Logical addressing &
+                        routing across networks</text>
 
                     <!-- Physical/Link Layer Protocols -->
-                    <rect x="50" y="180" width="700" height="40" fill="#222" stroke="#ffaa00" stroke-width="2"/>
-                    <text x="150" y="205" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Physical / Link Layer (Ethernet, WiFi 802.11)</text>
-                    <text x="500" y="205" fill="#ffaa00" font-family="sans-serif" font-size="12">Actual bit transfers via copper, fiber, or airwaves</text>
+                    <rect x="50" y="180" width="700" height="40" fill="#222" stroke="#ffaa00" stroke-width="2" />
+                    <text x="150" y="205" fill="#fff" font-family="monospace" font-size="14" font-weight="bold">Physical
+                        / Link Layer (Ethernet, WiFi 802.11)</text>
+                    <text x="500" y="205" fill="#ffaa00" font-family="sans-serif" font-size="12">Actual bit transfers
+                        via copper, fiber, or airwaves</text>
 
                     <!-- Connecting arrows -->
-                    <path d="M 120 70 L 120 80" stroke="#fff" stroke-width="2"/>
-                    <path d="M 120 120 L 120 130" stroke="#fff" stroke-width="2"/>
-                    <path d="M 120 170 L 120 180" stroke="#fff" stroke-width="2"/>
+                    <path d="M 120 70 L 120 80" stroke="#fff" stroke-width="2" />
+                    <path d="M 120 120 L 120 130" stroke="#fff" stroke-width="2" />
+                    <path d="M 120 170 L 120 180" stroke="#fff" stroke-width="2" />
                 </svg>
             </div>
 
             <div class="ar-text">
-                <br><b>إيه هي العتاد اللي بيبني الشبكات دي؟ بص يا برو:</b><br><br>
-                - <b>الراوتر Router:</b> الباشا بتاع المكان! ذكي جداً وشغلته يربط شبكات مختلفة ببعض، ده اللي بيتكلم لغة الآي بيهات (IP).<br>
-                - <b>السويتش Switch:</b> موظف التوصيل الشاطر. بيربط الأجهزة جوا نفس الشبكة (LAN)، وبيكون ذكي بيبعت الداتا للجهاز المظبوط بس عشان حافظ الـ MAC Address بتاعه.<br>
-                - <b>الهَب Hub:</b> ده بقى عم الطرشنجي القديم! غبي جداً، تجيله رسالة يروح مزعق ومبعتها للكل، وده بيعمل زحمة وخبطات في الشبكة (Collisions).<br>
-                - <b>الجدار الناري Firewall:</b> حرس الحدود وبوديجارد الشبكة! بيفتش أي رسالة داخلة أو خارجة، لو شاف حاجة مريبة ممنوع الدخول!<br>
-                - <b>السيرفرات Servers:</b> دي أجهزة عملاقة حِمالة أسية، شغالة 24 ساعة ماتنامش عشان تخدم عليك، زي سيرفر المواقع اللي بيبعتلك الصفحة أول ما تكتب اللينك.
+                <br><b>المكونات المادية للشبكات (Infrastructure Components):</b><br><br>
+                - <b>الموجه (Router):</b> الجهاز المسؤول عن ربط الشبكات المختلفة وتوجيه البيانات بناءً على عناوين الإنترنت (IP).<br>
+                - <b>المحول (Switch):</b> يربط الأجهزة داخل الشبكة المحلية (LAN) ويوجه البيانات للجهاز الهدف بناءً على عنوان الـ MAC.<br>
+                - <b>الموزع (Hub):</b> جهاز تقليدي بسيط يقوم ببث البيانات لجميع الأجهزة دون تمييز، مما يقلل من كفاءة الشبكة.<br>
+                - <b>الجدار الناري (Firewall):</b> المنظومة الأمنية التي تراقب وتصفي حزم البيانات لحماية الشبكة من أي اختراق أو هجوم.<br>
+                - <b>الخوادم (Servers):</b> أجهزة قوية تعمل بصفة مستمرة لتلبية طلبات المستخدمين، مثل استضافة المواقع وإرسال الملفات.
             </div>
         </div>
 
         <!-- SUPER SUMMARY SECTION -->
-        <div class="section-panel" style="animation-delay: 0.4s; border-color: #ffaa00; background: rgba(255, 170, 0, 0.05); text-align:center;">
-            <h2 class="glitch" data-text="[CORE MODULE SUMMARY]" style="font-size: 2.5rem; color: #ffaa00; text-shadow:0 0 10px #ffaa00; border:none; justify-content:center;">[CORE MODULE SUMMARY]</h2>
-            
-            <div style="font-family: var(--font-code); font-size: 1.4rem; color: #fff; margin-top: 30px; line-height: 2;">
+        <div class="section-panel"
+            style="animation-delay: 0.4s; border-color: #ffaa00; background: rgba(255, 170, 0, 0.05); text-align:center;">
+            <h2 class="glitch" data-text="[CORE MODULE SUMMARY]"
+                style="font-size: 2.5rem; color: #ffaa00; text-shadow:0 0 10px #ffaa00; border:none; justify-content:center;">
+                [CORE MODULE SUMMARY]</h2>
+
+            <div
+                style="font-family: var(--font-code); font-size: 1.4rem; color: #fff; margin-top: 30px; line-height: 2;">
                 <span class="highlight">Computer System</span> = Base Hardware + Logic Software.<br>
                 <span class="highlight">CPU Power</span> = ALU Calculations + CU Management + Registers Speed.<br>
                 <br>
-                <div style="display:inline-block; border-bottom: 2px dashed #0f0; margin-bottom: 20px;">NETWORK EQUATION</div><br>
-                <span style="color:#0f0">Network</span> = Devices (Nodes/Routers/Switches) + Connectivity Media (Wired/Wireless) + Communication Protocols (TCP/IP).<br>
+                <div style="display:inline-block; border-bottom: 2px dashed #0f0; margin-bottom: 20px;">NETWORK EQUATION
+                </div><br>
+                <span style="color:#0f0">Network</span> = Devices (Nodes/Routers/Switches) + Connectivity Media
+                (Wired/Wireless) + Communication Protocols (TCP/IP).<br>
                 <br>
-                <span style="color:#ff0055">LAN</span> (House) => <span style="color:#0ff">MAN</span> (City) => <span style="color:#0f0">WAN</span> (Global/Internet)<br>
-                <span style="color:#ffaa00">Internet definition:</span> Interconnected global WAN functioning over uniform TCP/IP logic stack.
+                <span style="color:#ff0055">LAN</span> (House) => <span style="color:#0ff">MAN</span> (City) => <span
+                    style="color:#0f0">WAN</span> (Global/Internet)<br>
+                <span style="color:#ffaa00">Internet definition:</span> Interconnected global WAN functioning over
+                uniform TCP/IP logic stack.
             </div>
         </div>
-        
+
     </div>
 
     <!-- Injecting Matrix Code Locally -->
@@ -773,32 +1004,32 @@
         const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        
+
         // Pure binary matrix mode specific to chapter 1 deep dive
         const letters = "01";
         const fontSize = 16;
         const columns = canvas.width / fontSize;
         const drops = [];
-        
+
         for (let x = 0; x < columns; x++) { drops[x] = 1; }
-        
+
         function drawMatrix() {
             ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#00e5ff";
             ctx.font = fontSize + "px monospace";
-            
+
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
                 // Add sporadic glowing bright bits
-                if(Math.random() > 0.98){
+                if (Math.random() > 0.98) {
                     ctx.fillStyle = "#fff";
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                     ctx.fillStyle = "#00e5ff";
                 } else {
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                 }
-                
+
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
@@ -813,4 +1044,5 @@
         });
     </script>
 </body>
+
 </html>
