@@ -1,60 +1,363 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 3: Cyberattacks & Vulnerabilities</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .content-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; z-index: 1; position: relative; }
-        .section-panel { background: var(--panel-bg); border: 1px solid var(--secondary-color); padding: 2.5rem; margin-bottom: 3rem; position: relative; box-shadow: 0 0 15px rgba(0, 0, 0, 0.9); animation: fadeIn 0.5s ease forwards; opacity: 0; backdrop-filter: blur(5px); }
-        .section-panel:hover { border-color: var(--primary-color); box-shadow: var(--border-glow); }
-        h2.cyber-heading { color: var(--primary-color); border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; font-size: 1.8rem; text-transform: uppercase; text-shadow: 0 0 5px rgba(0, 229, 255, 0.3); direction: ltr; }
-        h2.cyber-heading::before { content: '[CH.03] '; color: var(--secondary-color); margin-right: 15px; font-size: 1.2rem; animation: blink 1s infinite step-start; }
-        
-        h3.sub-heading { color: var(--primary-color); margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem; border-left: 3px solid var(--primary-color); padding-left: 10px; direction: rtl; text-align: right; }
-        .badge { display: inline-block; padding: 4px 10px; background: rgba(0, 229, 255, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 2px; font-size: 0.6em; margin-left: 15px; font-weight: bold; vertical-align: middle; }
-        
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--border-glow);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[CH.03] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
         /* Language Styles */
-        .en-def { direction: ltr; text-align: left; font-family: var(--font-code); color: #00e5ff; line-height: 1.5; padding: 10px 15px; border-left: 3px solid #00e5ff; background: rgba(0, 229, 255, 0.05); margin-bottom: 15px; font-size: 1.05rem; }
-        .ar-text { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #cbd5e1; margin: 0 0 25px 0; padding: 15px 20px; border-right: 3px solid var(--primary-color); background: rgba(0, 0, 0, 0.3); line-height: 1.8; font-size: 1.1rem; }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; direction: rtl; }
-        
-        .stat-card { background: rgba(11, 15, 25, 0.8); border: 1px solid #333; padding: 20px; transition: 0.3s; position: relative; overflow: hidden; text-align: right; }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--primary-color); opacity: 0.5; }
-        .stat-card:hover { border-color: rgba(0, 229, 255, 0.5); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 229, 255, 0.1); }
-        .stat-card:hover::before { opacity: 1; box-shadow: 0 0 10px var(--primary-color); }
-        
-        .svg-container { display: flex; justify-content: center; align-items: center; margin: 30px 0; padding: 30px; background: rgba(11, 15, 25, 0.8); border: 1px dashed rgba(0, 229, 255, 0.4); border-radius: 4px; overflow-x: auto; }
-        .flow-path { stroke-dasharray: 10; animation: dash 1s linear infinite; }
-        
-        @keyframes dash { to { stroke-dashoffset: -20; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); padding: 10px 25px; font-family: var(--font-code); background: rgba(0,0,0,0.8); transition: 0.3s; }
-        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
-        
-        ul.custom-list { list-style-type: none; padding-left: 20px; text-align: left; direction: ltr; margin-top:5px; }
-        ul.custom-list li { margin-bottom: 10px; position: relative; }
-        ul.custom-list li::before { content: '>'; color: var(--primary-color); position: absolute; left: -20px; font-weight: bold; }
-        
-        ul.ar-list { list-style-type: none; padding-right: 20px; text-align: right; direction: rtl; }
-        ul.ar-list li { margin-bottom: 10px; position: relative; }
-        ul.ar-list li::before { content: '<'; color: var(--primary-color); position: absolute; right: -20px; font-weight: bold; }
-        
-        .cyber-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: var(--font-code); background: rgba(0,0,0,0.6); direction: rtl; text-align:right;}
-        .cyber-table th, .cyber-table td { border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px; font-size: 1.1rem; }
-        .cyber-table th { background: rgba(0, 229, 255, 0.1); color: var(--primary-color); font-weight: bold; text-align:center;}
-        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
-        .eng-red { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
-        .eng-purple { font-family: var(--font-code); color: #a855f7; font-weight: bold; }
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 10px 15px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .stat-card {
+            background: rgba(11, 15, 25, 0.8);
+            border: 1px solid #333;
+            padding: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-align: right;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(0, 229, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.1);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(11, 15, 25, 0.8);
+            border: 1px dashed rgba(0, 229, 255, 0.4);
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .flow-path {
+            stroke-dasharray: 10;
+            animation: dash 1s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        ul.custom-list {
+            list-style-type: none;
+            padding-left: 20px;
+            text-align: left;
+            direction: ltr;
+            margin-top: 5px;
+        }
+
+        ul.custom-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        ul.custom-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            left: -20px;
+            font-weight: bold;
+        }
+
+        ul.ar-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        ul.ar-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        ul.ar-list li::before {
+            content: '<';
+            color: var(--primary-color);
+            position: absolute;
+            right: -20px;
+            font-weight: bold;
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+            direction: rtl;
+            text-align: right;
+        }
+
+        .cyber-table th,
+        .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .eng-word {
+            font-family: var(--font-code);
+            color: #00e5ff;
+            font-weight: bold;
+        }
+
+        .eng-red {
+            font-family: var(--font-code);
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .eng-purple {
+            font-family: var(--font-code);
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 1rem 0.5rem;
+            }
+
+            .section-panel {
+                padding: 1.5rem;
+            }
+
+            h2.cyber-heading {
+                font-size: 1.3rem;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            h2.cyber-heading::before {
+                margin-bottom: 5px;
+            }
+
+            header h1.glitch {
+                font-size: 2.2rem !important;
+            }
+
+            header p {
+                font-size: 1rem !important;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .svg-container {
+                overflow-x: auto;
+                padding: 10px;
+            }
+
+            .svg-container svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .cyber-table {
+                display: block;
+                overflow-x: auto;
+                font-size: 0.85rem;
+            }
+
+            .cyber-table th,
+            .cyber-table td {
+                padding: 10px;
+            }
+
+            .ar-text,
+            .en-def {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
-    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+    <canvas id="matrixCanvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
 
     <div class="content-container">
         <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
@@ -63,27 +366,38 @@
             <div class="glitch-wrapper">
                 <h1 class="glitch" data-text="CHAPTER 3" style="font-size: 4rem; color: #fff;">CHAPTER 3</h1>
             </div>
-            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">ADVANCED CYBERATTACKS & VULNERABILITIES</p>
-            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: CRITICAL | CLEARANCE: ARCHITECT</div>
+            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">ADVANCED CYBERATTACKS &
+                VULNERABILITIES</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: CRITICAL | CLEARANCE:
+                ARCHITECT</div>
         </header>
 
         <!-- 1. Deep Understanding: Why Cybersecurity is Critical -->
         <div class="section-panel" style="animation-delay: 0.1s;">
             <h2 class="cyber-heading">1. Why Cybersecurity is Critical <span class="badge">DEEP DIVE</span></h2>
-            
+
             <div class="ar-text">
-                المحاضرة دي مش مجرد حفظ أرقام، بتوصلك حقيقة علمية مهمة جداً: <b style="color:#00e5ff;">"كل ما الـ Technology تكبر، الهجمات بتكبر وتخترع طرق أذكى"</b>.<br><br>
+                المحاضرة دي مش مجرد حفظ أرقام، بتوصلك حقيقة علمية مهمة جداً: <b style="color:#00e5ff;">"كل ما الـ
+                    Technology تكبر، الهجمات بتكبر وتخترع طرق أذكى"</b>.<br><br>
                 **ليه الـ Cybersecurity مهم للدرجة دي؟**<br>
                 <ul class="ar-list">
-                    <li><span class="eng-word">Everything is Digital:</span> بنوك، مستشفيات، حكومات، وشركات ضخمة.. لو المنظومات دي اتهاجمت بتبقى كارثة.</li>
-                    <li><span class="eng-word">Smart Attacks:</span> الهاكرز دلوقتي مش بيشتغلوا يدوي، بقوا بيستخدموا الـ <span class="eng-word">AI</span> والـ <span class="eng-word">Automation</span> (شغل آلي) عشان يهاجموا بكفاءة، وكمان بجيوش من الـ <span class="eng-word">Botnets</span>.</li>
+                    <li><span class="eng-word">Everything is Digital:</span> بنوك، مستشفيات، حكومات، وشركات ضخمة.. لو
+                        المنظومات دي اتهاجمت بتبقى كارثة.</li>
+                    <li><span class="eng-word">Smart Attacks:</span> الهاكرز دلوقتي مش بيشتغلوا يدوي، بقوا بيستخدموا الـ
+                        <span class="eng-word">AI</span> والـ <span class="eng-word">Automation</span> (شغل آلي) عشان
+                        يهاجموا بكفاءة، وكمان بجيوش من الـ <span class="eng-word">Botnets</span>.
+                    </li>
                 </ul>
             </div>
 
             <div class="ar-text" style="background:rgba(239, 68, 68, 0.05); border-right-color:#ef4444;">
                 <b style="color:#ef4444;">أكبر خطر حالياً، والمحاضرة أكدت عليه بقوة:</b><br>
-                <div class="en-def" style="text-align:center; font-size:1.2rem; color:#ef4444; border:none; background:transparent;">"Applications are the most vulnerable attack surface."</div>
-                <b style="color:#ef4444;">التطبيقات والمواقع هي أضعف نقطة!</b> لو عندك موقع وفي الـ <span class="eng-red">Backend</span> بتاعه عيب برمجي صغير (<span class="eng-red">Bug</span>)، الهاكر هيدخل ويسرق كل الداتا من الـ <span class="eng-red">Database</span> بسهولة جداً.
+                <div class="en-def"
+                    style="text-align:center; font-size:1.2rem; color:#ef4444; border:none; background:transparent;">
+                    "Applications are the most vulnerable attack surface."</div>
+                <b style="color:#ef4444;">التطبيقات والمواقع هي أضعف نقطة!</b> لو عندك موقع وفي الـ <span
+                    class="eng-red">Backend</span> بتاعه عيب برمجي صغير (<span class="eng-red">Bug</span>)، الهاكر هيدخل
+                ويسرق كل الداتا من الـ <span class="eng-red">Database</span> بسهولة جداً.
             </div>
         </div>
 
@@ -93,157 +407,219 @@
 
             <div class="grid-2" style="margin-top:20px;">
                 <div class="stat-card" style="border-top: 2px solid #a855f7;">
-                    <h3 style="color:#a855f7; margin-bottom:10px; direction:ltr; text-align:left;">Vulnerability (الثغرة)</h3>
-                    <div class="en-def" style="margin:10px 0; border-color:#a855f7;">"A weakness or flaw in the system that can be exploited."</div>
+                    <h3 style="color:#a855f7; margin-bottom:10px; direction:ltr; text-align:left;">Vulnerability
+                        (الثغرة)</h3>
+                    <div class="en-def" style="margin:10px 0; border-color:#a855f7;">"A weakness or flaw in the system
+                        that can be exploited."</div>
                     <div class="ar-text" style="background:none; border:none; padding:0; margin:0; line-height:1.6;">
-                        الثغرة مش دايماً بتكون مجرد <span class="eng-purple">Bug</span> برمجي. ممكن الثغرة دي تكون باسوورد ضعيف، أو <span class="eng-purple">Wi-Fi</span> عام مفتوح بدون حماية، أو سوفت وير قديم مش متحدث، أو حتى <b>User غشيم</b> وموظف مش فاهم بيدوس على أي لينك يجيله. (الموظف ده يعتبر هو نفسه الثغرة 😅).
+                        الثغرة مش دايماً بتكون مجرد <span class="eng-purple">Bug</span> برمجي. ممكن الثغرة دي تكون
+                        باسوورد ضعيف، أو <span class="eng-purple">Wi-Fi</span> عام مفتوح بدون حماية، أو سوفت وير قديم مش
+                        متحدث، أو حتى <b>User غشيم</b> وموظف مش فاهم بيدوس على أي لينك يجيله.
                     </div>
                 </div>
-                
+
                 <div class="stat-card" style="border-top: 2px solid #ef4444;">
-                    <h3 style="color:#ef4444; margin-bottom:10px; direction:ltr; text-align:left;">Cyberattack (الهجوم)</h3>
-                    <div class="en-def" style="margin:10px 0; border-color:#ef4444; color:#ef4444;">"The act of exploiting a vulnerability to gain unauthorized access."</div>
+                    <h3 style="color:#ef4444; margin-bottom:10px; direction:ltr; text-align:left;">Cyberattack (الهجوم)
+                    </h3>
+                    <div class="en-def" style="margin:10px 0; border-color:#ef4444; color:#ef4444;">"The act of
+                        exploiting a vulnerability to gain unauthorized access."</div>
                     <div class="ar-text" style="background:none; border:none; padding:0; margin:0; line-height:1.6;">
-                        الهجوم نفسه ببساطة هو <b style="color:#ef4444;">استغلال الهاكر للثغرة دي</b>. طول ما العيب موجود والهاكر ما استغلوش، مفيش هجوم. بمجرد ما الهاكر يستغله عشان يسرق.. بيحصل الـ <span class="eng-red">Attack</span>.
+                        الهجوم نفسه ببساطة هو <b style="color:#ef4444;">استغلال الهاكر للثغرة دي</b>. طول ما العيب موجود
+                        والهاكر ما استغلوش، مفيش هجوم. بمجرد ما الهاكر يستغله عشان يسرق.. بيحصل الـ <span
+                            class="eng-red">Attack</span>.
                     </div>
                 </div>
             </div>
 
-            <div class="ar-text" style="text-align:center; font-size:1.4rem; padding:20px; background:rgba(0,0,0,0.5); border:1px solid #333; margin-top:20px;">
-                <span style="color:#a855f7;">Vulnerability</span> <b>+</b> <span style="color:#ef4444;">Attacker</span> <b>=</b> <span style="color:#00e5ff; text-shadow:0 0 10px #00e5ff;">CYBERATTACK</span>
+            <div class="ar-text"
+                style="text-align:center; font-size:1.4rem; padding:20px; background:rgba(0,0,0,0.5); border:1px solid #333; margin-top:20px;">
+                <span style="color:#a855f7;">Vulnerability</span> <b>+</b> <span style="color:#ef4444;">Attacker</span>
+                <b>=</b> <span style="color:#00e5ff; text-shadow:0 0 10px #00e5ff;">CYBERATTACK</span>
             </div>
-            
+
             <div class="ar-text" style="border-right-color:#00e5ff;">
-                <b>مثال عملي:</b> لو الموقع فيه عيب بيسمح بحقن قواعد البيانات (<span class="eng-word">SQL Injection</span>).. مجرد وجود العيب ده يعتبر <span class="eng-word">Vulnerability</span>. لكن لما الهاكر يكتب الكود فعلياً ويسرق الداتا.. ده اسمه <span class="eng-word">Attack</span>.
+                <b>مثال :</b> لو الموقع فيه عيب بيسمح بحقن قواعد البيانات (<span class="eng-word">SQL
+                    Injection</span>).. مجرد وجود العيب ده يعتبر <span class="eng-word">Vulnerability</span>. لكن لما
+                الهاكر يكتب الكود فعلياً ويسرق الداتا.. ده اسمه <span class="eng-word">Attack</span>.
             </div>
         </div>
 
         <!-- 3. Denial of Service (DoS) - SYN Flood and Buffer Overflow -->
         <div class="section-panel" style="animation-delay: 0.3s; border-color:#f97316;">
-            <h2 class="cyber-heading" style="color:#f97316; border-bottom-color: rgba(249, 115, 22, 0.3);">3. Denial of Service (DoS) <span class="badge" style="border-color:#f97316; color:#f97316;">EXHAUSTION</span></h2>
-            
+            <h2 class="cyber-heading" style="color:#f97316; border-bottom-color: rgba(249, 115, 22, 0.3);">3. Denial of
+                Service (DoS) <span class="badge" style="border-color:#f97316; color:#f97316;">EXHAUSTION</span></h2>
+
             <div class="en-def" style="border-color:#f97316; color:#f97316;">
-                "Denial of Service (DoS): An attack meant to shut down a machine or network, making it inaccessible to its intended users by exhausting resources."
-            </div>
-            
-            <div class="ar-text" style="border-right-color:#f97316;">
-                <b>الفهم العميق ليها:</b> أي سيرفر في الدنيا بيكون ليه إمكانيات محدودة <span style="color:#f97316;">(Limited CPU, RAM, Bandwidth)</span>.<br>
-                الهجوم ده مش مجرد بيقفل الموقع، ده <b>بيستنزف كل القدرات دي!</b> يفضل يطلب طلبات لحد ما الـ <span style="color:#f97316;">CPU usage ↑</span> يعلى لفوق، والـ <span style="color:#f97316;">RAM ↑</span> تتملي ع الآخر.. النتيجة الحتمية إن السيرفر بيقع ويجيله (Crash).
+                "Denial of Service (DoS): An attack meant to shut down a machine or network, making it inaccessible to
+                its intended users by exhausting resources."
             </div>
 
-            <h3 class="sub-heading" style="color:#00e5ff; border-right-color:#00e5ff;">Types of DoS Attacks (بفهم عميق)</h3>
-            
+            <div class="ar-text" style="border-right-color:#f97316;">
+                <b>الفهم العميق ليها:</b> أي سيرفر في الدنيا بيكون ليه إمكانيات محدودة <span
+                    style="color:#f97316;">(Limited CPU, RAM, Bandwidth)</span>.<br>
+                الهجوم ده مش مجرد بيقفل الموقع، ده <b>بيستنزف كل القدرات دي!</b> يفضل يطلب طلبات لحد ما الـ <span
+                    style="color:#f97316;">CPU usage ↑</span> يعلى لفوق، والـ <span style="color:#f97316;">RAM ↑</span>
+                تتملي ع الآخر.. النتيجة الحتمية إن السيرفر بيقع ويجيله (Crash).
+            </div>
+
+            <h3 class="sub-heading" style="color:#00e5ff; border-right-color:#00e5ff;">Types of DoS Attacks
+            </h3>
+
             <!-- Type 1: ICMP Flood -->
             <div class="ar-text">
                 <b class="eng-word">1. ICMP Flood:</b><br>
-                الطبيعي إننا بنعمل <span class="eng-word">Ping</span> عشان نختبر اتصال السيرفر وشغال ولا لأ. في الهجوم ده المهاجم بيبعت <i>آلاف الـ Ping Requests في الثانية الواحدة!</i>، السيرفر يغرق من كتر محاولات الرد وينهار.
+                الطبيعي إننا بنعمل <span class="eng-word">Ping</span> عشان نختبر اتصال السيرفر وشغال ولا لأ. في الهجوم
+                ده المهاجم بيبعت <i>آلاف الـ Ping Requests في الثانية الواحدة!</i>، السيرفر يغرق من كتر محاولات الرد
+                وينهار.
             </div>
 
             <!-- Type 2: SYN Flood -->
             <div class="ar-text" style="background:rgba(0,0,0,0.5);">
                 <b class="eng-red" style="font-size:1.3rem;">2. SYN Flood (مهم جداً جداً):</b><br>
-                لازم نفهم الـ <span class="eng-red">TCP Handshake</span> الأول. الطبيعي العميل بيبعت <span class="eng-red">SYN</span>، السيرفر يرد بـ <span class="eng-red">SYN-ACK</span>، والعميل يأكد ويقفلها بـ <span class="eng-red">ACK</span> لإنشاء الاتصال.<br>
-                <b>في الهجوم بقى:</b> المهاجم بيبعت رسالة الـ <span class="eng-red">SYN</span>، السيرفر الغلبان بيرد ويحجزله مكان <span class="eng-red">SYN-ACK</span>، ويستنى المهاجم يأكد.. المهاجم هنا "مابيردش خالص"!<br>
-                كده السيرفر بيفضل مستني، وتتراكم اتصالات مفتوحة متعلقة نصها (<span style="color:#ef4444;">Resources Consumed</span>) لحد ما السيرفر يتشل ويقع.<br><br>
-                <i>تشبيه عبقري: كأن حد بيرن عليك 1000 مرة وتيجي ترد تلاقيه معلق الخط ومبيتكلمش، ومش سايبك ترد على حد تاني!</i>
+                لازم نفهم الـ <span class="eng-red">TCP Handshake</span> الأول. الطبيعي العميل بيبعت <span
+                    class="eng-red">SYN</span>، السيرفر يرد بـ <span class="eng-red">SYN-ACK</span>، والعميل يأكد
+                ويقفلها بـ <span class="eng-red">ACK</span> لإنشاء الاتصال.<br>
+                <b>في الهجوم بقى:</b> المهاجم بيبعت رسالة الـ <span class="eng-red">SYN</span>، السيرفر الغلبان بيرد
+                ويحجزله مكان <span class="eng-red">SYN-ACK</span>، ويستنى المهاجم يأكد.. المهاجم هنا "مابيردش خالص"!<br>
+                كده السيرفر بيفضل مستني، وتتراكم اتصالات مفتوحة متعلقة نصها (<span style="color:#ef4444;">Resources
+                    Consumed</span>) لحد ما السيرفر يتشل ويقع.<br><br>
+                <i>تشبيه عبقري: كأن حد بيرن عليك 1000 مرة وتيجي ترد تلاقيه معلق الخط ومبيتكلمش، ومش سايبك ترد على حد
+                    تاني!</i>
             </div>
 
             <!-- SYN Flood SVG -->
             <div class="svg-container" style="margin: 10px auto; max-width: 600px;">
                 <svg width="100%" height="200" viewBox="0 0 500 200">
-                    <rect x="50" y="50" width="80" height="80" rx="10" fill="rgba(239, 68, 68, 0.2)" stroke="#ef4444" stroke-width="2"/>
-                    <text x="90" y="95" fill="#ef4444" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle">ATTACKER</text>
-                    
-                    <rect x="370" y="50" width="80" height="80" rx="10" fill="rgba(0, 229, 255, 0.2)" stroke="#00e5ff" stroke-width="2"/>
-                    <text x="410" y="95" fill="#00e5ff" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle">SERVER</text>
-                    
-                    <path class="flow-path" d="M140 70 L360 70" fill="none" stroke="#ef4444" stroke-width="2"/>
-                    <text x="250" y="60" fill="#ef4444" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">SYN MSG (FLOOD)</text>
-                    
-                    <path class="flow-path" d="M360 110 L140 110" fill="none" stroke="#00e5ff" stroke-width="2" stroke-dasharray="5"/>
-                    <text x="250" y="100" fill="#00e5ff" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">SYN-ACK (WAITING...)</text>
-                    
+                    <rect x="50" y="50" width="80" height="80" rx="10" fill="rgba(239, 68, 68, 0.2)" stroke="#ef4444"
+                        stroke-width="2" />
+                    <text x="90" y="95" fill="#ef4444" font-family="monospace" font-size="14" font-weight="bold"
+                        text-anchor="middle">ATTACKER</text>
+
+                    <rect x="370" y="50" width="80" height="80" rx="10" fill="rgba(0, 229, 255, 0.2)" stroke="#00e5ff"
+                        stroke-width="2" />
+                    <text x="410" y="95" fill="#00e5ff" font-family="monospace" font-size="14" font-weight="bold"
+                        text-anchor="middle">SERVER</text>
+
+                    <path class="flow-path" d="M140 70 L360 70" fill="none" stroke="#ef4444" stroke-width="2" />
+                    <text x="250" y="60" fill="#ef4444" font-family="monospace" font-size="12" font-weight="bold"
+                        text-anchor="middle">SYN MSG (FLOOD)</text>
+
+                    <path class="flow-path" d="M360 110 L140 110" fill="none" stroke="#00e5ff" stroke-width="2"
+                        stroke-dasharray="5" />
+                    <text x="250" y="100" fill="#00e5ff" font-family="monospace" font-size="12" font-weight="bold"
+                        text-anchor="middle">SYN-ACK (WAITING...)</text>
+
                     <circle cx="410" cy="150" r="15" fill="#ef4444">
                         <animate attributeName="opacity" values="0.2;1;0.2" dur="0.5s" repeatCount="indefinite" />
                     </circle>
-                    <text x="410" y="155" fill="#fff" font-family="monospace" font-size="12" font-weight="bold" text-anchor="middle">CRASH</text>
+                    <text x="410" y="155" fill="#fff" font-family="monospace" font-size="12" font-weight="bold"
+                        text-anchor="middle">CRASH</text>
                 </svg>
             </div>
 
             <!-- Type 3: Buffer Overflow -->
             <div class="ar-text">
                 <b class="eng-word">3. Buffer Overflow (قنبلة الـ Applications):</b><br>
-                <div class="en-def" style="margin:10px 0; border-left:none; padding-left:0; font-size:1rem;">Overwriting memory spaces to alter logic or inject malicious code.</div>
-                البرنامج بيكون فيه حاوية معلومات (<span class="eng-word">Memory Buffer</span>) بتشيل حجم محدد. الهاكرز بيبعتوا داتا بحجم أكبر من الـ Buffer دي بمراحل، فا بيحصل (فيضان أو طفح للمحتوى) وبيأدي لكتابة الداتا دي فوق الذاكرة الأساسية (<span class="eng-word">Overwrite Memory</span>).<br>
-                المصيبة الكبيرة في الهجوم ده هو إن الهاكر بيقدر يحقن كود خبيث في المنطقة اللي طفحت دي وينفذه عن بعد (<span class="eng-red">Remote Code Execution</span>).
+                <div class="en-def" style="margin:10px 0; border-left:none; padding-left:0; font-size:1rem;">Overwriting
+                    memory spaces to alter logic or inject malicious code.</div>
+                البرنامج بيكون فيه حاوية معلومات (<span class="eng-word">Memory Buffer</span>) بتشيل حجم محدد. الهاكرز
+                بيبعتوا داتا بحجم أكبر من الـ Buffer دي بمراحل، فا بيحصل (فيضان أو طفح للمحتوى) وبيأدي لكتابة الداتا دي
+                فوق الذاكرة الأساسية (<span class="eng-word">Overwrite Memory</span>).<br>
+                المصيبة الكبيرة في الهجوم ده هو إن الهاكر بيقدر يحقن كود خبيث في المنطقة اللي طفحت دي وينفذه عن بعد
+                (<span class="eng-red">Remote Code Execution</span>).
             </div>
-            
+
             <!-- Type 4: Ping of Death -->
             <div class="ar-text">
                 <b class="eng-word">4. Ping of Death:</b><br>
-                حزمة بيانات الـ <span class="eng-word">Packet size</span> بيكون ليها حجم طبيعي محدود. המهاجم هنا بيبعت حزمة بيانات مضخمة أكتر من الحجم الطبيعي، السيرفر ييجي يعملها Process ما يستحملش ويتعطل وتجيله صدمة (<span class="eng-word">Crash</span>).
+                حزمة بيانات الـ <span class="eng-word">Packet size</span> بيكون ليها حجم طبيعي محدود. המهاجم هنا بيبعت
+                حزمة بيانات مضخمة أكتر من الحجم الطبيعي، السيرفر ييجي يعملها Process ما يستحملش ويتعطل وتجيله صدمة
+                (<span class="eng-word">Crash</span>).
             </div>
         </div>
 
         <!-- 4. DDoS -->
         <div class="section-panel" style="animation-delay: 0.4s;">
             <h2 class="cyber-heading">4. Distributed DoS (DDoS) <span class="badge">BOTNET ARMY</span></h2>
-            
+
             <div class="en-def">
-                "DDoS: A massive DoS attack launched simultaneously from thousands of compromised devices (Botnets) across multiple global locations."
+                "DDoS: A massive DoS attack launched simultaneously from thousands of compromised devices (Botnets)
+                across multiple global locations."
             </div>
             <div class="ar-text">
-                الـ <span class="eng-word">DDoS</span> مش معناه إن المهاجم زعلان وبيخلص ثأره من جهازه لوحده.. ده بيهاجم <b>بجيش من الأجهزة</b>!<br>
-                <b>إيه هو الـ <span class="eng-word">Botnet</span>؟</b> شبكة من آلاف الأجهزة المتهكرة في كل حتة في العالم (تلفزيونات، موبايلات، كمبيوترات) اتحولوا لـ (<span class="eng-word">Zombies</span>) بيتحكم فيهم الهاكر.<br><br>
-                <b>السيناريو:</b> الهاكر بيدي أمر لجيش الـ <span class="eng-word">Botnet</span> بتاعه كله إنه يبعت ترافيك لسيرفر معين في ثانية واحدة.. فبيحصل (<span class="eng-word">Attack from multiple IP sources</span>). الترافيك بيبقى مرعب ومفيش سيرفر بيصمد!<br>
-                <b style="color:#ef4444;">ليه الـ DDoS أخطر بمراحل؟</b> لأن الترافيك بيبان طبيعي ومِن أماكن مختلفة (مش ترافيك واحد مشبوه تقدر تقفله)، فا السيرفر ما بيعرفش يميز بين الزاير الحقيقي للـ Botnet.
+                الـ <span class="eng-word">DDoS</span> مش معناه إن المهاجم زعلان وبيخلص ثأره من جهازه لوحده.. ده بيهاجم
+                <b>بجيش من الأجهزة</b>!<br>
+                <b>إيه هو الـ <span class="eng-word">Botnet</span>؟</b> شبكة من آلاف الأجهزة المتهكرة في كل حتة في
+                العالم (تلفزيونات، موبايلات، كمبيوترات) اتحولوا لـ (<span class="eng-word">Zombies</span>) بيتحكم فيهم
+                الهاكر.<br><br>
+                <b>السيناريو:</b> الهاكر بيدي أمر لجيش الـ <span class="eng-word">Botnet</span> بتاعه كله إنه يبعت
+                ترافيك لسيرفر معين في ثانية واحدة.. فبيحصل (<span class="eng-word">Attack from multiple IP
+                    sources</span>). الترافيك بيبقى مرعب ومفيش سيرفر بيصمد!<br>
+                <b style="color:#ef4444;">ليه الـ DDoS أخطر بمراحل؟</b> لأن الترافيك بيبان طبيعي ومِن أماكن مختلفة (مش
+                ترافيك واحد مشبوه تقدر تقفله)، فا السيرفر ما بيعرفش يميز بين الزاير الحقيقي للـ Botnet.
             </div>
         </div>
 
         <!-- 5. MITM Deep Understanding -->
         <div class="section-panel" style="animation-delay: 0.5s; border-color:#a855f7;">
-            <h2 class="cyber-heading" style="color:#a855f7; border-bottom-color: rgba(168, 85, 247, 0.3);">5. Man In The Middle (MITM) <span class="badge" style="border-color:#a855f7; color:#a855f7;">STEALTH INTERCEPTION</span></h2>
-            
+            <h2 class="cyber-heading" style="color:#a855f7; border-bottom-color: rgba(168, 85, 247, 0.3);">5. Man In The
+                Middle (MITM) <span class="badge" style="border-color:#a855f7; color:#a855f7;">STEALTH
+                    INTERCEPTION</span></h2>
+
             <div class="en-def" style="border-color:#a855f7; color:#a855f7;">
-                "MITM: An attacker secretly relays and possibly alters the communications between two parties who believe they are directly communicating."
+                "MITM: An attacker secretly relays and possibly alters the communications between two parties who
+                believe they are directly communicating."
             </div>
             <div class="ar-text" style="border-right-color:#a855f7;">
-                <b>الفكرة الأساسية:</b> الاتصال مش آمن، فبيكون الهاكر متدخل وسامع في النص بينكم بصمت تام! (<span class="eng-purple">User ↔ Attacker ↔ Server</span>).<br>
-                المهاجم يقدر: يشوف الداتا ويقراها، أو يغيرها قبل ما توصل، أو يسرق الفيزا والباسووردات (Credentials).. <b>طبعاً الضحية والسيرفر مش حاسين أصلا إن فيه حد تالت قاعد يسجل مكالمتهم ودي أخطر حاجة!</b>
+                <b>الفكرة الأساسية:</b> الاتصال مش آمن، فبيكون الهاكر متدخل وسامع في النص بينكم بصمت تام! (<span
+                    class="eng-purple">User ↔ Attacker ↔ Server</span>).<br>
+                المهاجم يقدر: يشوف الداتا ويقراها، أو يغيرها قبل ما توصل، أو يسرق الفيزا والباسووردات (Credentials)..
+                <b>طبعاً الضحية والسيرفر مش حاسين أصلا إن فيه حد تالت قاعد يسجل مكالمتهم ودي أخطر حاجة!</b>
             </div>
 
-            <h3 class="sub-heading" style="color:#a855f7; border-right-color:#a855f7;">أنواع هجمات المراقبة والاختطاف (MITM Types)</h3>
-            
+            <h3 class="sub-heading" style="color:#a855f7; border-right-color:#a855f7;">أنواع هجمات المراقبة والاختطاف
+                (MITM Types)</h3>
+
             <div class="grid-2">
                 <div class="stat-card" style="border-top: 1px solid #a855f7;">
                     <h3 class="eng-purple">1. DNS Spoofing</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">تكتب <span class="eng-word">Google.com</span> تلاقيه وداك على عنوان <span class="eng-word">Fake IP</span> لموقع تاني بتاع هاكر وشكله زي جوجل بالضبط.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">تكتب <span
+                            class="eng-word">Google.com</span> تلاقيه وداك على عنوان <span class="eng-word">Fake
+                            IP</span> لموقع تاني بتاع هاكر وشكله زي جوجل بالضبط.</p>
                 </div>
                 <div class="stat-card" style="border-top: 1px solid #a855f7;">
                     <h3 class="eng-purple">2. HTTP Spoofing</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">موقع مزيف نسخة طبق الأصل من الـ Original متكريت بـ <span class="eng-word">HTTP</span> عشان تدخل باسووردك فهيتسرق فوراً.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">موقع مزيف نسخة طبق الأصل من الـ Original
+                        متكريت بـ <span class="eng-word">HTTP</span> عشان تدخل باسووردك فهيتسرق فوراً.</p>
                 </div>
                 <div class="stat-card" style="border-top: 1px solid #a855f7;">
                     <h3 class="eng-purple">3. IP Spoofing</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">الهاكر بيزور عنوانه ويظهر كأنه <span class="eng-word">Trusted</span>.. يعني السيرفر بيفكروا شخص موثوق فيه فيدخله الشبكة.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">الهاكر بيزور عنوانه ويظهر كأنه <span
+                            class="eng-word">Trusted</span>.. يعني السيرفر بيفكروا شخص موثوق فيه فيدخله الشبكة.</p>
                 </div>
                 <div class="stat-card" style="border-top: 1px solid #a855f7;">
                     <h3 class="eng-purple">4. SSL Hijacking</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">الهاكر بيكسر تشفير الـ <span class="eng-word">HTTPS</span> السري ويقدر يقرأ الداتا المبعوتة بسهولة (يفك التشفير).</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">الهاكر بيكسر تشفير الـ <span
+                            class="eng-word">HTTPS</span> السري ويقدر يقرأ الداتا المبعوتة بسهولة (يفك التشفير).</p>
                 </div>
                 <div class="stat-card" style="border-top: 1px solid #a855f7;">
                     <h3 class="eng-purple">5. Email Hijacking</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">يسيطروا على ඉيميل شخص أو جهة معينة، ويبعتوا رسايل كاذبة كأنها منه عشان يخدعوا الموظفين.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">يسيطروا على ඉيميل شخص أو جهة معينة،
+                        ويبعتوا رسايل كاذبة كأنها منه عشان يخدعوا الموظفين.</p>
                 </div>
                 <div class="stat-card" style="border-top: 1px solid #a855f7;">
                     <h3 class="eng-purple">6. Cookie Stealing (Session)</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">ملفات تعريف الارتباط <span class="eng-word">(Cookies)</span> هي اللي بتدلك دخول للموقع. الهاكر يسرقها ويدخل حسابك من غير أي باسوورد.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">ملفات تعريف الارتباط <span
+                            class="eng-word">(Cookies)</span> هي اللي بتدلك دخول للموقع. الهاكر يسرقها ويدخل حسابك من
+                        غير أي باسوورد.</p>
                 </div>
             </div>
 
             <div class="ar-text" style="background:rgba(239, 68, 68, 0.05); text-align:center; margin-top:20px;">
                 <b class="eng-red" style="font-size:1.2rem;">أخطر سيناريو بيحصل كل يوم: Wi-Fi Eavesdropping</b><br>
-                تقعد في كافيه أو نادي، وتلاقي <span class="eng-red">Public Wi-Fi</span> مفتوح ببلاش وتقول يا سلام! المهاجم بيكون قاعد جنبك وببرامج التنصت بيراقب كل الـ <span class="eng-red">Traffic</span> اللي خارج منك ويسرقك.. <br>
+                تقعد في كافيه أو نادي، وتلاقي <span class="eng-red">Public Wi-Fi</span> مفتوح ببلاش وتقول يا سلام!
+                المهاجم بيكون قاعد جنبك وببرامج التنصت بيراقب كل الـ <span class="eng-red">Traffic</span> اللي خارج منك
+                ويسرقك.. <br>
                 (شبكات الواي-فاي الاوبن هي الفخ الأكبر في السايبر دايماً).
             </div>
         </div>
@@ -251,85 +627,123 @@
         <!-- 6. Protection -->
         <div class="section-panel" style="animation-delay: 0.6s;">
             <h2 class="cyber-heading">6. Protection Strategies <span class="badge">DEFENSE</span></h2>
-            
+
             <div class="ar-text">
                 قاعدة أساسية في السايبر: <b>كل Attack اتعمل مهما بلغت قوته، ليه نقطة ضعف وحماية ممكن تقفله وتدمره.</b>
             </div>
 
             <table class="cyber-table">
-                <tr><th style="width:25%;">Threat Vector (الخطر)</th><th style="width:75%;">Protection Method (كيفية الحماية)</th></tr>
+                <tr>
+                    <th style="width:25%;">Threat Vector (الخطر)</th>
+                    <th style="width:75%;">Protection Method (كيفية الحماية)</th>
+                </tr>
                 <tr>
                     <td class="eng-purple">Man-in-the-Middle (MITM)</td>
-                    <td>دائماً لازم تستخدم الـ <span class="eng-word">VPN</span>، ونظام الـ <span class="eng-word">HTTPS</span> المعتمد، وتتجنب نهائياً شبكات الـ <span class="eng-word">Public Wi-Fi</span> المفتوحة القاتلة دي!</td>
+                    <td>دائماً لازم تستخدم الـ <span class="eng-word">VPN</span>، ونظام الـ <span
+                            class="eng-word">HTTPS</span> المعتمد، وتتجنب نهائياً شبكات الـ <span
+                            class="eng-word">Public Wi-Fi</span> المفتوحة القاتلة دي!</td>
                 </tr>
                 <tr>
                     <td class="eng-red" style="color:#f97316;">Denial of Service (DoS)</td>
-                    <td>نستخدم توزيع للضغط وأجهزة زي الـ <span class="eng-word">Load Balancers</span>، وسياسة تحديد الطلبات لكل مستخدم الـ <span class="eng-word">Rate Limiting</span>، مع ظبط الـ <span class="eng-word">Firewalls</span>.</td>
+                    <td>نستخدم توزيع للضغط وأجهزة زي الـ <span class="eng-word">Load Balancers</span>، وسياسة تحديد
+                        الطلبات لكل مستخدم الـ <span class="eng-word">Rate Limiting</span>، مع ظبط الـ <span
+                            class="eng-word">Firewalls</span>.</td>
                 </tr>
                 <tr>
                     <td class="eng-word">Buffer Overflow</td>
-                    <td>علاجها هو كتابة كود نضيف وآمن من المبرمج فيما يسمى بالـ <span class="eng-word">Secure Coding</span>، وعمليات متخصصة في الـ <span class="eng-word">Input Validation</span> عشان نقص البيانات الأطول من المسموح بيها.</td>
+                    <td>علاجها هو كتابة كود نضيف وآمن من المبرمج فيما يسمى بالـ <span class="eng-word">Secure
+                            Coding</span>، وعمليات متخصصة في الـ <span class="eng-word">Input Validation</span> عشان نقص
+                        البيانات الأطول من المسموح بيها.</td>
                 </tr>
             </table>
         </div>
 
         <!-- 7. Connection to CIA -->
         <div class="section-panel" style="animation-delay: 0.7s; border-color:var(--primary-color);">
-            <h2 class="cyber-heading">7. Mapping to the CIA Triad <span class="badge" style="background:var(--primary-color); color:#000;">MUST MEMORIZE</span></h2>
-            
+            <h2 class="cyber-heading">7. Mapping to the CIA Triad <span class="badge"
+                    style="background:var(--primary-color); color:#000;">MUST MEMORIZE</span></h2>
+
             <div class="ar-text">
-                المحاضرة دي (CH.3) بتسلم للـ (CH.2) بالمللي! إزاي تربط كل نوع هجومي بأي مبدأ وثلاثية بيضربها من الـ <span class="eng-word">CIA Triad</span>:
+                المحاضرة دي (CH.3) بتسلم للـ (CH.2) بالمللي! إزاي تربط كل نوع هجومي بأي مبدأ وثلاثية بيضربها من الـ
+                <span class="eng-word">CIA Triad</span>:
             </div>
 
             <!-- TRIAD MATCHING SVG -->
             <div class="svg-container" style="padding:40px 10px;">
                 <svg width="600" height="200" viewBox="0 0 600 200">
                     <!-- Left Attacks -->
-                    <rect x="20" y="20" width="160" height="40" rx="5" fill="rgba(11,15,25,0.8)" stroke="#f97316" stroke-width="2"/>
-                    <text x="100" y="45" fill="#f97316" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">DoS / DDoS</text>
+                    <rect x="20" y="20" width="160" height="40" rx="5" fill="rgba(11,15,25,0.8)" stroke="#f97316"
+                        stroke-width="2" />
+                    <text x="100" y="45" fill="#f97316" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">DoS / DDoS</text>
 
-                    <rect x="20" y="80" width="160" height="40" rx="5" fill="rgba(11,15,25,0.8)" stroke="#a855f7" stroke-width="2"/>
-                    <text x="100" y="105" fill="#a855f7" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">MITM</text>
+                    <rect x="20" y="80" width="160" height="40" rx="5" fill="rgba(11,15,25,0.8)" stroke="#a855f7"
+                        stroke-width="2" />
+                    <text x="100" y="105" fill="#a855f7" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">MITM</text>
 
-                    <rect x="20" y="140" width="160" height="40" rx="5" fill="rgba(11,15,25,0.8)" stroke="#00e5ff" stroke-width="2"/>
-                    <text x="100" y="165" fill="#00e5ff" font-family="monospace" font-size="14" font-weight="bold" text-anchor="middle">BUFFER OVERFLOW</text>
+                    <rect x="20" y="140" width="160" height="40" rx="5" fill="rgba(11,15,25,0.8)" stroke="#00e5ff"
+                        stroke-width="2" />
+                    <text x="100" y="165" fill="#00e5ff" font-family="monospace" font-size="14" font-weight="bold"
+                        text-anchor="middle">BUFFER OVERFLOW</text>
 
                     <!-- Arrows -->
-                    <path class="flow-path" d="M180 40 L400 40" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="5"/>
-                    <path class="flow-path" d="M180 100 L400 100" fill="none" stroke="#a855f7" stroke-width="2" stroke-dasharray="5"/>
-                    <path class="flow-path" d="M180 160 L400 160" fill="none" stroke="#00e5ff" stroke-width="2" stroke-dasharray="5"/>
+                    <path class="flow-path" d="M180 40 L400 40" fill="none" stroke="#f97316" stroke-width="2"
+                        stroke-dasharray="5" />
+                    <path class="flow-path" d="M180 100 L400 100" fill="none" stroke="#a855f7" stroke-width="2"
+                        stroke-dasharray="5" />
+                    <path class="flow-path" d="M180 160 L400 160" fill="none" stroke="#00e5ff" stroke-width="2"
+                        stroke-dasharray="5" />
 
                     <!-- Right CIA -->
-                    <rect x="420" y="20" width="160" height="40" rx="5" fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="2" stroke-dasharray="5"/>
-                    <text x="500" y="45" fill="#f97316" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">AVAILABILITY</text>
+                    <rect x="420" y="20" width="160" height="40" rx="5" fill="rgba(249,115,22,0.1)" stroke="#f97316"
+                        stroke-width="2" stroke-dasharray="5" />
+                    <text x="500" y="45" fill="#f97316" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">AVAILABILITY</text>
 
-                    <rect x="420" y="80" width="160" height="40" rx="5" fill="rgba(168,85,247,0.1)" stroke="#a855f7" stroke-width="2" stroke-dasharray="5"/>
-                    <text x="500" y="105" fill="#a855f7" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">CONFIDENTIALITY</text>
+                    <rect x="420" y="80" width="160" height="40" rx="5" fill="rgba(168,85,247,0.1)" stroke="#a855f7"
+                        stroke-width="2" stroke-dasharray="5" />
+                    <text x="500" y="105" fill="#a855f7" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">CONFIDENTIALITY</text>
 
-                    <rect x="420" y="140" width="160" height="40" rx="5" fill="rgba(0,229,255,0.1)" stroke="#00e5ff" stroke-width="2" stroke-dasharray="5"/>
-                    <text x="500" y="165" fill="#00e5ff" font-family="monospace" font-size="16" font-weight="bold" text-anchor="middle">INTEGRITY</text>
+                    <rect x="420" y="140" width="160" height="40" rx="5" fill="rgba(0,229,255,0.1)" stroke="#00e5ff"
+                        stroke-width="2" stroke-dasharray="5" />
+                    <text x="500" y="165" fill="#00e5ff" font-family="monospace" font-size="16" font-weight="bold"
+                        text-anchor="middle">INTEGRITY</text>
                 </svg>
             </div>
-            
+
             <div class="ar-text" style="font-size:1.1rem; text-align:center;">
-                - الدوس بيوقع السيرفر، يعني بيقفل وصولك للداتا (<span class="eng-word" style="color:#f97316;">Availability</span>).<br>
-                - التنصت والمراقبة بيسرق بياناتك المخفية، يعني انعدام خصوصيتك (<span class="eng-word" style="color:#a855f7;">Confidentiality</span>).<br>
-                - البفر أوفرفلو بيكتب فوق الذاكرة ويعديلها بكود الهاكر، فكده دمر سلامة البيانات (<span class="eng-word" style="color:#00e5ff;">Integrity</span>).
+                - الدوس بيوقع السيرفر، يعني بيقفل وصولك للداتا (<span class="eng-word"
+                    style="color:#f97316;">Availability</span>).<br>
+                - التنصت والمراقبة بيسرق بياناتك المخفية، يعني انعدام خصوصيتك (<span class="eng-word"
+                    style="color:#a855f7;">Confidentiality</span>).<br>
+                - البفر أوفرفلو بيكتب فوق الذاكرة ويعديلها بكود الهاكر، فكده دمر سلامة البيانات (<span class="eng-word"
+                    style="color:#00e5ff;">Integrity</span>).
             </div>
         </div>
 
         <!-- 8. EXAM Qs & Definitions -->
         <div class="section-panel" style="animation-delay: 0.8s;">
             <h2 class="cyber-heading">8. Final Ultra Summary <span class="badge">TEST PREP</span></h2>
-            
-            <div class="en-def" style="border-left:none; background:rgba(0,0,0,0.5); border:1px solid #333; padding:20px;">
-                <h4 style="color:#00e5ff; text-align:center; padding-bottom:15px; border-bottom:1px solid #333; margin-top:0;">Definitions (Important to Memorize)</h4>
+
+            <div class="en-def"
+                style="border-left:none; background:rgba(0,0,0,0.5); border:1px solid #333; padding:20px;">
+                <h4
+                    style="color:#00e5ff; text-align:center; padding-bottom:15px; border-bottom:1px solid #333; margin-top:0;">
+                    Definitions (Important to Memorize)</h4>
                 <ul class="custom-list" style="color:#ccc;">
-                    <li style="margin-bottom:15px;"><span class="eng-red" style="font-size:1.1rem;">Cyberattack:</span> unauthorized access or exploit.</li>
-                    <li style="margin-bottom:15px;"><span class="eng-word" style="font-size:1.1rem;">Vulnerability:</span> weakness in systems or users.</li>
-                    <li style="margin-bottom:15px;"><span class="eng-red" style="color:#f97316; font-size:1.1rem;">DoS:</span> action to overload a server.</li>
-                    <li style="margin-bottom:15px;"><span class="eng-red" style="color:#f97316; font-size:1.1rem;">DDoS:</span> attack from multiple sources (botnet).</li>
-                    <li style="margin-bottom:15px;"><span class="eng-purple" style="font-size:1.1rem;">MITM:</span> intercept communication invisibly.</li>
+                    <li style="margin-bottom:15px;"><span class="eng-red" style="font-size:1.1rem;">Cyberattack:</span>
+                        unauthorized access or exploit.</li>
+                    <li style="margin-bottom:15px;"><span class="eng-word"
+                            style="font-size:1.1rem;">Vulnerability:</span> weakness in systems or users.</li>
+                    <li style="margin-bottom:15px;"><span class="eng-red"
+                            style="color:#f97316; font-size:1.1rem;">DoS:</span> action to overload a server.</li>
+                    <li style="margin-bottom:15px;"><span class="eng-red"
+                            style="color:#f97316; font-size:1.1rem;">DDoS:</span> attack from multiple sources (botnet).
+                    </li>
+                    <li style="margin-bottom:15px;"><span class="eng-purple" style="font-size:1.1rem;">MITM:</span>
+                        intercept communication invisibly.</li>
                 </ul>
             </div>
         </div>
@@ -342,12 +756,12 @@
         const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        
+
         const letters = "01ABCDEXFYZ*!";
         const fontSize = 16;
         const columns = canvas.width / fontSize;
         const drops = [];
-        
+
         for (let x = 0; x < columns; x++) { drops[x] = 1; }
         function drawMatrix() {
             ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
@@ -356,7 +770,7 @@
             ctx.font = fontSize + "px monospace";
             for (let i = 0; i < drops.length; i++) {
                 const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                if(Math.random() > 0.98){
+                if (Math.random() > 0.98) {
                     ctx.fillStyle = "#fff";
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                     ctx.fillStyle = "#00e5ff";
@@ -373,4 +787,5 @@
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
     </script>
 </body>
+
 </html>
