@@ -1,64 +1,405 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chapter 2: Cybersecurity Basics</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .content-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; z-index: 1; position: relative; }
-        .section-panel { background: var(--panel-bg); border: 1px solid var(--secondary-color); padding: 2.5rem; margin-bottom: 3rem; position: relative; box-shadow: 0 0 15px rgba(0, 0, 0, 0.9); animation: fadeIn 0.5s ease forwards; opacity: 0; backdrop-filter: blur(5px); }
-        .section-panel:hover { border-color: var(--primary-color); box-shadow: var(--border-glow); }
-        h2.cyber-heading { color: var(--primary-color); border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 15px; margin-bottom: 25px; display: flex; align-items: center; font-size: 1.8rem; text-transform: uppercase; text-shadow: 0 0 5px rgba(0, 229, 255, 0.3); direction: ltr; }
-        h2.cyber-heading::before { content: '[CH.02] '; color: var(--secondary-color); margin-right: 15px; font-size: 1.2rem; animation: blink 1s infinite step-start; }
-        h3.sub-heading { color: var(--primary-color); margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem; border-left: 3px solid var(--primary-color); padding-left: 10px; direction: rtl; text-align: right; }
-        .badge { display: inline-block; padding: 4px 10px; background: rgba(0, 229, 255, 0.1); color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 2px; font-size: 0.6em; margin-left: 15px; font-weight: bold; vertical-align: middle; }
-        
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--border-glow);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[CH.02] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
         /* Language Styles */
-        .en-def { direction: ltr; text-align: left; font-family: var(--font-code); color: #00e5ff; line-height: 1.5; padding: 10px 15px; border-left: 3px solid #00e5ff; background: rgba(0, 229, 255, 0.05); margin-bottom: 15px; font-size: 1.05rem; }
-        .ar-text { direction: rtl; text-align: right; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #cbd5e1; margin: 0 0 25px 0; padding: 15px 20px; border-right: 3px solid var(--primary-color); background: rgba(0, 0, 0, 0.3); line-height: 1.8; font-size: 1.1rem; }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; direction: rtl; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; direction: rtl; margin-top: 20px; }
-        
-        .stat-card { background: rgba(11, 15, 25, 0.8); border: 1px solid #333; padding: 20px; transition: 0.3s; position: relative; overflow: hidden; text-align: right; }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--primary-color); opacity: 0.5; }
-        .stat-card:hover { border-color: rgba(0, 229, 255, 0.5); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 229, 255, 0.1); }
-        .stat-card:hover::before { opacity: 1; box-shadow: 0 0 10px var(--primary-color); }
-        
-        .svg-container { display: flex; justify-content: center; align-items: center; margin: 30px 0; padding: 30px; background: rgba(11, 15, 25, 0.8); border: 1px dashed rgba(0, 229, 255, 0.4); border-radius: 4px; overflow-x: auto; }
-        .flow-path { stroke-dasharray: 10; animation: dash 1s linear infinite; }
-        
-        @keyframes dash { to { stroke-dashoffset: -20; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; filter: drop-shadow(0 0 10px var(--primary-color)); } 100% { opacity: 0.6; } }
-        
-        .back-btn { display: inline-block; margin-bottom: 30px; color: var(--primary-color); text-decoration: none; border: 1px solid var(--primary-color); padding: 10px 25px; font-family: var(--font-code); background: rgba(0, 0, 0, 0.8); transition: 0.3s; }
-        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
-        
-        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
-        .eng-red { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
-        .eng-purple { font-family: var(--font-code); color: #a855f7; font-weight: bold; }
-        .eng-orange { font-family: var(--font-code); color: #f97316; font-weight: bold; }
-        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 10px 15px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
 
-        ul.custom-list { list-style-type: none; padding-left: 20px; text-align: left; direction: ltr; margin-top:5px; }
-        ul.custom-list li { margin-bottom: 10px; position: relative; }
-        ul.custom-list li::before { content: '>'; color: var(--primary-color); position: absolute; left: -20px; font-weight: bold; }
-        
-        ul.ar-list { list-style-type: none; padding-right: 20px; text-align: right; direction: rtl; }
-        ul.ar-list li { margin-bottom: 10px; position: relative; }
-        ul.ar-list li::before { content: '<'; color: var(--primary-color); position: absolute; right: -20px; font-weight: bold; }
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
 
-        .cyber-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: var(--font-code); background: rgba(0,0,0,0.6); direction: rtl; text-align:right;}
-        .cyber-table th, .cyber-table td { border: 1px solid rgba(0, 229, 255, 0.3); padding: 15px; font-size: 1.1rem; }
-        .cyber-table th { background: rgba(0, 229, 255, 0.1); color: var(--primary-color); font-weight: bold; text-align:center;}
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            direction: rtl;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(11, 15, 25, 0.8);
+            border: 1px solid #333;
+            padding: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-align: right;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(0, 229, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 229, 255, 0.1);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            padding: 30px;
+            background: rgba(11, 15, 25, 0.8);
+            border: 1px dashed rgba(0, 229, 255, 0.4);
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        .flow-path {
+            stroke-dasharray: 10;
+            animation: dash 1s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -20;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+                filter: drop-shadow(0 0 10px var(--primary-color));
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .eng-word {
+            font-family: var(--font-code);
+            color: #00e5ff;
+            font-weight: bold;
+        }
+
+        .eng-red {
+            font-family: var(--font-code);
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .eng-purple {
+            font-family: var(--font-code);
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .eng-orange {
+            font-family: var(--font-code);
+            color: #f97316;
+            font-weight: bold;
+        }
+
+        .eng-green {
+            font-family: var(--font-code);
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        ul.custom-list {
+            list-style-type: none;
+            padding-left: 20px;
+            text-align: left;
+            direction: ltr;
+            margin-top: 5px;
+        }
+
+        ul.custom-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        ul.custom-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            left: -20px;
+            font-weight: bold;
+        }
+
+        ul.ar-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        ul.ar-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        ul.ar-list li::before {
+            content: '<';
+            color: var(--primary-color);
+            position: absolute;
+            right: -20px;
+            font-weight: bold;
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+            direction: rtl;
+            text-align: right;
+        }
+
+        .cyber-table th,
+        .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-container {
+                padding: 1rem 0.5rem;
+            }
+
+            .section-panel {
+                padding: 1.5rem;
+            }
+
+            h2.cyber-heading {
+                font-size: 1.3rem;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            h2.cyber-heading::before {
+                margin-bottom: 5px;
+            }
+
+            header h1.glitch {
+                font-size: 2.2rem !important;
+            }
+
+            header p {
+                font-size: 1rem !important;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .svg-container {
+                overflow-x: auto;
+                padding: 10px;
+            }
+
+            .svg-container svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .cyber-table {
+                display: block;
+                overflow-x: auto;
+                font-size: 0.85rem;
+            }
+
+            .cyber-table th,
+            .cyber-table td {
+                padding: 10px;
+            }
+
+            .ar-text,
+            .en-def {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+
+            .grid-2,
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <canvas id="matrixCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
-    <div class="scanlines" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;"></div>
+    <canvas id="matrixCanvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
 
     <div class="content-container">
         <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
@@ -67,39 +408,53 @@
             <div class="glitch-wrapper">
                 <h1 class="glitch" data-text="CHAPTER 2" style="font-size: 4rem; color: #fff;">CHAPTER 2</h1>
             </div>
-            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">CYBERSECURITY BASICS: THE CIA TRIAD</p>
-            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: CLASSIFIED | CLEARANCE: ARCHITECT</div>
+            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">CYBERSECURITY BASICS: THE
+                CIA TRIAD</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: CLASSIFIED | CLEARANCE:
+                ARCHITECT</div>
         </header>
 
         <!-- 1. What is Cybersecurity? -->
         <div class="section-panel" style="animation-delay: 0.1s;">
             <h2 class="cyber-heading">1. What is Cybersecurity? <span class="badge">DEFINITION</span></h2>
-            
+
             <div class="en-def">
-                "Cybersecurity is the act of protecting systems, networks, devices, and programs from digital attacks aimed at accessing, altering, or destroying sensitive information."
+                "Cybersecurity is the act of protecting systems, networks, devices, and programs from digital attacks
+                aimed at accessing, altering, or destroying sensitive information."
             </div>
             <div class="ar-text">
                 <b>التعريف البسيط والأهم:</b><br>
-                الأمن السيبراني هو ببساطة إنك تحمي الأنظمة بتاعتك (زي الـ <span class="eng-word">Software</span> والـ <span class="eng-word">Hardware</span> والـ <span class="eng-word">Data</span>) من أي وصول غير مصرح بيه، أو تلاعب، أو تعطيل كامل. وده بيكون للأنظمة المتصلة بالإنترنت أو الشبكات الداخلية <span class="eng-word">(Intranet)</span>.
+                الأمن السيبراني هو ببساطة إنك تحمي الأنظمة بتاعتك (زي الـ <span class="eng-word">Software</span> والـ
+                <span class="eng-word">Hardware</span> والـ <span class="eng-word">Data</span>) من أي وصول غير مصرح بيه،
+                أو تلاعب، أو تعطيل كامل. وده بيكون للأنظمة المتصلة بالإنترنت أو الشبكات الداخلية <span
+                    class="eng-word">(Intranet)</span>.
                 <br><br>
                 <b>الحماية مش بس لصورك وباسوورداتك، ده إحنا بنحمي كوارث لو اتسربت:</b>
                 <ul class="ar-list">
                     <li><b class="eng-purple">Personal Data:</b> بياناتك الشخصية (صورك، شاتك، إيميلك).</li>
                     <li><b class="eng-green">Financial Data:</b> أرصدة البنك وبيانات الفيزا المربوطة.</li>
-                    <li><b class="eng-red">Business-Critical Info:</b> معلومات الشركة السرية وبراءات الاختراع والتصنيع.</li>
-                    <li><b class="eng-word">Operational Continuity:</b> ضمان استمرارية الخدمة عشان الموقع ما يقعش (Availability).</li>
+                    <li><b class="eng-red">Business-Critical Info:</b> معلومات الشركة السرية وبراءات الاختراع والتصنيع.
+                    </li>
+                    <li><b class="eng-word">Operational Continuity:</b> ضمان استمرارية الخدمة عشان الموقع ما يقعش
+                        (Availability).</li>
                 </ul>
             </div>
 
-            <h3 class="sub-heading" style="color:#a855f7; border-right-color:#a855f7;">السايبر مش مجرد أنتي فيرس! (The Core Formula)</h3>
+            <h3 class="sub-heading" style="color:#a855f7; border-right-color:#a855f7;">السايبر مش مجرد أنتي فيرس! (The
+                Core Formula)</h3>
             <div class="ar-text" style="border-right-color:#a855f7;">
-                المحاضرة بتأكد إن السايبر سيكيوريتي عمره ما كان مجرد برامج حماية، إحفظ المعادلة دي صم عشان بتيجي في الامتحانات:<br>
-                <div style="text-align:center; direction:ltr; font-family:var(--font-code); color:#00e5ff; background:rgba(0,0,0,0.5); padding:15px; border-radius:5px; margin:20px 0; border:1px solid #333;">
+                السايبر سيكيوريتي عمره ما كان مجرد برامج حماية :<br>
+                <div
+                    style="text-align:center; direction:ltr; font-family:var(--font-code); color:#00e5ff; background:rgba(0,0,0,0.5); padding:15px; border-radius:5px; margin:20px 0; border:1px solid #333;">
                     CYBERSECURITY = PEOPLE + TECHNOLOGY + PROCESSES
                 </div>
-                <b class="eng-purple">People:</b> وعي الموظفين والناس العادية هو حائط الصد الأول (مفيش فايدة لو الموظف غشيم).<br>
-                <b class="eng-word">Technology:</b> أدوات الحماية التقنية نفسها (زي الـ <span class="eng-word">Firewalls</span> والـ <span class="eng-word">Antivirus</span> وتشفير الـ <span class="eng-word">Encryption</span>).<br>
-                <b class="eng-red">Processes:</b> سياسات الدعم والتشغيل اللي المؤسسة بتتمسك بيها وبتمشي عليها لضمان الأمان ومرونة العودة.
+                <b class="eng-purple">People:</b> وعي الموظفين والناس العادية هو حائط الصد الأول (مفيش فايدة لو الموظف
+                غشيم).<br>
+                <b class="eng-word">Technology:</b> أدوات الحماية التقنية نفسها (زي الـ <span
+                    class="eng-word">Firewalls</span> والـ <span class="eng-word">Antivirus</span> وتشفير الـ <span
+                    class="eng-word">Encryption</span>).<br>
+                <b class="eng-red">Processes:</b> سياسات الدعم والتشغيل اللي المؤسسة بتتمسك بيها وبتمشي عليها لضمان
+                الأمان ومرونة العودة.
             </div>
 
             <div class="svg-container">
@@ -108,15 +463,20 @@
                     <circle cx="150" cy="220" r="90" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" stroke-width="2" />
                     <circle cx="250" cy="220" r="90" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="2" />
 
-                    <text x="200" y="80" fill="#00e5ff" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle">PEOPLE</text>
-                    <text x="100" y="250" fill="#3b82f6" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle">TECH</text>
-                    <text x="300" y="250" fill="#a855f7" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle">PROCESS</text>
+                    <text x="200" y="80" fill="#00e5ff" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle">PEOPLE</text>
+                    <text x="100" y="250" fill="#3b82f6" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle">TECH</text>
+                    <text x="300" y="250" fill="#a855f7" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle">PROCESS</text>
 
-                    <text x="200" y="195" fill="#fff" font-family="monospace" font-size="20" font-weight="bold" text-anchor="middle" style="filter: drop-shadow(0 0 5px #fff);">CYBERSEC</text>
+                    <text x="200" y="195" fill="#fff" font-family="monospace" font-size="20" font-weight="bold"
+                        text-anchor="middle" style="filter: drop-shadow(0 0 5px #fff);">CYBERSEC</text>
                 </svg>
             </div>
 
-            <div class="en-def" style="background:rgba(239,68,68,0.05); border-left-color:#ef4444; color:#ef4444; text-align:center; font-weight:bold;">
+            <div class="en-def"
+                style="background:rgba(239,68,68,0.05); border-left-color:#ef4444; color:#ef4444; text-align:center; font-weight:bold;">
                 Cybersecurity is a continuous process, not a product you buy and forget about.
             </div>
         </div>
@@ -124,35 +484,49 @@
         <!-- 2. CIA Triad -->
         <div class="section-panel" style="animation-delay: 0.2s;">
             <h2 class="cyber-heading">2. The CIA Triad <span class="badge">CORE PILLARS</span></h2>
-            
+
             <div class="en-def" style="border-left:none; background:transparent;">
-                "The CIA Triad is a foundational model designed to guide policies for information security within an organization."
+                "The CIA Triad is a foundational model designed to guide policies for information security within an
+                organization."
             </div>
-            
+
             <div class="ar-text">
-                يعتبر المثلث الذهبي ده هو كل حاجة في السايبر سيكيوريتي، أي نظام أمني في العالم مبني على الـ 3 مبادئ دول عشان يضمن الجودة الكاملة:
+                يعتبر المثلث الذهبي ده هو كل حاجة في السايبر سيكيوريتي، أي نظام أمني في العالم مبني على الـ 3 مبادئ دول
+                عشان يضمن الجودة الكاملة:
             </div>
 
             <div class="grid-3">
                 <div class="stat-card" style="border-top: 2px solid #00e5ff;">
-                    <h3 style="color:#00e5ff; margin-bottom:10px; direction:ltr; text-align:left;">C: Confidentiality</h3>
-                    <div class="en-def" style="border:none; background:none; padding:0; margin:5px 0 10px 0;">"Preventing unauthorized disclosure of sensitive information."</div>
+                    <h3 style="color:#00e5ff; margin-bottom:10px; direction:ltr; text-align:left;">C: Confidentiality
+                    </h3>
+                    <div class="en-def" style="border:none; background:none; padding:0; margin:5px 0 10px 0;">
+                        "Preventing unauthorized disclosure of sensitive information."</div>
                     <p style="color:#aaa; font-size:0.95rem; line-height:1.6; margin:0;">
-                         <b>(السرية):</b> عشان البيانات دي ميشوفهاش غير صاحبها والمصرح ليهم فقط. بتتحقق عن طريق الباسووردات المعقدة، التشفير (<span class="eng-word">Encryption</span>)، والمصادقة الثنائية (<span class="eng-word">2FA</span>).
+                        <b>(السرية):</b> عشان البيانات دي ميشوفهاش غير صاحبها والمصرح ليهم فقط. بتتحقق عن طريق
+                        الباسووردات المعقدة، التشفير (<span class="eng-word">Encryption</span>)، والمصادقة الثنائية
+                        (<span class="eng-word">2FA</span>).
                     </p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #a855f7;">
                     <h3 style="color:#a855f7; margin-bottom:10px; direction:ltr; text-align:left;">I: Integrity</h3>
-                    <div class="en-def" style="border:none; text-align:left; background:none; padding:0; color:#a855f7; margin:5px 0 10px 0;">"Ensuring information maintains its accuracy and completeness."</div>
+                    <div class="en-def"
+                        style="border:none; text-align:left; background:none; padding:0; color:#a855f7; margin:5px 0 10px 0;">
+                        "Ensuring information maintains its accuracy and completeness."</div>
                     <p style="color:#aaa; font-size:0.95rem; line-height:1.6; margin:0;">
-                        <b>(السلامة):</b> ضمان إن المعلومة مستحيل تتعدل أو تتلعب في سياقها عن طريق هاكر (يعني درجة الطالب الـ 85 متتعدلش وتبقى 58!). بتتحقق عن طريق الـ (<span class="eng-purple">Hashing</span> والـ <span class="eng-purple">Digital Signatures</span>).
+                        <b>(السلامة):</b> ضمان إن المعلومة مستحيل تتعدل أو تتلعب في سياقها عن طريق هاكر (يعني درجة
+                        الطالب الـ 85 متتعدلش وتبقى 58!). بتتحقق عن طريق الـ (<span class="eng-purple">Hashing</span>
+                        والـ <span class="eng-purple">Digital Signatures</span>).
                     </p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #f97316;">
                     <h3 style="color:#f97316; margin-bottom:10px; direction:ltr; text-align:left;">A: Availability</h3>
-                    <div class="en-def" style="border:none; text-align:left; background:none; padding:0; color:#f97316; margin:5px 0 10px 0;">"Ensuring data and resources are accessible when needed."</div>
+                    <div class="en-def"
+                        style="border:none; text-align:left; background:none; padding:0; color:#f97316; margin:5px 0 10px 0;">
+                        "Ensuring data and resources are accessible when needed."</div>
                     <p style="color:#aaa; font-size:0.95rem; line-height:1.6; margin:0;">
-                        <b>(الإتاحة):</b> ضمان إن الخدمة تفضل متاح استخدامها في أي وقت نطلبها ومتقعش. لو موقع الكلية وقع يوم النتيجة دي مشكلة إتاحة! بتتحقق عن طريق الـ (<span class="eng-orange">Backups</span> والـ <span class="eng-orange">Redundancy</span>).
+                        <b>(الإتاحة):</b> ضمان إن الخدمة تفضل متاح استخدامها في أي وقت نطلبها ومتقعش. لو موقع الكلية وقع
+                        يوم النتيجة دي مشكلة إتاحة! بتتحقق عن طريق الـ (<span class="eng-orange">Backups</span> والـ
+                        <span class="eng-orange">Redundancy</span>).
                     </p>
                 </div>
             </div>
@@ -160,31 +534,44 @@
             <!-- CIA Triangle Visualization -->
             <div class="svg-container">
                 <svg width="400" height="350" viewBox="0 0 400 350">
-                    <polygon points="200,50 350,300 50,300" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="10" />
-                    <line x1="200" y1="50" x2="200" y2="185" stroke="#00e5ff" stroke-width="3" style="animation: pulse 2s infinite;" />
-                    <line x1="350" y1="300" x2="200" y2="185" stroke="#a855f7" stroke-width="3" style="animation: pulse 2s infinite 0.6s;" />
-                    <line x1="50" y1="300" x2="200" y2="185" stroke="#f97316" stroke-width="3" style="animation: pulse 2s infinite 1.3s;" />
+                    <polygon points="200,50 350,300 50,300" fill="none" stroke="#e2e8f0" stroke-width="2"
+                        stroke-dasharray="10" />
+                    <line x1="200" y1="50" x2="200" y2="185" stroke="#00e5ff" stroke-width="3"
+                        style="animation: pulse 2s infinite;" />
+                    <line x1="350" y1="300" x2="200" y2="185" stroke="#a855f7" stroke-width="3"
+                        style="animation: pulse 2s infinite 0.6s;" />
+                    <line x1="50" y1="300" x2="200" y2="185" stroke="#f97316" stroke-width="3"
+                        style="animation: pulse 2s infinite 1.3s;" />
 
                     <circle cx="200" cy="50" r="15" fill="#00e5ff" />
                     <circle cx="350" cy="300" r="15" fill="#a855f7" />
                     <circle cx="50" cy="300" r="15" fill="#f97316" />
 
-                    <text x="200" y="25" fill="#00e5ff" font-family="monospace" font-size="18" font-weight="bold" text-anchor="middle">CONFIDENTIALITY</text>
-                    <text x="350" y="335" fill="#a855f7" font-family="monospace" font-size="18" font-weight="bold" text-anchor="middle">INTEGRITY</text>
-                    <text x="50" y="335" fill="#f97316" font-family="monospace" font-size="18" font-weight="bold" text-anchor="middle">AVAILABILITY</text>
+                    <text x="200" y="25" fill="#00e5ff" font-family="monospace" font-size="18" font-weight="bold"
+                        text-anchor="middle">CONFIDENTIALITY</text>
+                    <text x="350" y="335" fill="#a855f7" font-family="monospace" font-size="18" font-weight="bold"
+                        text-anchor="middle">INTEGRITY</text>
+                    <text x="50" y="335" fill="#f97316" font-family="monospace" font-size="18" font-weight="bold"
+                        text-anchor="middle">AVAILABILITY</text>
 
                     <circle cx="200" cy="185" r="30" fill="#112" stroke="#fff" stroke-width="2" />
-                    <text x="200" y="193" fill="#fff" font-family="monospace" font-size="22" font-weight="bold" text-anchor="middle">CIA</text>
+                    <text x="200" y="193" fill="#fff" font-family="monospace" font-size="22" font-weight="bold"
+                        text-anchor="middle">CIA</text>
                 </svg>
             </div>
 
             <!-- ATM Example -->
-            <h3 class="sub-heading" style="color:#10b981; border-right-color:#10b981;">مثال المحاضرة الذهبي: الـ ATM</h3>
+            <h3 class="sub-heading" style="color:#10b981; border-right-color:#10b981;">مثال الـ ATM
+            </h3>
             <div class="ar-text" style="border-right-color:#10b981;">
-                المحاضرة شرحت ماكينة الصراف الآلي عشان تثبت إنها بتجمع الـ 3 حاجات بدقة:<br>
-                1. <b><span class="eng-word">Confidentiality</span> (السرية):</b> الكارت بتاعك والـ <span class="eng-word">PIN Code</span> بيحموا بياناتك المالية ومحدش يقدر يشوف رصيدك غيرك.<br>
-                2. <b><span class="eng-purple">Integrity</span> (السلامة):</b> الـ <span class="eng-purple">Database</span> بتسجل سحوباتك بالمللي. يعني مفيش رقم بيتغير بعد ما تدوس تأكيد السحب.<br>
-                3. <b><span class="eng-orange">Availability</span> (الإتاحة):</b> إن الماكينة ديما فاتحة 24 ساعة، متوصلة بسيرفر البنك عشان تقدر تسحب فلوس في نص الليل بالظبط.
+                ماكينة الصراف الآلي عشان تثبت إنها بتجمع الـ 3 حاجات بدقة:<br>
+                1. <b><span class="eng-word">Confidentiality</span> (السرية):</b> الكارت بتاعك والـ <span
+                    class="eng-word">PIN Code</span> بيحموا بياناتك المالية ومحدش يقدر يشوف رصيدك غيرك.<br>
+                2. <b><span class="eng-purple">Integrity</span> (السلامة):</b> الـ <span
+                    class="eng-purple">Database</span> بتسجل سحوباتك بالمللي. يعني مفيش رقم بيتغير بعد ما تدوس تأكيد
+                السحب.<br>
+                3. <b><span class="eng-orange">Availability</span> (الإتاحة):</b> إن الماكينة ديما فاتحة 24 ساعة، متوصلة
+                بسيرفر البنك عشان تقدر تسحب فلوس في نص الليل بالظبط.
             </div>
         </div>
 
@@ -198,27 +585,36 @@
             <div class="grid-2">
                 <div class="stat-card" style="border-top: 2px solid #3b82f6;">
                     <h3 style="color:#3b82f6; direction:ltr; text-align:left;">1. Network Security</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">حماية الشبكات من التدخل المجهول والتنصت الخارجي (زي تهيئة الـ <span class="eng-word">Firewalls</span> والـ <span class="eng-word">VPN</span>).</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">حماية الشبكات من التدخل المجهول والتنصت
+                        الخارجي (زي تهيئة الـ <span class="eng-word">Firewalls</span> والـ <span
+                            class="eng-word">VPN</span>).</p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #10b981;">
                     <h3 style="color:#10b981; direction:ltr; text-align:left;">2. Information Security</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">تأمين المعلومات المادية والرقمية أثناء النقل أو التخزين في الـ <span class="eng-green">Data Centers</span> لمنع التسريب.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">تأمين المعلومات المادية والرقمية أثناء
+                        النقل أو التخزين في الـ <span class="eng-green">Data Centers</span> لمنع التسريب.</p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #a855f7;">
                     <h3 style="color:#a855f7; direction:ltr; text-align:left;">3. Application Security</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">اكتشاف وسد ثغرات التطبيقات نفسها عشان الهاكرز ميقدروش يدخلوا بقاعدة <span class="eng-purple">SQL Injection</span> للموقع الأساسي.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">اكتشاف وسد ثغرات التطبيقات نفسها عشان
+                        الهاكرز ميقدروش يدخلوا بقاعدة <span class="eng-purple">SQL Injection</span> للموقع الأساسي.</p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #ef4444;">
                     <h3 style="color:#ef4444; direction:ltr; text-align:left;">4. Disaster Recovery (BCP)</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;"><span class="eng-red">Business Continuity Process:</span> إزاي نرجع السيرفرات تشتغل فوراً وتدينا الـ <span class="eng-red">Backup</span> أول ما السيرفر الأصلي يدمر!</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;"><span class="eng-red">Business Continuity
+                            Process:</span> إزاي نرجع السيرفرات تشتغل فوراً وتدينا الـ <span
+                            class="eng-red">Backup</span> أول ما السيرفر الأصلي يدمر!</p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #f97316;">
                     <h3 style="color:#f97316; direction:ltr; text-align:left;">5. Operational Security (OPSEC)</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">مراقبة العمليات وإعطاء الصلاحيات وإجراءات المنع (زي إن الموظفين ممنوع يستخدموا فلاشات للملفات السرية).</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">مراقبة العمليات وإعطاء الصلاحيات وإجراءات
+                        المنع (زي إن الموظفين ممنوع يستخدموا فلاشات للملفات السرية).</p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #e2e8f0;">
                     <h3 style="color:#e2e8f0; direction:ltr; text-align:left;">6. End-User Education</h3>
-                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">توعية الموظف واليوزر العادي لإن أي بنية لو صارف عليها ملايين هتدمر لو الموظف داس على لينك <span style="font-family:var(--font-code);">Phishing</span> وتجاهل الوعي.</p>
+                    <p style="color:#aaa; font-size:0.95rem; line-height:1.6;">توعية الموظف واليوزر العادي لإن أي بنية
+                        لو صارف عليها ملايين هتدمر لو الموظف داس على لينك <span
+                            style="font-family:var(--font-code);">Phishing</span> وتجاهل الوعي.</p>
                 </div>
             </div>
         </div>
@@ -226,22 +622,30 @@
         <!-- 4. What is Cyberattack & Attack Surfaces -->
         <div class="section-panel" style="animation-delay: 0.4s;">
             <h2 class="cyber-heading">4. Cyberattacks & Surfaces <span class="badge">THREAT VECTORS</span></h2>
-            
-            <div class="en-def">"A Cyberattack is any intentional action aimed at exploiting vulnerabilities in a computer system to steal, alter, disable, or destroy data."</div>
+
+            <div class="en-def">"A Cyberattack is any intentional action aimed at exploiting vulnerabilities in a
+                computer system to steal, alter, disable, or destroy data."</div>
             <div class="ar-text">
-                <b>الهجوم السيبراني (Cyberattack):</b> هو أي محاولة بائسة لاستغلال نقطة ضعف عشان نوصل لهدف خبيث سواء سرقة أو تشفير للمنظومة دي أو تدميرها.
+                <b>الهجوم السيبراني (Cyberattack):</b> هو أي محاولة بائسة لاستغلال نقطة ضعف عشان نوصل لهدف خبيث سواء
+                سرقة أو تشفير للمنظومة دي أو تدميرها.
             </div>
 
             <h3 class="sub-heading" style="color:#ef4444; border-right-color:#ef4444;">سطح الهجوم (Attack Surface)</h3>
-            <div class="en-def" style="border-color:#ef4444; color:#ef4444;">"Attack Surface: The total sum of vulnerabilities that can be exploited in a given system."</div>
+            <div class="en-def" style="border-color:#ef4444; color:#ef4444;">"Attack Surface: The total sum of
+                vulnerabilities that can be exploited in a given system."</div>
             <div class="ar-text" style="border-right-color:#ef4444;">
-                <b>(سطح الهجوم):</b> ببساطة هو إجمالي جميع النوافذ والأبواب والمنافذ الممكنة اللي ممكن للهاكر يخترق التسيستم من خلالها!<br>
+                <b>(سطح الهجوم):</b> ببساطة هو إجمالي جميع النوافذ والأبواب والمنافذ الممكنة اللي ممكن للهاكر يخترق
+                التسيستم من خلالها!<br>
                 المحاضرة ركزت إن المساحات دي بتشمل:<br>
                 <ul class="ar-list">
-                    <li><b class="eng-word">Data & Storage Servers:</b> سيرفرات المعلومات والتخزين (الباب الملكي للهاكرز).</li>
-                    <li><b class="eng-purple">Application Servers:</b> المواقع والبرامج المفتوحة على الإنترنت للعملاء.</li>
-                    <li><b class="eng-green">Operational Systems:</b> أنظمة التشغيل والشبكات لو مش معمول ليها أبديت أول بأول.</li>
-                    <li><b class="eng-red">Endpoints & Portals:</b> الأجهزة الشخصية للموظفين وبوابات الدخول بتاعتهم.</li>
+                    <li><b class="eng-word">Data & Storage Servers:</b> سيرفرات المعلومات والتخزين (الباب الملكي
+                        للهاكرز).</li>
+                    <li><b class="eng-purple">Application Servers:</b> المواقع والبرامج المفتوحة على الإنترنت للعملاء.
+                    </li>
+                    <li><b class="eng-green">Operational Systems:</b> أنظمة التشغيل والشبكات لو مش معمول ليها أبديت أول
+                        بأول.</li>
+                    <li><b class="eng-red">Endpoints & Portals:</b> الأجهزة الشخصية للموظفين وبوابات الدخول بتاعتهم.
+                    </li>
                 </ul>
             </div>
         </div>
@@ -262,45 +666,64 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="font-weight:bold; color:#fff;" class="eng-purple">Malware<br><span style="font-size:0.8em; color:#888;">(البرمجيات الخبيثة)</span></td>
+                        <td style="font-weight:bold; color:#fff;" class="eng-purple">Malware<br><span
+                                style="font-size:0.8em; color:#888;">(البرمجيات الخبيثة)</span></td>
                         <td>
-                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">Malicious software designed to cause damage or harvest data.</div>
-                            برامج بتنزل تخرب وتتجسس. زي الـ <span class="eng-word">Virus</span> و الـ <span class="eng-word">Spyware</span> وطبعاً وحش الشاشة <b class="eng-red">Ransomware</b> (فيروس الفدية اللي بيشفر ملفاتك لغاية ما تدفع).
+                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">
+                                Malicious software designed to cause damage or harvest data.</div>
+                            برامج بتنزل تخرب وتتجسس. زي الـ <span class="eng-word">Virus</span> و الـ <span
+                                class="eng-word">Spyware</span> وطبعاً وحش الشاشة <b class="eng-red">Ransomware</b>
+                            (فيروس الفدية اللي بيشفر ملفاتك لغاية ما تدفع).
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-weight:bold; color:#fff;" class="eng-purple">Phishing<br><span style="font-size:0.8em; color:#888;">(التصيد الاحتيالي)</span></td>
+                        <td style="font-weight:bold; color:#fff;" class="eng-purple">Phishing<br><span
+                                style="font-size:0.8em; color:#888;">(التصيد الاحتيالي)</span></td>
                         <td>
-                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">Deceptive communication designed to trick victims into revealing sensitive info.</div>
-                            بيعتمد على غفلة البشر! يبعتلك ماسدج كأنه البنك ويقولك ادخل سجل بياناتك عشان تتحدث.. وأنت تخش تسلم كل باسوورداتك بنفسك!
+                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">
+                                Deceptive communication designed to trick victims into revealing sensitive info.</div>
+                            بيعتمد على غفلة البشر! يبعتلك ماسدج كأنه البنك ويقولك ادخل سجل بياناتك عشان تتحدث.. وأنت تخش
+                            تسلم كل باسوورداتك بنفسك!
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-weight:bold; color:#fff;" class="eng-purple">SQL Injection<br><span style="font-size:0.8em; color:#888;">(حقن القواعد)</span></td>
+                        <td style="font-weight:bold; color:#fff;" class="eng-purple">SQL Injection<br><span
+                                style="font-size:0.8em; color:#888;">(حقن القواعد)</span></td>
                         <td>
-                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">Inserting malicious SQL queries via client input into the target application.</div>
-                            لو الصفحة مش متأمنة، الهاكر بيكتب كود برمجي <span class="eng-word">SQL</span> بدل الباسوورد، فالسيرفر يقرأ الكود ده على إنه أمر مباشر وينفذه، ويطلعله داتا الملايين من الـ <span class="eng-purple">Database</span>.
+                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">
+                                Inserting malicious SQL queries via client input into the target application.</div>
+                            لو الصفحة مش متأمنة، الهاكر بيكتب كود برمجي <span class="eng-word">SQL</span> بدل الباسوورد،
+                            فالسيرفر يقرأ الكود ده على إنه أمر مباشر وينفذه، ويطلعله داتا الملايين من الـ <span
+                                class="eng-purple">Database</span>.
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-weight:bold; color:#fff;" class="eng-purple">DoS Attack<br><span style="font-size:0.8em; color:#888;">(حجب الخدمة)</span></td>
+                        <td style="font-weight:bold; color:#fff;" class="eng-purple">DoS Attack<br><span
+                                style="font-size:0.8em; color:#888;">(حجب الخدمة)</span></td>
                         <td>
-                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">Flooding a system with requests to exhaust resources and deny access.</div>
-                            يغرق السيرفر بالطلبات الوهمية لحد ما السيرفر يكرش ويقع وميستحملش! (ده بيضرب مبدأ الـ <span class="eng-orange">Availability</span> تماماً).
+                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">
+                                Flooding a system with requests to exhaust resources and deny access.</div>
+                            يغرق السيرفر بالطلبات الوهمية لحد ما السيرفر يكرش ويقع وميستحملش! (ده بيضرب مبدأ الـ <span
+                                class="eng-orange">Availability</span> تماماً).
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-weight:bold; color:#fff;" class="eng-purple">MITM Attack<br><span style="font-size:0.8em; color:#888;">(ਰجل في المنتصف)</span></td>
+                        <td style="font-weight:bold; color:#fff;" class="eng-purple">MITM Attack<br><span
+                                style="font-size:0.8em; color:#888;">(ਰجل في المنتصف)</span></td>
                         <td>
-                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">Secretly intercepting data communicated between two parties.</div>
+                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">
+                                Secretly intercepting data communicated between two parties.</div>
                             يعترض الداتا في الهوا ويقراها أو يغيرها بدون علمهم. (زي التنصت على شبكة واي-فاي عامة).
                         </td>
                     </tr>
                     <tr>
-                        <td style="font-weight:bold; color:#fff;" class="eng-purple">Zero-Day Exploits<br><span style="font-size:0.8em; color:#888;">(ثغرات يوم الصفر)</span></td>
+                        <td style="font-weight:bold; color:#fff;" class="eng-purple">Zero-Day Exploits<br><span
+                                style="font-size:0.8em; color:#888;">(ثغرات يوم الصفر)</span></td>
                         <td>
-                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">Attacking undisclosed vulnerabilities before the vendor releases a patch.</div>
-                            استغلال ثغرة متفجرة لسة الشركة الأصلية مبتعرفش عنها حاجة أصلا، وبالتالي ملهاش أي علاج ولا ترقيعة <span class="eng-red">(Patch)</span> لغاية لحظة الهجوم!
+                            <div class="en-def" style="border:none; padding:0; background:none; margin-bottom:5px;">
+                                Attacking undisclosed vulnerabilities before the vendor releases a patch.</div>
+                            استغلال ثغرة متفجرة لسة الشركة الأصلية مبتعرفش عنها حاجة أصلا، وبالتالي ملهاش أي علاج ولا
+                            ترقيعة <span class="eng-red">(Patch)</span> لغاية لحظة الهجوم!
                         </td>
                     </tr>
                 </tbody>
@@ -315,15 +738,20 @@
                 <b>دوافع الهجمات الرئيسية <span class="eng-word">(Attack Objectives)</span>:</b><br>
                 <ul class="ar-list">
                     <li><b class="eng-orange">Financial Gain:</b> عشان الفلوس طبعاً دي رقم 1 (ابتزاز وفدية).</li>
-                    <li><b class="eng-purple">Damaging Brand Value:</b> ضرب سمعة الشركة عشان أسهمها في البورصة وثقتها تقع.</li>
-                    <li><b class="eng-red">Cyberterrorism:</b> الإرهاب السيبراني لإثارة الرعب وتخريب المنظومات الحيوية للدول.</li>
-                    <li><b class="eng-green">Business Secrets:</b> سرقة أسرار المنافسين والصناعة <span class="eng-word">(Corporate Espionage)</span>.</li>
+                    <li><b class="eng-purple">Damaging Brand Value:</b> ضرب سمعة الشركة عشان أسهمها في البورصة وثقتها
+                        تقع.</li>
+                    <li><b class="eng-red">Cyberterrorism:</b> الإرهاب السيبراني لإثارة الرعب وتخريب المنظومات الحيوية
+                        للدول.</li>
+                    <li><b class="eng-green">Business Secrets:</b> سرقة أسرار المنافسين والصناعة <span
+                            class="eng-word">(Corporate Espionage)</span>.</li>
                 </ul>
             </div>
 
-            <h3 class="sub-heading" style="color:#00e5ff; border-right-color:#00e5ff;">Technical Breaches Correlation</h3>
+            <h3 class="sub-heading" style="color:#00e5ff; border-right-color:#00e5ff;">Technical Breaches Correlation
+            </h3>
             <div class="ar-text" style="border-right-color:#00e5ff;">
-                المحاضرة قفلت بربط الاختراقات الكبيرة اللي حصلت في التاريخ التكنولوجي بمبادئ الـ <span class="eng-word">CIA Triad</span> التلاتة، ركز جداً في الربط الأكاديمي ده:
+                المحاضرة قفلت بربط الاختراقات الكبيرة اللي حصلت في التاريخ التكنولوجي بمبادئ الـ <span
+                    class="eng-word">CIA Triad</span> التلاتة، ركز جداً في الربط الأكاديمي ده:
             </div>
 
             <div class="grid-3" style="margin-bottom:20px;">
@@ -331,26 +759,30 @@
                     <h3 class="eng-word" style="direction:ltr; text-align:left;">1. Confidentiality Breach</h3>
                     <p style="color:#aaa; font-size:0.95rem; line-height:1.6; margin-top:10px;">
                         يعني البيانات القيمة اتسربت وشافها اللي ملوش فيها.<br><br>
-                        <b>أمثلة تاريخية:</b> تسريب بيانات فندق <b>Marriott 2018</b> (تسريب باسبورات 500 مليون نزيل للعلن)، واختراق <b>Equifax 2017</b>.
+                        <b>أمثلة تاريخية:</b> تسريب بيانات فندق <b>Marriott 2018</b> (تسريب باسبورات 500 مليون نزيل
+                        للعلن)، واختراق <b>Equifax 2017</b>.
                     </p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #a855f7;">
                     <h3 class="eng-purple" style="direction:ltr; text-align:left;">2. Integrity Breach</h3>
                     <p style="color:#aaa; font-size:0.95rem; line-height:1.6; margin-top:10px;">
                         يعني الداتا اتلعب فيها أو النظام اتهكر عشان يتم تدميره من جوه ببرمجيات خبيثة.<br><br>
-                        <b>أمثلة تاريخية:</b> فيروس <b>Stuxnet 2010</b> الشهير جداً اللي ضرب مفاعلات إيران الصناعية ودمرها، واختراق وكالة <b>WADA 2016</b>.
+                        <b>أمثلة تاريخية:</b> فيروس <b>Stuxnet 2010</b> الشهير جداً اللي ضرب مفاعلات إيران الصناعية
+                        ودمرها، واختراق وكالة <b>WADA 2016</b>.
                     </p>
                 </div>
                 <div class="stat-card" style="border-top: 2px solid #f97316;">
                     <h3 class="eng-orange" style="direction:ltr; text-align:left;">3. Availability Breach</h3>
                     <p style="color:#aaa; font-size:0.95rem; line-height:1.6; margin-top:10px;">
                         يعني السيرفر والخدمة وقعت ومحدش عارف يدخل عليها ويستفيد منها.<br><br>
-                        <b>أمثلة تاريخية:</b> عطل سيرفرات <b>Google Cloud 2018</b> اللي خلى الخدمات الحيوية تقف بالكامل، ووقوع بنية <b>Equinix 2018</b>.
+                        <b>أمثلة تاريخية:</b> عطل سيرفرات <b>Google Cloud 2018</b> اللي خلى الخدمات الحيوية تقف بالكامل،
+                        ووقوع بنية <b>Equinix 2018</b>.
                     </p>
                 </div>
             </div>
 
-            <div class="ar-text" style="background:rgba(0,0,0,0.5); text-align:center; font-weight:bold; font-size:1.2rem; border:1px solid #333; margin-top:30px; direction:ltr;">
+            <div class="ar-text"
+                style="background:rgba(0,0,0,0.5); text-align:center; font-weight:bold; font-size:1.2rem; border:1px solid #333; margin-top:30px; direction:ltr;">
                 <span style="color:#fff;">Exam Correlation Rule:</span><br><br>
                 <span style="color:#00e5ff;">Data Stolen/Leaked = Confidentiality Breach</span><br>
                 <span style="color:#a855f7;">Data Altered/Destroyed = Integrity Breach</span><br>
@@ -398,4 +830,5 @@
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
     </script>
 </body>
+
 </html>
