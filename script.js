@@ -69,6 +69,12 @@ const modules = [
         link: "chapter9.html"
     },
     {
+        id: "CH-10",
+        title: "Malware & System Threats Part II",
+        description: "Master advanced malware types. Deep dive into Spyware, Worms, Adware, and Ransomware with interactive simulators, real examples, and countermeasures.",
+        link: "chapter10.html"
+    },
+    {
         id: "DICT",
         title: "Cyber Dictionary & Glossary",
         description: "A comprehensive dual-language (English/Arabic) dictionary of every term taught. Search, filter, and study hardware, networking, and cryptography concepts.",
