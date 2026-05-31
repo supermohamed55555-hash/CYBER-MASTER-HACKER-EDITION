@@ -1,0 +1,7 @@
+scratch/
+extract_lec10_images.py
+*.pyc
+__pycache__/
+.DS_Store
+.idea/
+.vscode/

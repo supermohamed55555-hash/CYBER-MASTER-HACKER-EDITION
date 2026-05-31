@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 10: Computer Malware Classification Part II (Spyware, Worms, Adware & Ransomware)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[CH.10] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 15px 20px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
+        .eng-red   { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
+        .eng-purple{ font-family: var(--font-code); color: #a855f7; font-weight: bold; }
+        .eng-orange{ font-family: var(--font-code); color: #f97316; font-weight: bold; }
+        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
+        .eng-yellow{ font-family: var(--font-code); color: #eab308; font-weight: bold; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--secondary-color);
+            padding: 20px;
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        ul.cyber-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 20px;
+        }
+
+        ul.cyber-list li {
+            margin-bottom: 15px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        ul.cyber-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            right: -25px;
+            font-weight: bold;
+            font-family: var(--font-code);
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cyber-table th, .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 12px 15px;
+            font-size: 0.95rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Image Box */
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px auto;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+            filter: brightness(0.9) contrast(1.1);
+            transition: 0.3s;
+        }
+
+        .image-container img:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            filter: brightness(1.0);
+        }
+
+        .image-caption {
+            color: var(--primary-color);
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Stat Cards */
+        .stat-card {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,229,255,0.2);
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0,229,255,0.15);
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-family: var(--font-code);
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-family: var(--font-code);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Spyware Type Cards */
+        .type-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(168,85,247,0.3);
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 15px;
+            direction: rtl;
+            text-align: right;
+            transition: 0.3s;
+        }
+
+        .type-card:hover {
+            border-color: #a855f7;
+            background: rgba(168,85,247,0.05);
+        }
+
+        .type-card-title {
+            font-family: var(--font-code);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .type-card-desc {
+            color: #94a3b8;
+            font-size: 1rem;
+            line-height: 1.7;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Simulator */
+        .video-simulator {
+            border: 2px solid var(--primary-color);
+            background: #060913;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
+            font-family: var(--font-code);
+            overflow: hidden;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .video-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .video-title { color: var(--primary-color); font-size: 0.9rem; font-weight: bold; }
+
+        .video-screen {
+            background: #02040a;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: background-color 0.5s ease;
+        }
+
+        .narration-box {
+            background: rgba(0, 229, 255, 0.08);
+            border-right: 3px solid var(--primary-color);
+            padding: 12px 15px;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.05rem;
+            direction: rtl;
+            text-align: right;
+            min-height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            background: #1e293b;
+            height: 6px;
+            margin: 0 15px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .progress-bar-container:hover { height: 8px; }
+
+        .progress-bar {
+            background: var(--primary-color);
+            height: 100%;
+            width: 0%;
+            border-radius: 3px;
+            transition: width 0.1s linear;
+        }
+
+        .play-btn {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .play-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 10px var(--primary-color); }
+
+        /* Terminal Log */
+        .terminal-log {
+            background: #000;
+            border: 1px solid #10b981;
+            border-radius: 4px;
+            padding: 15px 20px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            direction: ltr;
+            text-align: left;
+            color: #10b981;
+            min-height: 80px;
+            line-height: 1.8;
+        }
+
+        .terminal-log .log-line { display: block; }
+        .terminal-log .log-warn { color: #eab308; }
+        .terminal-log .log-danger { color: #ef4444; }
+        .terminal-log .log-safe { color: #10b981; }
+
+        /* Ransomware Extension Table */
+        .ext-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            direction: ltr;
+            margin: 15px 0;
+        }
+
+        .ext-card {
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 4px;
+            padding: 10px 14px;
+            text-align: center;
+            font-family: var(--font-code);
+            transition: 0.3s;
+        }
+
+        .ext-card:hover { background: rgba(239,68,68,0.15); border-color: #ef4444; transform: scale(1.04); }
+
+        .ext-name { color: #ef4444; font-size: 1rem; font-weight: bold; display: block; }
+        .ext-family { color: #94a3b8; font-size: 0.75rem; display: block; margin-top: 4px; }
+
+        /* Comparison table row colors */
+        .row-spyware td:first-child { color: #a855f7; }
+        .row-worm td:first-child { color: #10b981; }
+        .row-adware td:first-child { color: #f97316; }
+        .row-ransom td:first-child { color: #ef4444; }
+
+        @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align:center;margin-bottom:50px;border-bottom:1px solid #333;padding-bottom:30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CHAPTER 10" style="font-size:4rem;color:#fff;">CHAPTER 10</h1>
+            </div>
+            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">MALWARE CLASSIFICATION — PART II</p>
+            <p style="color:#a855f7;font-size:1.1rem;margin-top:8px;font-family:var(--font-code);">Spyware · Worms · Adware · Ransomware</p>
+            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: THREAT ANALYSIS MODE | CLEARANCE: ARCHITECT</div>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 1. SPYWARE                                      -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.1s;border-color:#a855f7;">
+            <h2 class="cyber-heading" style="color:#a855f7;">1. Spyware <span class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.1);">STEALTH SPY</span></h2>
+
+            <div class="en-def" style="border-left-color:#a855f7;color:#a855f7;">
+                <b>Spyware:</b> "A software installed on a computer without the user's knowledge, designed to monitor online activities, collect personal data, and secretly transmit it to a third party."
+            </div>
+
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                الـ <span class="eng-purple">Spyware</span> زي الجاسوس اللي بيتسلل جوه جهازك بهدوء تام من غير ما تحس بيه. مش بيعمل دمار واضح زي الفيروسات — هدفه الأساسي هو <b>التجسس وسرقة معلوماتك</b> بصمت. بيتابع كل حاجة بتعملها أونلاين: الكيبورد اللي بتكتب عليه، المواقع اللي بتزورها، معلومات الكارت البنكي، والباسووردات. ولما تحس بيه في الغالب بيكون وصّل بياناتك لصاحبه!
+            </div>
+
+            <!-- Stats row -->
+            <div class="grid-3" style="margin:25px 0;">
+                <div class="stat-card">
+                    <span class="stat-number" style="color:#a855f7;">Slow</span>
+                    <span class="stat-label">System Performance Drop</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" style="color:#ef4444;">Silent</span>
+                    <span class="stat-label">Hard to Detect</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" style="color:#10b981;">3rd Party</span>
+                    <span class="stat-label">Data Transmitted To</span>
+                </div>
+            </div>
+
+            <!-- Sources -->
+            <h3 class="sub-heading" style="color:#a855f7;border-left-color:#a855f7;">Spyware Sources — من فين بييجي؟</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-purple">Torrent & File Sharing Sites:</span> أشهر مصدر — تحميل الأفلام والموسيقى والبرامج من مواقع التورنت المشبوهة بيكون مصحوب في الغالب بـ Spyware مختبي جوه الملف.</li>
+                <li><span class="eng-purple">Shareware & Freeware:</span> برامج مجانية بتيجي مع "هدية" مجانية غلط — Spyware بيتسطب بهدوء جنب البرنامج الأصلي.</li>
+                <li><span class="eng-purple">Spam Emails:</span> إيميلات من مجهولين فيها روابط أو مرفقات ملغومة بتنزل الـ Spyware فور ما تضغط عليها.</li>
+            </ul>
+
+            <!-- Objectives -->
+            <h3 class="sub-heading" style="color:#a855f7;border-left-color:#a855f7;">Spyware Objectives — هدفه إيه؟</h3>
+            <div class="grid-2">
+                <div class="code-box" style="border-color:rgba(168,85,247,0.4);">
+// Primary Targets:
+> Credit card numbers
+> Banking credentials
+> Usernames & Passwords
+> Browsing history & habits
+> Keystrokes (what you type)
+> Location tracking data
+                </div>
+                <div class="ar-text" style="border-right-color:#a855f7;margin:0;">
+                    الأهداف بتتلخص في <b>سرقة المعلومات المالية والشخصية</b> — أرقام الكريدت كارد، بيانات الحسابات البنكية، الباسووردات — وكمان تتبع مكانك وتاريخ التصفح وتبيع المعلومات دي لشركات أو جهات خبيثة.
+                </div>
+            </div>
+
+            <!-- Symptoms -->
+            <h3 class="sub-heading" style="color:#a855f7;border-left-color:#a855f7;">Spyware Symptoms — علامات الإصابة</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-purple">System Slowdown:</span> أداء الجهاز بيهبط فجأة وبيكون في استهلاك مستمر من المعالج والذاكرة.</li>
+                <li><span class="eng-purple">Browser Toolbar Changes:</span> بتلاقي إضافات وأدوات غريبة اتضافت لمتصفحك من غير ما تطلب.</li>
+                <li><span class="eng-purple">Unwanted Ads:</span> إعلانات وبوب أبز بتطلع على شاشتك بشكل متكرر ومزعج.</li>
+                <li><span class="eng-purple">Internet Bandwidth Chokes:</span> النت بيبطأ لأن الـ Spyware بيرسل بياناتك لسيرفره في الخلفية.</li>
+                <li><span class="eng-purple">Search Engine Changed:</span> محرك البحث الافتراضي اتغير لموقع غريب من غير إذنك.</li>
+                <li><span class="eng-purple">Programs Crash:</span> بعض البرامج بتوقف عن الشغل أو بتتعطل بشكل مفاجئ.</li>
+            </ul>
+
+            <!-- 4 Types -->
+            <h3 class="sub-heading" style="color:#a855f7;border-left-color:#a855f7;">The 4 Main Types of Spyware</h3>
+
+            <div class="type-card">
+                <div class="type-card-title"><span class="eng-purple">1. Modem Hijacker Spyware</span></div>
+                <div class="type-card-desc">بيختطف الـ Modem الخاص بيك ويحوّل الاتصال لأرقام تليفون بتكلف فلوس كتير (Dial-up premium numbers) أو لسيرفرات تانية من غير علمك.</div>
+            </div>
+
+            <div class="type-card">
+                <div class="type-card-title"><span class="eng-purple">2. Browser Hijacker Spyware</span></div>
+                <div class="type-card-desc">بيسيطر على متصفحك الإنترنت، بيغير الـ Homepage والـ Search Engine وبيحولك لمواقع إعلانية أو خطيرة، وبيمنعك ترجع للإعدادات الأصلية.</div>
+            </div>
+
+            <div class="type-card">
+                <div class="type-card-title"><span class="eng-purple">3. Keyboard Logger (Keylogger) Spyware</span></div>
+                <div class="type-card-desc">ده الأخطر! بيسجل <b>كل ضغطة على الكيبورد</b> بالترتيب ويبعتها للهكر. بيطلع الباسووردات والرسائل وأرقام الكروت تلقائياً.</div>
+            </div>
+
+            <div class="type-card">
+                <div class="type-card-title"><span class="eng-purple">4. Commercial Spyware</span></div>
+                <div class="type-card-desc">بيتستخدم أحياناً بشكل قانوني من الشركات والأهل لمراقبة موظفيهم أو أطفالهم، لكن بيتحول لأداة تجسس خطيرة لو اتساء استخدامه.</div>
+            </div>
+
+            <!-- Real Examples -->
+            <h3 class="sub-heading" style="color:#a855f7;border-left-color:#a855f7;">Real Spyware Examples</h3>
+            <div class="grid-2">
+                <div class="code-box" style="border-color:rgba(168,85,247,0.4);">
+[+] CoolWebSearch (CWS)
+    > Browser Hijacker
+    > Redirects searches to ads
+    > Very persistent & hard to remove
+
+[+] Advanced Keylogger
+    > Records ALL keystrokes
+    > Sends logs via email/FTP
+    > Hides from Task Manager
+
+[+] Internet Optimizer
+    > Claims to speed up internet
+    > Actually hijacks DNS
+    > Redirects error pages to ads
+                </div>
+                <div class="code-box" style="border-color:rgba(168,85,247,0.4);">
+[+] GO Keyboard (Android)
+    > Popular mobile keyboard app
+    > Was caught sending user data
+    > Location + keystrokes leaked
+
+[+] Spyware Preventer
+    > Fake "anti-spyware" tool
+    > Actually installs more spyware
+    > Tricks users into buying it
+    > Classic "Rogue Software" tactic
+                </div>
+            </div>
+
+            <!-- Spyware Slide Images -->
+            <div class="grid-2" style="margin-top: 20px;">
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/spyware_coolwebsearch.png" alt="CoolWebSearch (CWS)">
+                    <span class="image-caption">> CoolWebSearch Spyware Example _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/spyware_keylogger.png" alt="Advanced Keylogger">
+                    <span class="image-caption">> Advanced Keylogger Log Example _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/spyware_internet_optimizer.png" alt="Internet Optimizer & GO Keyboard">
+                    <span class="image-caption">> Internet Optimizer / GO Keyboard _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/spyware_preventer.png" alt="Spyware Preventer">
+                    <span class="image-caption">> Spyware Preventer Rogue Software _</span>
+                </div>
+            </div>
+
+            <!-- Countermeasures -->
+            <h3 class="sub-heading" style="color:#10b981;border-left-color:#10b981;">Countermeasures — الدفاع ضد الـ Spyware</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-green">Close Pop-ups Properly:</span> لو طلع بوب أب غريب، مش هتضغط OK أو NO أو YES — هتقفله من الـ X مباشرة أو من Task Manager.</li>
+                <li><span class="eng-green">Careful with New Sites:</span> تجنب زيارة مواقع مجهولة أو اللي بتوديك ليها Redirects غريبة.</li>
+                <li><span class="eng-green">No Free Downloads from Unknown Sources:</span> ما تنزلش أدوات مجانية إلا من مصادر موثوقة ورسمية.</li>
+                <li><span class="eng-green">Activate Firewall:</span> جدار الحماية بيمنع الـ Spyware من إرسال بياناتك للخارج.</li>
+                <li><span class="eng-green">Update OS & Anti-spyware:</span> تحديثات نظام التشغيل بتسد الثغرات اللي الـ Spyware بيستغلها.</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 2. WORMS                                        -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.2s;border-color:#10b981;">
+            <h2 class="cyber-heading" style="color:#10b981;">2. Worms <span class="badge" style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">SELF-REPLICATING</span></h2>
+
+            <div class="en-def" style="border-left-color:#10b981;color:#10b981;">
+                <b>Worm:</b> "A self-replicating malware that spreads across networks by exploiting OS and network vulnerabilities — WITHOUT requiring any human interaction or host file."
+            </div>
+
+            <div class="ar-text" style="border-right-color:#10b981;">
+                الـ <span class="eng-green">Worm</span> أو الدودة — ده النوع اللي ما بيحتاجش منك أي حاجة عشان ينتشر! مجرد ما يصيب جهاز واحد على الشبكة، بيبدأ فوراً في المسح الأوتوماتيكي للشبكة ويستغل الثغرات في أنظمة التشغيل المجاورة وينسخ نفسه ويسيبها. الضرر مش بس تدمير ملفات، لكن الدودة بتستهلك الـ <span class="eng-green">Bandwidth</span> والذاكرة والهارد بالكامل لحد ما الشبكة بأكملها تسقط!
+            </div>
+
+            <!-- Visual comparison: Virus needs host vs Worm is standalone -->
+            <div class="grid-2" style="margin:25px 0;">
+                <div class="code-box" style="border-color:rgba(239,68,68,0.5);text-align:center;">
+                    <div style="color:#ef4444;font-size:1.2rem;margin-bottom:10px;">⚠️ VIRUS</div>
+                    <div style="color:#94a3b8;">Needs a HOST file to attach to</div>
+                    <div style="color:#94a3b8;margin-top:5px;">Needs USER ACTION to spread</div>
+                    <div style="color:#ef4444;margin-top:10px;">Cannot spread on its own</div>
+                </div>
+                <div class="code-box" style="border-color:rgba(16,185,129,0.5);text-align:center;">
+                    <div style="color:#10b981;font-size:1.2rem;margin-bottom:10px;">☣️ WORM</div>
+                    <div style="color:#94a3b8;">Standalone — No host needed</div>
+                    <div style="color:#94a3b8;margin-top:5px;">Spreads AUTOMATICALLY via network</div>
+                    <div style="color:#10b981;margin-top:10px;">Self-replicates without user action</div>
+                </div>
+            </div>
+
+            <!-- Famous Worms -->
+            <h3 class="sub-heading" style="color:#10b981;border-left-color:#10b981;">Famous Worms — أشهر الديدان في التاريخ</h3>
+
+            <div class="type-card" style="border-color:rgba(16,185,129,0.3);">
+                <div class="type-card-title"><span class="eng-green">1. Blaster Worm (2003)</span></div>
+                <div class="type-card-desc">
+                    استغل ثغرة خطيرة في خدمة الـ <b>RPC (Remote Procedure Call)</b> في ويندوز XP و2000. أشهر حاجة فيه إنه كان بيظهر للضحية رسالة إجبارية: <i>"Windows must now restart because the Remote Procedure Call (RPC) service terminated unexpectedly"</i> ويبدأ عداد تنازلي لإعادة تشغيل الجهاز قسراً. أصاب ملايين الأجهزة حول العالم خلال أيام.
+                </div>
+            </div>
+
+            <div class="type-card" style="border-color:rgba(16,185,129,0.3);">
+                <div class="type-card-title"><span class="eng-green">2. ILOVEYOU Worm (2000)</span></div>
+                <div class="type-card-desc">
+                    وصل عن طريق إيميل بموضوع <b>"ILOVEYOU"</b> ومرفق اسمه <code>LOVE-LETTER-FOR-YOU.txt.vbs</code>. أول ما تفتحه، كان بيبعت نفسه لكل جهات اتصالك في الـ Outlook ويحذف ملفات الصور والموسيقى. خسائره تجاوزت <b>10 مليار دولار</b> وأصاب 10% من أجهزة الإنترنت وقتها.
+                </div>
+            </div>
+
+            <div class="type-card" style="border-color:rgba(16,185,129,0.3);">
+                <div class="type-card-title"><span class="eng-green">3. MyDoom Worm (2004)</span></div>
+                <div class="type-card-desc">
+                    أسرع دودة انتشرت في التاريخ — كانت بتحتل 25% من كل إيميلات الإنترنت في ذروتها! كانت بتنشئ <b>Backdoor</b> على الجهاز المصاب وتستخدمه لشن هجمات DDoS على مواقع زي SCO وMicrosoft.
+                </div>
+            </div>
+
+            <div class="type-card" style="border-color:rgba(16,185,129,0.3);">
+                <div class="type-card-title"><span class="eng-green">4. Code Red Worm (2001)</span></div>
+                <div class="type-card-desc">
+                    استغل ثغرة في <b>Microsoft IIS Web Server</b>. كان بيحط صفحة بدل أي موقع مكتوب عليها <i>"HELLO! Welcome to http://www.worm.com! Hacked By Chinese!"</i> وبيستخدم الجهاز المصاب لشن هجمات على سيرفرات البيت الأبيض الأمريكي.
+                </div>
+            </div>
+
+            <div class="type-card" style="border-color:rgba(16,185,129,0.3);">
+                <div class="type-card-title"><span class="eng-green">5. CIH Worm (Chernobyl Virus, 1998)</span></div>
+                <div class="type-card-desc">
+                    واحدة من أخطر الديدان في التاريخ — كانت بتكتب على الـ <b>BIOS Chip</b> بالكامل وتدمره مما يجعل الجهاز لا يستطيع الإقلاع نهائياً. أصاب ملايين الأجهزة في دول آسيا.
+                </div>
+            </div>
+
+            <!-- Worm images from lecture slides -->
+            <div class="grid-2" style="margin-top: 20px;">
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/worm_blaster.png" alt="Blaster Worm RPC Shutdown Dialog">
+                    <span class="image-caption">> Blaster Worm — Forced 60-Second Shutdown (2003) _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/worm_iloveyou.png" alt="ILOVEYOU Worm Email">
+                    <span class="image-caption">> ILOVEYOU Worm Email (2000) _</span>
+                </div>
+            </div>
+
+            <!-- Worm Symptoms -->
+            <h3 class="sub-heading" style="color:#10b981;border-left-color:#10b981;">Worm Symptoms — علامات الإصابة بالدودة</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-green">OS & File Errors:</span> أخطاء متكررة في ملفات نظام التشغيل وملفات عادية بتختفي أو مش بتتفتح.</li>
+                <li><span class="eng-green">Firewall Warnings:</span> تحذيرات غريبة من جدار الحماية عن اتصالات مجهولة المصدر.</li>
+                <li><span class="eng-green">Strange Icons/Files:</span> ملفات وأيقونات غريبة بتظهر على الـ Desktop من غير سبب.</li>
+                <li><span class="eng-green">System Freezes/Hangs:</span> الجهاز بيتعلق ويهنج أو بيعيد التشغيل لوحده بشكل متكرر.</li>
+                <li><span class="eng-green">Emails Sent Without Your Knowledge:</span> الأصدقاء والـ Contacts بيقولوا إنهم استلموا إيميلات منك ما بعتهاش.</li>
+                <li><span class="eng-green">Network Slowdown:</span> الشبكة بالكامل بتبطأ لأن الدودة بتاكل الـ Bandwidth بحجم الـ Replication.</li>
+            </ul>
+
+            <!-- Countermeasures -->
+            <h3 class="sub-heading" style="color:#10b981;border-left-color:#10b981;">Countermeasures — الحماية من الديدان</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-green">OS Patches & Updates:</span> تحديثات ويندوز بتسد الثغرات اللي الديدان بتستغلها — مش تأجيل أبداً!</li>
+                <li><span class="eng-green">Email Vigilance:</span> ما تفتحش مرفقات من ناس مجهولين حتى لو العنوان جذاب زي "ILOVEYOU".</li>
+                <li><span class="eng-green">Activate Security Firewall:</span> بيمنع الدودة من الاتصال والانتشار لأجهزة تانية.</li>
+                <li><span class="eng-green">Anti-virus + Anti-malware:</span> من شركات موثوقة ومحدّثة دايماً بقواعد بيانات الفيروسات الجديدة.</li>
+                <li><span class="eng-green">Packet Filters on Network:</span> فلترة الباكيتات على مستوى الشبكة لمنع انتشار الدودة بين الأجهزة.</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 3. ADWARE — Interactive Simulator               -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.3s;border-color:#f97316;">
+            <h2 class="cyber-heading" style="color:#f97316;">3. Adware <span class="badge" style="color:#f97316;border-color:#f97316;background:rgba(249,115,22,0.1);">AD INJECTION</span></h2>
+
+            <div class="en-def" style="border-left-color:#f97316;color:#f97316;">
+                <b>Adware:</b> "A program that forces Internet users to view specific advertisements, pop-up windows, or redirected web pages — often without consent and sometimes bundled with legitimate software."
+            </div>
+
+            <div class="ar-text" style="border-right-color:#f97316;">
+                الـ <span class="eng-orange">Adware</span> بيفرض عليك الإعلانات بالغصب! بيتسطب مع برامج مجانية تانية ومرة يكون جوه جهازك بيبدأ يقاطعك بإعلانات في أي وقت: أونلاين، أوفلاين، حتى لو المتصفح مش مفتوح. بعض شركات التسويق الرقمي بتستخدمه بشكل "قانوني" لكنه غالباً بيحتوي على مكونات Spyware لتتبع سلوكك.
+            </div>
+
+            <h3 class="sub-heading" style="color:#f97316;border-left-color:#f97316;">How Adware Works — آلية العمل</h3>
+            <div class="code-box" style="border-color:rgba(249,115,22,0.4);">
+[STEP 1] User downloads "free" software (game, tool, etc.)
+[STEP 2] Adware silently installs alongside it (bundled)
+[STEP 3] Adware registers itself with the OS
+[STEP 4] Browser/system behavior gets hijacked
+[STEP 5] Ads start appearing everywhere — pop-ups, banners, redirects
+[STEP 6] User data (browsing habits) collected & sold to advertisers
+[STEP 7] System slows down due to constant ad loading & data transmission
+            </div>
+
+            <!-- Adware slide images -->
+            <div class="grid-3" style="margin-top: 20px; direction: ltr;">
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/adware_howworks.png" alt="How Adware Works Diagram">
+                    <span class="image-caption">> How Adware Works (Page 26) _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/adware_example1.png" alt="Adware Example 1">
+                    <span class="image-caption">> Adware Example: Security Warning _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/adware_example2.png" alt="Adware Example 2">
+                    <span class="image-caption">> Adware Example: Popups _</span>
+                </div>
+            </div>
+
+            <!-- Adware Simulator -->
+            <div class="video-simulator" id="adware-video" style="border-color:#f97316;box-shadow:0 0 25px rgba(249,115,22,0.2);">
+                <div class="video-header">
+                    <span class="video-title" style="color:#f97316;">> Adware_Infection_Simulator.exe _</span>
+                    <div>
+                        <span class="video-dot" style="background:#f97316;"></span>
+                        <span style="color:#64748b;font-size:0.8rem;">LIVE SIM</span>
+                    </div>
+                </div>
+
+                <div class="video-screen" id="adware-screen">
+                    <div id="adware-content" style="direction:ltr;text-align:left;font-family:var(--font-code);">
+                        <div style="color:#10b981;margin-bottom:10px;">// Browser: Normal State — No Adware</div>
+                        <div style="color:#94a3b8;">URL: https://www.google.com</div>
+                        <div style="color:#94a3b8;margin-top:5px;">Search Results: Clean ✓</div>
+                        <div style="color:#94a3b8;">Pop-ups: None ✓</div>
+                        <div style="color:#94a3b8;">Redirects: None ✓</div>
+                    </div>
+                </div>
+
+                <div class="narration-box" id="adware-narration" style="border-right-color:#f97316;background:rgba(249,115,22,0.08);">
+                    المستخدم نزّل برنامج مجاني لتسريع الجهاز. كل حاجة تمام حتى الآن...
+                </div>
+
+                <div class="video-controls">
+                    <button class="play-btn" id="adware-play-pause" style="border-color:#f97316;color:#f97316;">PAUSE</button>
+                    <div class="progress-bar-container" id="adware-progress-container">
+                        <div class="progress-bar" id="adware-progress" style="background:#f97316;"></div>
+                    </div>
+                    <span id="adware-timer">00:00</span>
+                </div>
+            </div>
+
+            <!-- Adware Symptoms -->
+            <h3 class="sub-heading" style="color:#f97316;border-left-color:#f97316;">Adware Symptoms — علامات الإصابة</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-orange">Frequent Redirects & Pop-ups:</span> متصفحك بيوديك لمواقع إعلانية مش طلبتها، وبوب أبز بتطلع بشكل مجنون.</li>
+                <li><span class="eng-orange">Spam Emails Increase:</span> ملقتش كتير في إيميل الـ Spam لأن الـ Adware بيبيع إيميلك لقوائم بريدية.</li>
+                <li><span class="eng-orange">Heavy Browser Ads:</span> كل صفحة بتفتحها مليانة إعلانات مش طبيعية حتى على مواقع معادة.</li>
+                <li><span class="eng-orange">High Network Traffic:</span> استهلاك إنترنت عالي حتى وانت مش بتعمل حاجة، لأن الـ Adware بيبعت بياناتك.</li>
+                <li><span class="eng-orange">Slow Internet:</span> النت بيبطأ من استهلاك الـ Adware المستمر للـ Bandwidth.</li>
+            </ul>
+
+            <!-- Countermeasures -->
+            <h3 class="sub-heading" style="color:#10b981;border-left-color:#10b981;">Countermeasures — الحماية من الـ Adware</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-green">Pop-up Blocker:</span> فعّل الـ Pop-up Blocker في المتصفح — كروم وفايرفوكس بيعمل ده بشكل افتراضي.</li>
+                <li><span class="eng-green">Activate Firewall:</span> بيمنع الـ Adware من الاتصال بسيرفراته لإرسال بياناتك.</li>
+                <li><span class="eng-green">Install Anti-Adware Software:</span> برامج زي Malwarebytes متخصصة في كشف وإزالة الـ Adware.</li>
+                <li><span class="eng-green">Avoid Free Downloads:</span> إوعى تنزل برامج مجانية مجهولة المصدر — اقرأ كويس شروط التسطيب.</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 4. RANSOMWARE — Extended Coverage               -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.4s;border-color:#ef4444;">
+            <h2 class="cyber-heading" style="color:#ef4444;">4. Ransomware <span class="badge" style="color:#ef4444;border-color:#ef4444;background:rgba(239,68,68,0.1);">FILE HOSTAGE</span></h2>
+
+            <div class="en-def" style="border-left-color:#ef4444;color:#ef4444;">
+                <b>Ransomware:</b> "A type of malware that prevents access to your computer or data by encrypting files, locking the screen, or threatening to delete/leak data — then demands a ransom (usually in cryptocurrency) to restore access."
+            </div>
+
+            <div class="ar-text" style="border-right-color:#ef4444;">
+                الـ <span class="eng-red">Ransomware</span> أو <b>فيروس الفدية</b> — ده أكثر نوع من الـ Malware بيسبب خسائر مادية ضخمة! بيشفر ملفاتك بالكامل ويغير امتداداتها لامتدادات مشفرة مش تقدر تفتحها، ويقفل شاشتك بلوحة حمرا ويطلب منك تدفع <span class="eng-red">Bitcoin</span> في مهلة معينة وإلا بيمسح ملفاتك نهائي. أشهر هجوم: WannaCry 2017 اللي ضرب أكتر من 200,000 جهاز في 150 دولة!
+            </div>
+
+            <div class="grid-3" style="margin-top: 20px; direction: ltr;">
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/wannacry_ransomware.png" alt="WannaCry Ransomware Screen">
+                    <span class="image-caption">> WannaCry Decryptor Screen _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/ransomware_detection.png" alt="Ransomware Detection">
+                    <span class="image-caption">> Ransomware Detection (Page 36) _</span>
+                </div>
+                <div class="image-container" style="margin: 10px auto;">
+                    <img src="images/malware_detection.png" alt="Malware Detection Examples">
+                    <span class="image-caption">> Malware Detection (Page 37) _</span>
+                </div>
+            </div>
+
+            <!-- Ransomware Symptoms -->
+            <h3 class="sub-heading" style="color:#ef4444;border-left-color:#ef4444;">Ransomware Symptoms — علامات الإصابة</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-red">Encrypted Files:</span> ملفاتك اتحولت لامتدادات غريبة زي <code>.locky</code> أو <code>.crypt</code> ومش قادر تفتحها.</li>
+                <li><span class="eng-red">Ransom Note / Changed Desktop:</span> شاشتك اتغيرت لرسالة تهديد بتطلب الفدية أو Desktop wallpaper غريب.</li>
+                <li><span class="eng-red">System Lockout:</span> في بعض أنواعه بيقفل جهازك كله ومش قادر تعمل أي حاجة.</li>
+                <li><span class="eng-red">Unusual Network Activity:</span> نشاط شبكي غريب لأن الفيروس بيتصل بـ C&C Server لتبادل مفاتيح التشفير.</li>
+                <li><span class="eng-red">Disabled Security Software:</span> بيوقف الأنتي فيرس وجدار الحماية عشان ما يتكشفش.</li>
+                <li><span class="eng-red">System Performance Drop:</span> الجهاز بيبطأ جداً أثناء عملية التشفير.</li>
+            </ul>
+
+            <!-- Encrypted Extensions Grid -->
+            <h3 class="sub-heading" style="color:#ef4444;border-left-color:#ef4444;">Ransomware File Extensions — الامتدادات المشفرة (مهمة للامتحان!)</h3>
+            <div class="ext-grid">
+                <div class="ext-card"><span class="ext-name">.locky</span><span class="ext-family">Locky</span></div>
+                <div class="ext-card"><span class="ext-name">.crypt</span><span class="ext-family">CryptXXX</span></div>
+                <div class="ext-card"><span class="ext-name">.zepto</span><span class="ext-family">Locky Variant</span></div>
+                <div class="ext-card"><span class="ext-name">.cerber</span><span class="ext-family">Cerber</span></div>
+                <div class="ext-card"><span class="ext-name">.odin</span><span class="ext-family">Locky Variant</span></div>
+                <div class="ext-card"><span class="ext-name">.wallet</span><span class="ext-family">Dharma</span></div>
+                <div class="ext-card"><span class="ext-name">.crySiS</span><span class="ext-family">Crysis/Dharma</span></div>
+                <div class="ext-card"><span class="ext-name">.arena</span><span class="ext-family">Dharma</span></div>
+                <div class="ext-card"><span class="ext-name">.zzzzz</span><span class="ext-family">TeslaCrypt</span></div>
+                <div class="ext-card"><span class="ext-name">.vvv</span><span class="ext-family">TeslaCrypt</span></div>
+                <div class="ext-card"><span class="ext-name">.xtbl</span><span class="ext-family">Troldesh/Shade</span></div>
+                <div class="ext-card"><span class="ext-name">.exx</span><span class="ext-family">GlobeImposter</span></div>
+                <div class="ext-card"><span class="ext-name">.mole</span><span class="ext-family">CryptoMix</span></div>
+                <div class="ext-card"><span class="ext-name">.phobos</span><span class="ext-family">Phobos</span></div>
+                <div class="ext-card"><span class="ext-name">.makop</span><span class="ext-family">Makop</span></div>
+                <div class="ext-card"><span class="ext-name">.djvu</span><span class="ext-family">STOP/Djvu</span></div>
+                <div class="ext-card"><span class="ext-name">.npsk</span><span class="ext-family">STOP/Djvu</span></div>
+                <div class="ext-card"><span class="ext-name">.tor</span><span class="ext-family">Onion Ransomware</span></div>
+            </div>
+
+            <!-- Countermeasures -->
+            <h3 class="sub-heading" style="color:#10b981;border-left-color:#10b981;">Countermeasures — الحماية من الـ Ransomware</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-green">Regular Data Backups:</span> النسخ الاحتياطي المنتظم هو سلاحك الأقوى — لو اتشفرت ملفاتك، تعمل فورمات وترجع الـ Backup بدون ما تدفع فلوس.</li>
+                <li><span class="eng-green">Keep OS & Software Updated:</span> تحديثات الأمان بتسد ثغرات WannaCry النوع اللي الـ Ransomware بيستغلها.</li>
+                <li><span class="eng-green">Antivirus & Anti-Malware:</span> تسطيب وتحديث برامج الحماية من مصادر موثوقة باستمرار.</li>
+                <li><span class="eng-green">Multi-Factor Authentication (MFA):</span> بيمنع الهكر يدخل على حساباتك حتى لو عنده الباسورد.</li>
+                <li><span class="eng-green">Monitor Network Activity:</span> مراقبة الـ Traffic الغريب اللي بيطلع من الشبكة لسيرفرات مجهولة.</li>
+                <li><span class="eng-green">Enable IDS & IPS:</span> نظام كشف ومنع الاختراق بيحس بسلوك الـ Ransomware قبل ما يكمل عمله.</li>
+            </ul>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 5. COMPARISON TABLE                             -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.5s;border-color:#eab308;">
+            <h2 class="cyber-heading" style="color:#eab308;">5. Full Comparison Table <span class="badge" style="color:#eab308;border-color:#eab308;background:rgba(234,179,8,0.1);">EXAM READY</span></h2>
+
+            <div class="ar-text" style="border-right-color:#eab308;">
+                ده الجدول الذهبي المقارن بين الأربع أنواع — احفظه كويس لأنه أكتر حاجة بتيجي في الامتحان!
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>Malware Type</th>
+                            <th>Main Goal</th>
+                            <th>Spreads How?</th>
+                            <th>Needs User Action?</th>
+                            <th>Main Damage</th>
+                            <th>Key Symptom</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-spyware">
+                            <td><b>Spyware</b></td>
+                            <td style="color:#94a3b8;">Steal personal data secretly</td>
+                            <td style="color:#94a3b8;">Bundled with downloads, spam</td>
+                            <td style="color:#eab308;">Yes — to install</td>
+                            <td style="color:#94a3b8;">Privacy breach, financial theft</td>
+                            <td style="color:#94a3b8;">Slow system, changed browser</td>
+                        </tr>
+                        <tr class="row-worm">
+                            <td><b>Worm</b></td>
+                            <td style="color:#94a3b8;">Consume resources, spread</td>
+                            <td style="color:#94a3b8;">Network vulnerabilities</td>
+                            <td style="color:#10b981;">No — fully automatic</td>
+                            <td style="color:#94a3b8;">Network bandwidth collapse</td>
+                            <td style="color:#94a3b8;">Emails sent without you knowing</td>
+                        </tr>
+                        <tr class="row-adware">
+                            <td><b>Adware</b></td>
+                            <td style="color:#94a3b8;">Force-show ads, collect data</td>
+                            <td style="color:#94a3b8;">Bundled with freeware</td>
+                            <td style="color:#eab308;">Yes — to install</td>
+                            <td style="color:#94a3b8;">Annoying ads, privacy loss</td>
+                            <td style="color:#94a3b8;">Pop-ups, browser redirects</td>
+                        </tr>
+                        <tr class="row-ransom">
+                            <td><b>Ransomware</b></td>
+                            <td style="color:#94a3b8;">Encrypt files, demand ransom</td>
+                            <td style="color:#94a3b8;">Email attachments, exploits</td>
+                            <td style="color:#eab308;">Yes — to execute</td>
+                            <td style="color:#94a3b8;">Data loss, financial extortion</td>
+                            <td style="color:#94a3b8;">Encrypted files (.locky, .crypt)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 6. CRYPTOGRAPHY PRACTICE                        -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.6s;border-color:#f97316;">
+            <h2 class="cyber-heading" style="color:#f97316;">6. Cryptography Practice <span class="badge" style="color:#f97316;border-color:#f97316;background:rgba(249,115,22,0.1);">BONUS TASK</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#f97316;">
+                دي مهمة الـ Cryptography اللي جت في آخر المحاضرة — تدريب عملي على ما اتعلمناه في المحاضرات السابقة:
+            </div>
+            <div class="code-box" style="border-color:rgba(249,115,22,0.5);">
+Task 1: Affine Cipher
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Plaintext: "Attack Amazon Website"
+Key: K = (5, 22)
+Formula: E(x) = (5x + 22) mod 26
+
+A=0,B=1,...,Z=25
+[A(0)]  → (5×0  + 22) mod 26 = 22 → W
+[T(19)] → (5×19 + 22) mod 26 = 117 mod 26 = 13 → N
+[T(19)] → 13 → N
+[A(0)]  → 22 → W
+[C(2)]  → (5×2  + 22) mod 26 = 32 mod 26 = 6  → G
+[K(10)] → (5×10 + 22) mod 26 = 72 mod 26 = 20 → U
+...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Task 2: Hill Cipher (2×2 Key from GYBNQKURP)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Plaintext: ACT
+Key: GYBNQKURP → Key Matrix K = | 6  24  1 |
+                                  | 13 16 10 |
+                                  | 20  17  5 |
+
+A=0, C=2, T=19  → Column Vector [0, 2, 19]ᵀ
+Ciphertext = K × P (mod 26)
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "SPYWAREWORMRANSOMADWARE01*!@#";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        // ─── Adware Simulator ───────────────────────────────
+        const adwareSteps = [
+            {
+                time: 0, narration: "المستخدم نزّل برنامج مجاني لتسريع الجهاز. كل حاجة تمام حتى الآن...",
+                screen: `<div style="color:#10b981;margin-bottom:10px;">// Browser: Normal State</div>
+                         <div style="color:#94a3b8;">URL: https://www.google.com</div>
+                         <div style="color:#94a3b8;margin-top:5px;">Search Results: Clean ✓</div>
+                         <div style="color:#94a3b8;">Pop-ups: None ✓</div>`, bg: "#02040a"
+            },
+            {
+                time: 6, narration: "السطيب انتهى وبدأ برنامج التسريع المجاني. في الخفاء، الـ Adware اتسطب معاه...",
+                screen: `<div style="color:#eab308;margin-bottom:10px;">// Installing: SpeedBoosterPro_free.exe</div>
+                         <div style="color:#94a3b8;">[██████████] 100% Complete</div>
+                         <div style="color:#ef4444;margin-top:8px;">> HIDDEN: AdwareBundle_v3.dll installed silently</div>
+                         <div style="color:#ef4444;">> Registering with Windows startup...</div>`, bg: "#1a1400"
+            },
+            {
+                time: 13, narration: "فتح المتصفح وبدأ البوب أبز تطلع من كل مكان! الـ Homepage اتغير لموقع إعلاني!",
+                screen: `<div style="color:#ef4444;margin-bottom:10px;">// Browser HIJACKED ⚠️</div>
+                         <div style="color:#f97316;">Homepage: http://best-deals-now.adware.ru/</div>
+                         <div style="color:#f97316;margin-top:5px;">🔔 POP-UP: "YOU WON $1000!! CLICK NOW!"</div>
+                         <div style="color:#f97316;">🔔 POP-UP: "FREE iPhone 16 for you!"</div>
+                         <div style="color:#f97316;">🔔 POP-UP: "Update your Flash Player NOW"</div>`, bg: "#1a0800"
+            },
+            {
+                time: 20, narration: "الأنتي أدوير شاف الخطر وقام بحذف الـ Adware وتنظيف المتصفح. الجهاز آمن تاني!",
+                screen: `<div style="color:#10b981;margin-bottom:10px;">// Malwarebytes Anti-Adware SCAN COMPLETE ✓</div>
+                         <div style="color:#10b981;">[REMOVED] AdwareBundle_v3.dll</div>
+                         <div style="color:#10b981;">[REMOVED] BrowserHijacker registry keys</div>
+                         <div style="color:#10b981;">[RESTORED] Browser homepage & settings</div>
+                         <div style="color:#94a3b8;margin-top:8px;">System Status: CLEAN ✓</div>`, bg: "#001a0a"
+            },
+            {
+                time: 27, narration: "المحاكاة خلصت — الـ Adware اتكشف واتحذف. دايماً فعّل الـ Pop-up Blocker وجدار الحماية!",
+                screen: `<div style="color:#00e5ff;margin-bottom:10px;">// Simulation Complete</div>
+                         <div style="color:#94a3b8;">Lesson: Never install unknown freeware.</div>
+                         <div style="color:#94a3b8;margin-top:5px;">Enable pop-up blocker ✓</div>
+                         <div style="color:#94a3b8;">Keep antivirus updated ✓</div>`, bg: "#02040a"
+            }
+        ];
+
+        let adwareTimer = 0;
+        let adwarePlaying = true;
+        let adwareInterval = null;
+        const ADWARE_DURATION = 30;
+
+        function runAdwareSim() {
+            document.getElementById("adware-progress").style.width = (adwareTimer / ADWARE_DURATION * 100) + "%";
+            let s = Math.floor(adwareTimer);
+            document.getElementById("adware-timer").innerHTML = "00:" + (s < 10 ? "0" + s : s);
+
+            let activeStep = adwareSteps[0];
+            for (let step of adwareSteps) {
+                if (adwareTimer >= step.time) activeStep = step;
+            }
+
+            document.getElementById("adware-narration").innerHTML = activeStep.narration;
+            document.getElementById("adware-content").innerHTML = activeStep.screen;
+            document.getElementById("adware-screen").style.backgroundColor = activeStep.bg;
+        }
+
+        function updateAdwareTimer() {
+            if (!adwarePlaying) return;
+            adwareTimer += 0.5;
+            if (adwareTimer > ADWARE_DURATION) adwareTimer = 0;
+            runAdwareSim();
+        }
+
+        adwareInterval = setInterval(updateAdwareTimer, 500);
+
+        document.getElementById("adware-play-pause").addEventListener("click", function () {
+            adwarePlaying = !adwarePlaying;
+            this.innerHTML = adwarePlaying ? "PAUSE" : "PLAY";
+        });
+
+        document.getElementById("adware-progress-container").addEventListener("click", function (e) {
+            const rect = this.getBoundingClientRect();
+            adwareTimer = ((e.clientX - rect.left) / rect.width) * ADWARE_DURATION;
+            runAdwareSim();
+        });
+
+        runAdwareSim();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: Cyberattacks & Vulnerabilities Part II (Detailed)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[CH.06] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        /* Typography Elements */
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 15px 20px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* Utility Colors */
+        .eng-word {
+            font-family: var(--font-code);
+            color: #00e5ff;
+            font-weight: bold;
+        }
+
+        .eng-red {
+            font-family: var(--font-code);
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .eng-purple {
+            font-family: var(--font-code);
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .eng-orange {
+            font-family: var(--font-code);
+            color: #f97316;
+            font-weight: bold;
+        }
+
+        .eng-green {
+            font-family: var(--font-code);
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .eng-yellow {
+            font-family: var(--font-code);
+            color: #eab308;
+            font-weight: bold;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--secondary-color);
+            padding: 20px;
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .accent-box {
+            border-left: 4px solid #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+            padding: 15px;
+        }
+
+        ul.cyber-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 20px;
+        }
+
+        ul.cyber-list li {
+            margin-bottom: 15px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        ul.cyber-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            right: -25px;
+            font-weight: bold;
+            font-family: var(--font-code);
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+            direction: rtl;
+            text-align: right;
+        }
+
+        .cyber-table th,
+        .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Image Box Styling */
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+            filter: brightness(0.9) contrast(1.1);
+            transition: 0.3s;
+        }
+
+        .image-container img:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            filter: brightness(1.0);
+        }
+
+        .image-caption {
+            color: var(--primary-color);
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Simulated Video Player Components */
+        .video-simulator {
+            border: 2px solid var(--primary-color);
+            background: #060913;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
+            position: relative;
+            font-family: var(--font-code);
+            overflow: hidden;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .video-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .video-title {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .video-screen {
+            background: #02040a;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 20px;
+            min-height: 220px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .narration-box {
+            background: rgba(0, 229, 255, 0.08);
+            border-right: 3px solid var(--primary-color);
+            padding: 12px 15px;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.05rem;
+            direction: rtl;
+            text-align: right;
+            min-height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            background: #1e293b;
+            height: 6px;
+            margin: 0 15px;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress-bar-container:hover {
+            height: 8px;
+        }
+
+        .progress-bar {
+            background: var(--primary-color);
+            height: 100%;
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        .play-btn {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .play-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        /* Forms in Simulator */
+        .sim-form-group {
+            margin-bottom: 12px;
+            text-align: left;
+            direction: ltr;
+        }
+
+        .sim-label {
+            display: block;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 4px;
+        }
+
+        .sim-input {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #f1f5f9;
+            padding: 8px 12px;
+            font-family: var(--font-code);
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .sim-input.injected {
+            border-color: #ef4444;
+            color: #ef4444;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+        }
+
+        .sim-btn {
+            width: 100%;
+            background: #0284c7;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-family: var(--font-code);
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+
+        .sim-alert {
+            margin-top: 15px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .sim-alert.success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #10b981;
+            opacity: 1;
+        }
+
+        .sim-alert.danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            opacity: 1;
+        }
+
+        /* Email Screen in Simulator */
+        .sim-email-client {
+            background: #0b0f19;
+            border: 1px solid #1e293b;
+            border-radius: 4px;
+            text-align: left;
+            direction: ltr;
+        }
+
+        .sim-email-header {
+            background: #111827;
+            padding: 10px 15px;
+            border-bottom: 1px solid #1e293b;
+            font-size: 0.85rem;
+        }
+
+        .sim-email-body {
+            padding: 15px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-family: sans-serif;
+        }
+
+        .highlight-pulse {
+            border: 2px solid #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            animation: pulse-border 1.5s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        /* Spamming simulator CSS */
+        .spam-monitor {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            text-align: left;
+            direction: ltr;
+        }
+
+        .spam-card {
+            background: #0b0f19;
+            border: 1px solid #1e293b;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        .spam-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .spam-value.danger {
+            color: #ef4444;
+        }
+
+        /* Mind Map Explanation CSS */
+        .explanation-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #1e293b;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        .explanation-card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 5px;
+        }
+
+        @keyframes pulse {
+            from {
+                opacity: 0.5;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .spam-monitor {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CHAPTER 6" style="font-size: 4rem; color: #fff;">CHAPTER 6</h1>
+            </div>
+            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">CYBERATTACKS &
+                VULNERABILITIES (PART II)</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: WEAPONIZED EXPLOITS |
+                CLEARANCE: BLUE TEAM</div>
+        </header>
+
+        <!-- 1. SQL Injection Attack -->
+        <div class="section-panel" style="animation-delay: 0.1s; border-color: #00e5ff;">
+            <h2 class="cyber-heading" style="color: #00e5ff;">1. SQL Injection (SQLi) <span class="badge">DATABASE
+                    INTRUSION</span></h2>
+
+            <div class="ar-text">
+                بص يا صاحبي، الـ <span class="eng-word">SQL Injection (SQLi)</span> ده من أشهر وأصيع الـ <span
+                    class="eng-word">Web Application Attacks</span>. بيحصل لما الهاكر يستغل ثغرة في الكود إنه مش بيفلتر
+                الـ <span class="eng-word">User Input</span> ويسمى ده بـ <span class="eng-word">Input
+                    Sanitization</span>. فيقوم الهاكر حاقن أو كاتب كود SQL خبيث في خانة الإدخال عشان يتنفذ ورا في
+                السيرفر!
+            </div>
+
+            <div class="en-def">
+                <b>SQL Injection (SQLi) Definition:</b> "A type of malicious practice to steal the valuable data from
+                the database server. This method exploits the vulnerabilities in the traditional Active Server Page
+                (ASP) websites, PHP applications, and SQL server forms."
+            </div>
+
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/sql_injection_diagram.png" alt="SQL Injection Flow Diagram">
+                    <span class="image-caption">> SQL Injection Attack Flow Diagram _</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/sql_injection_illustration.png" alt="SQL Injection Illustration">
+                    <span class="image-caption">> SQLi Authentication Bypass Mechanism Diagram _</span>
+                </div>
+            </div>
+
+            <!-- Simulated Video Tutorial: SQL Injection -->
+            <h3 class="sub-heading">SQL Injection Demo Lab</h3>
+            <div class="ar-text" style="background:none; border:none; padding:0 10px 0 0;">
+                معانا هنا مثال حقيقي لصفحة تسجيل دخول، شغل المحاكي التلقائي تحت عشان تشوف بعينك إزاي الهجوم بيتم خطوة
+                بخطوة:
+            </div>
+
+            <div class="video-simulator" id="sqli-video">
+                <div class="video-header">
+                    <span class="video-title">> SQLi_Exploit_Demo.mp4 _</span>
+                    <div>
+                        <span class="video-dot"></span>
+                        <span style="color:#64748b; font-size:0.8rem;">AUTOPLAYING</span>
+                    </div>
+                </div>
+                <div class="video-screen">
+                    <div id="sqli-form">
+                        <div class="sim-form-group">
+                            <label class="sim-label">Username</label>
+                            <input type="text" class="sim-input" id="sqli-user-input" disabled value="">
+                        </div>
+                        <div class="sim-form-group">
+                            <label class="sim-label">Password</label>
+                            <input type="password" class="sim-input" id="sqli-pass-input" disabled value="">
+                        </div>
+                        <button class="sim-btn" id="sqli-submit-btn" disabled>LOGIN</button>
+                    </div>
+                    <div class="sim-alert" id="sqli-alert-box">ACCESS DENIED</div>
+                </div>
+                <div class="narration-box" id="sqli-narration">
+                    بص يا صاحبي، هنا صفحة تسجيل الدخول العادية اللي في أي ويب سايت...
+                </div>
+                <div class="video-controls">
+                    <button class="play-btn" id="sqli-play-pause">PAUSE</button>
+                    <div class="progress-bar-container" id="sqli-progress-container">
+                        <div class="progress-bar" id="sqli-progress"></div>
+                    </div>
+                    <span id="sqli-timer">00:00</span>
+                </div>
+            </div>
+
+            <h3 class="sub-heading">بيحصل إزاي الهجوم ده بالظبط؟ (How it Works)</h3>
+            <ul class="cyber-list">
+                <li>الهاكر بيقوم حاطط أمر SQL إضافي في خانة الفورم وهو بيملاها (<span class="eng-word">appends an SQL
+                        command in the back-end SQL form field</span>).</li>
+                <li><b>الهدف من اللعبة دي:</b> كسر كود الـ SQL الأصلي المكتوب في الباك-إند عشان ينفذ الكود الخبيث اللي
+                    الهاكر داحسه في النص (<span class="eng-word">break the original SQL script and run the malicious
+                        script</span>).</li>
+                <li>الـ Database بتفتكر الكود ده جزء سليم من الاستعلام وبتنفذه فوراً وترجع بيانات حساسة للهاكر.</li>
+            </ul>
+
+            <div class="code-box">
+                <span style="color:#888;">// الكود الأصلي في الباك-إند:</span><br>
+                SELECT * FROM Users WHERE Username = '<b>user_input</b>' AND Password = '<b>pass_input</b>';<br><br>
+                <span style="color:#ef4444;">// SQLi Attack Payload entered in Username field:</span><br>
+                ' OR '1'='1<br><br>
+                <span style="color:#0f0;">// شكل الكود بعد ما اتدمج واتنفذ فعلياً في الداتابيز:</span><br>
+                SELECT * FROM Users WHERE Username = '' OR '1'='1' AND Password = '...';
+                <br><span style="color:#888;">// وبما إن الشرط ('1'='1') صح دايماً، الاستعلام هيرجع داتا ويدخله للسيستم
+                    من غير باسورد!</span>
+            </div>
+
+            <div class="ar-text accent-box"
+                style="border-left-color: #00e5ff; background: rgba(0, 229, 255, 0.05); text-align: right;">
+                <b>أكتر 3 مجالات متضررة ومتبهدلة من هجمات الـ SQL Injection:</b><br>
+                الترتيب كالتالي:<br>
+                1. شركات ومجال تكنولوجيا المعلومات (<span class="eng-word">IT</span>)<br>
+                2. البنوك ومواقع المعاملات المالية الإلكترونية (<span class="eng-word">Banks and e-transaction
+                    websites</span>)<br>
+                3. المواقع الحكومية (<span class="eng-word">Government websites</span>)
+            </div>
+        </div>
+
+        <!-- 2. Spamming -->
+        <div class="section-panel" style="animation-delay: 0.2s; border-color: #eab308;">
+            <h2 class="cyber-heading" style="color: #eab308; border-bottom-color: rgba(234, 179, 8, 0.3);">2. Spamming
+                <span class="badge" style="color:#eab308; border-color:#eab308; background:rgba(234, 179, 8, 0.1);">MASS
+                    SPAMMING</span></h2>
+
+            <div class="ar-text" style="border-right-color: #eab308;">
+                الـ <span class="eng-yellow">Spamming</span> ده بقى عبارة عن إرسال رسايل أو إيميلات عشوائية ومزعجة
+                (<span class="eng-word">Junk Mails & Messages</span>) بكميات ضخمة جداً (<span class="eng-word">In
+                    Bulk</span>) لعدد كبير من المستخدمين من غير ما يوافقوا ولا يطلبوا الداتا دي أصلاً (<span
+                    class="eng-word">without getting consent</span>).
+            </div>
+
+            <div class="en-def"
+                style="color: #eab308; border-left-color: #eab308; background: rgba(234, 179, 8, 0.05);">
+                <b>Spamming Definition:</b> "Spamming in the IT field is the name of sending junk mails and messages to
+                the users in bulk without getting consent from the users."
+            </div>
+
+            <h3 class="sub-heading">الهاكرز بيستخدموه في إيه؟</h3>
+            <div class="ar-text" style="background:none; border:none; padding:0;">
+                الموضوع مش مجرد إعلانات رخمة، الهاكرز بيستغلوا حملات الـ Spamming عشان ينشروا بلاوي تانية زي:
+            </div>
+            <ul class="cyber-list">
+                <li>نشر الملفات الخبيثة (<span class="eng-yellow">Malware</span>) والفيروسات (<span
+                        class="eng-word">Viruses</span>).</li>
+                <li>توزيع روابط الصفحات المزورة (<span class="eng-word">Phishing</span>).</li>
+                <li>تنزيل حصان طروادة (<span class="eng-word">Trojans</span>)، الديدان (<span
+                        class="eng-word">Worms</span>)، وبرامج التجسس (<span class="eng-word">Spyware</span>) في أجهزة
+                    الضحايا.</li>
+            </ul>
+
+            <!-- Simulated Video Tutorial: Spamming -->
+            <h3 class="sub-heading">Spamming & Resource Exhaustion Lab</h3>
+            <div class="ar-text" style="background:none; border:none; padding:0 10px 0 0;">
+                شغل المحاكي التفاعلي تحت لمشاهدة تأثير الـ Spamming خطوة بخطوة:
+            </div>
+
+            <div class="video-simulator" id="spamming-video"
+                style="border-color:#eab308; box-shadow:0 0 25px rgba(234, 179, 8, 0.2);">
+                <div class="video-header">
+                    <span class="video-title" style="color:#eab308;">> Spam_Flooding_Demo.mp4 _</span>
+                    <div>
+                        <span class="video-dot"></span>
+                        <span style="color:#64748b; font-size:0.8rem;">AUTOPLAYING</span>
+                    </div>
+                </div>
+                <div class="video-screen">
+                    <div class="spam-monitor">
+                        <div class="spam-card">
+                            <div class="sim-label">Legitimate Mails Processed</div>
+                            <div class="spam-value" id="spam-normal-mails">0</div>
+                        </div>
+                        <div class="spam-card">
+                            <div class="sim-label">Spam Mails Received (Bulk)</div>
+                            <div class="spam-value danger" id="spam-junk-mails">0</div>
+                        </div>
+                        <div class="spam-card">
+                            <div class="sim-label">Mail Server CPU Load</div>
+                            <div class="spam-value" id="spam-cpu-load">5%</div>
+                        </div>
+                        <div class="spam-card">
+                            <div class="sim-label">Server Storage Utilization</div>
+                            <div class="spam-value" id="spam-storage">12%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="narration-box" id="spamming-narration"
+                    style="border-right-color:#eab308; background:rgba(234, 179, 8, 0.08);">
+                    في الحالات الطبيعية، سيرفر الإيميل بيعالج الإيميلات الحقيقية بهدوء وبأقل استهلاك للموارد...
+                </div>
+                <div class="video-controls">
+                    <button class="play-btn" id="spamming-play-pause"
+                        style="border-color:#eab308; color:#eab308;">PAUSE</button>
+                    <div class="progress-bar-container" id="spamming-progress-container">
+                        <div class="progress-bar" id="spamming-progress" style="background:#eab308;"></div>
+                    </div>
+                    <span id="spamming-timer">00:00</span>
+                </div>
+            </div>
+
+            <h3 class="sub-heading">طرق ووسائل الإرسال (Modes of Messaging)</h3>
+            <div class="ar-text" style="background:none; border:none; padding:0;">
+                الـ Spamming مش محصور في الإيميل بس، ده بيتم بكل الطرق دي:
+            </div>
+            <ul class="cyber-list">
+                <li>الرسائل الفورية (<span class="eng-yellow">Instant messages</span>) زي الواتساب وتليجرام.</li>
+                <li>البريد الإلكتروني (<span class="eng-yellow">Emails</span>).</li>
+                <li>رسائل شبكات التواصل الاجتماعي (<span class="eng-yellow">Social network messages</span>).</li>
+                <li>الإعلانات المزعجة (<span class="eng-yellow">Ads</span>).</li>
+                <li>رسائل الموبايل القصيرة (<span class="eng-yellow">Mobile phone messages - SMS</span>).</li>
+                <li>المجموعات والجروبات الاجتماعية (<span class="eng-yellow">Social groups</span>).</li>
+            </ul>
+
+            <h3 class="sub-heading">شوية أرقام وإحصائيات (Spam Stats)</h3>
+            <div class="grid-2">
+                <div class="code-box" style="border-color: #eab308;">
+                    <span style="color:#eab308; font-weight:bold;">[ DAILY SPAM VOLUME ]</span><br><br>
+                    - في أوائل سنة <b>2018</b>، الأبحاث بتقول إن فيه أكتر من <b>14.5 billion spam emails</b> كان بيتبعت
+                    يومياً على الإنترنت.<br>
+                    - الإحصائيات بتزيد بشكل مرعب مع الوقت.
+                </div>
+                <div class="code-box" style="border-color: #eab308;">
+                    <span style="color:#eab308; font-weight:bold;">[ FINANCIAL INCENTIVE ]</span><br><br>
+                    - Spammers بيكسبوا أرباح خيالية بتوصل لـ <b>US $7,000 per day</b>!
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Zero-Day Exploitation -->
+        <div class="section-panel" style="animation-delay: 0.3s; border-color: #a855f7;">
+            <h2 class="cyber-heading" style="color: #a855f7; border-bottom-color: rgba(168, 85, 247, 0.3);">3. Zero-Day
+                Exploitation <span class="badge"
+                    style="color:#a855f7; border-color:#a855f7; background:rgba(168, 85, 247, 0.1);">UNKNOWN
+                    VULNERABILITY</span></h2>
+
+            <div class="ar-text" style="border-right-color: #a855f7;">
+                ثغرة الـ <span class="eng-purple">Zero-Day</span> دي عبارة عن نقطة ضعف أو عيب في الكود بتاع البرنامج، بس
+                مفيش حد يعرفه خالص غير الهاكر اللي اكتشفه! والشركة المنتجة للبرنامج متعرفش عنه أي حاجة، وبالتالي مفيش أي
+                ترقيع أمني (<span class="eng-word">Patch</span>) نزل للثغرة دي لسه.
+            </div>
+
+            <div class="en-def">
+                <b>Zero-Day Vulnerability Definition:</b> "A vulnerability in the computer software system that is known
+                exactly on the same day when the malicious attacks exploit that vulnerability."
+            </div>
+
+            <div class="image-container">
+                <img src="images/zeroday_lifecycle.png" alt="Life cycle of a Zero Day">
+                <span class="image-caption">> Life Cycle of a Zero-Day Exploit Diagram _</span>
+            </div>
+
+            <div class="ar-text">
+                لما بيحصل الهجوم ده، المهندسين بتوع الشركة بيبقى معندهمش وقت يلحقوا يصلحوا الثغرة أو يكتبوا تحديث عشان
+                يمنعوا الضرر (<span class="eng-purple">no time to patch up the vulnerability</span>).<br>
+                عشان كده الشركات بتعمل برامج تحفيزية وتدفع فلوس كتير للهاكرز الأخلاقيين عشان يدوروا على الثغرات دي
+                ويقولولهم عليها الأول، البرامج دي اسمها مكافآت صيد الثغرات (<span class="eng-word">Bug Bounty
+                    Rewards</span>).<br>
+                - <b>مثال تاريخي:</b> شركة <span class="eng-word">Google</span> لوحدها دفعت أكتر من <b>3 مليون دولار</b>
+                في سنة 2017 لمكتشفي الثغرات!
+            </div>
+        </div>
+
+        <!-- 4. Phishing vs. Spoofing vs. Spamming -->
+        <div class="section-panel" style="animation-delay: 0.4s; border-color: #ef4444;">
+            <h2 class="cyber-heading" style="color: #ef4444; border-bottom-color: rgba(239, 68, 68, 0.3);">4. Phishing,
+                Spoofing & Spamming <span class="badge"
+                    style="color:#ef4444; border-color:#ef4444; background:rgba(239, 68, 68, 0.1);">SOCIAL
+                    ENGINEERING</span></h2>
+
+            <div class="ar-text" style="border-right-color: #ef4444;">
+                الـ <span class="eng-red">Phishing</span> ده هجوم الهاكر بيبعت فيه رسايل وإيميلات شبه بتاعة البنوك أو
+                شركات التأمين الموثوقة بالظبط، والهدف إنه يغرق الضحية بالرسايل دي عشان يخوفه ويخليه يدخل بياناته الحساسة
+                زي كارت البنك وباسورداته عشان يسرقه.
+            </div>
+
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/spoofing_vs_phishing.png" alt="Spoofing vs Phishing diagram">
+                    <span class="image-caption">> Spoofing vs. Phishing Mechanics Diagram _</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/phishing_vs_spam.png" alt="Phishing vs Spam diagram">
+                    <span class="image-caption">> Phishing vs. Spam Differences Diagram _</span>
+                </div>
+            </div>
+
+            <!-- Simulated Video Tutorial: Phishing -->
+            <h3 class="sub-heading">Phishing Investigation Lab</h3>
+            <div class="ar-text" style="background:none; border:none; padding:0 10px 0 0;">
+                معانا هنا إيميل احتيالي وهمي، شغل المحاكاة لمشاهدة تفصيل الثغرات اللي الهاكر سايبها ورا خطوة بخطوة!
+            </div>
+
+            <div class="video-simulator" id="phishing-video"
+                style="border-color:#ef4444; box-shadow:0 0 25px rgba(239, 68, 68, 0.2);">
+                <div class="video-header">
+                    <span class="video-title" style="color:#ef4444;">> Phishing_Analysis_Demo.mp4 _</span>
+                    <div>
+                        <span class="video-dot"></span>
+                        <span style="color:#64748b; font-size:0.8rem;">AUTOPLAYING</span>
+                    </div>
+                </div>
+                <div class="video-screen">
+                    <div class="sim-email-client">
+                        <div class="sim-email-header">
+                            <div><b>From:</b> <span id="phish-sender">security@paypal.com</span></div>
+                            <div><b>To:</b> victim@cyber.com</div>
+                            <div><b>Subject:</b> <span id="phish-subject">Urgent: Account Suspension Notice</span></div>
+                        </div>
+                        <div class="sim-email-body">
+                            <p id="phish-greeting">Dear Customer,</p>
+                            <p>We detected unauthorized login attempts. Click the button to confirm bank details.</p>
+                            <div style="text-align:center; margin: 15px 0;">
+                                <button id="phish-btn"
+                                    style="background:#0070ba; color:white; border:none; padding:8px 16px; border-radius:4px; font-weight:bold; cursor:not-allowed;">CONFIRM
+                                    BANK DETAILS</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="narration-box" id="phishing-narration"
+                    style="border-right-color:#ef4444; background:rgba(239, 68, 68, 0.08);">
+                    بص في الإيميل ده كويس يا صاحبي، للوهلة الأولى هتشوفه كأنه من شركة PayPal فعلاً...
+                </div>
+                <div class="video-controls">
+                    <button class="play-btn" id="phishing-play-pause"
+                        style="border-color:#ef4444; color:#ef4444;">PAUSE</button>
+                    <div class="progress-bar-container" id="phishing-progress-container">
+                        <div class="progress-bar" id="phishing-progress" style="background:#ef4444;"></div>
+                    </div>
+                    <span id="phishing-timer">00:00</span>
+                </div>
+            </div>
+
+            <h3 class="sub-heading">Phishing Attack Vectors</h3>
+            <ul class="cyber-list">
+                <li>
+                    <span class="eng-red">1. Telephone calls / Vishing:</span> voice phishing, using phone calls with a
+                    human voice to extract details.
+                    <br><span style="color:#aaa; font-size:0.95rem;">(الـ <span class="eng-word">Vishing</span> ده هو
+                        التصيد الصوتي، يعني الهاكر بيكلمك في التليفون بصوت بني آدم حقيقي عشان يستدرجك ويخدعك ويآخد منك
+                        بياناتك الحساسة).</span>
+                </li>
+                <li>
+                    <span class="eng-red">2. Emails:</span> general phishing, sending fake emails posing as trusted
+                    entities.
+                    <br><span style="color:#aaa; font-size:0.95rem;">(الـ <span class="eng-word">Email Phishing</span>
+                        ده التصيد العادي بالإيميلات، الهاكر ببيعتلك إيميل شكله رسمي جداً كأنه من شركة أو بنك موثوق عشان
+                        تقع في الفخ وتدخل اللينك).</span>
+                </li>
+                <li>
+                    <span class="eng-red">3. Small text messages (SMS) / Smishing:</span> using mobile SMS links to
+                    trick targets.
+                    <br><span style="color:#aaa; font-size:0.95rem;">(الـ <span class="eng-word">Smishing</span> ده
+                        التصيد برسايل الـ SMS على الموبايل، بيبعتلك رسالة فيها لينك مشبوه ويدعي إن حسابك هيتوقف ولازم
+                        تأكد بياناتك فوراً).</span>
+                </li>
+            </ul>
+
+            <h3 class="sub-heading">Phishing vs. Spoofing vs. Spamming Comparison</h3>
+            <table class="cyber-table">
+                <thead>
+                    <tr>
+                        <th style="color:#ef4444; text-align:center;">Attack Type</th>
+                        <th style="color:#ef4444; text-align:center;">Mechanism & Objective</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="eng-red" style="text-align:center;">Phishing</td>
+                        <td><b>Tricks victims:</b> Designs a plot/lure to trick victims into directly providing access
+                            to their personal sensitive data (credit cards, pin codes, usernames). Normally used for
+                            financial theft of bank accounts.</td>
+                    </tr>
+                    <tr>
+                        <td class="eng-orange" style="text-align:center;">Spoofing</td>
+                        <td><b>Grabs identity:</b> Hacker tries to grab and clone the original identity of a genuine
+                            user or computer node to conduct unauthorized malicious activities.</td>
+                    </tr>
+                    <tr>
+                        <td class="eng-yellow" style="text-align:center;">Spamming</td>
+                        <td><b>Bulk sending:</b> Sending unsolicited emails/messages in bulk without user consent,
+                            mainly containing irrelevant content or commercial ads, but also used to spread malware.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ar-text accent-box"
+                style="border-right-color: #ef4444; background: rgba(239, 68, 68, 0.05); text-align: right; margin-top: 15px;">
+                <b>الخلاصة والمقارنة السريعة بالبلدي:</b><br>
+                - الـ <span class="eng-word">Phishing</span> بيضحك على الضحية عشان يسلم بياناته البنكية الحساسة <b>بنفسه
+                    طواعية</b> تحت تأثير الخوف أو الإغراء.<br>
+                - الـ <span class="eng-word">Spoofing</span> ده انتحال وتزييف هوية بالكامل (بيسرق الـ Identity أو الـ
+                IP) عشان يعدي من الفايروال والأنظمة الأمنية كأنه شخص موثوق.<br>
+                - الـ <span class="eng-word">Spamming</span> ده إغراق وإرسال رسايل بالجملة وغالباً بتبقى إعلانات مزعجة
+                وبكميات ضخمة جداً لصندوق الوارد لتعطيل الموارد.
+            </div>
+        </div>
+
+        <!-- 5. Cyber Frauds & Forgery -->
+        <div class="section-panel" style="animation-delay: 0.5s; border-color: #10b981;">
+            <h2 class="cyber-heading" style="color: #10b981; border-bottom-color: rgba(16, 185, 129, 0.3);">5. Cyber
+                Frauds & Forgery <span class="badge"
+                    style="color:#10b981; border-color:#10b981; background:rgba(16, 185, 129, 0.1);">DIGITAL
+                    FORGERY</span></h2>
+
+            <div class="ar-text" style="border-right-color: #10b981;">
+                الـ <span class="eng-green">Cyber Frauds and Forgery</span> هو عبارة عن <span class="eng-word">New form
+                    of cyberattack in the modern digital world</span>. في الجريمة دي الـ <span
+                    class="eng-word">digitally stored documents</span> بيتم التعديل عليها وتزويرها بالكامل لإنتاج
+                مستندات مزيفة (<span class="eng-word">counterfeit documents</span>) بهدف الخداع أو الاحتيال المالي
+                والسرقة الإلكترونية.
+            </div>
+
+            <div class="en-def">
+                <b>Cyber Frauds and Forgery:</b> "In this form of crime, the digitally stored documents are forged to
+                form the Fake (counterfeit) documents. This crime is increased during the recent years due to the
+                availability of high-tech devices."
+            </div>
+
+            <h3 class="sub-heading">ليه الجريمة دي زادت جداً السنين الأخيرة؟ (The Rise of Digital Forgery)</h3>
+            <div class="ar-text">
+                الموضوع بقى سهل جداً ومحترف بسبب توافر وانتشار تكنولوجيا الأجهزة الدقيقة والمتاحة للجميع (<span
+                    class="eng-word">availability of high-tech devices</span>) زي:
+                <ul class="cyber-list" style="margin-top:10px;">
+                    <li>برامج التعديل والـ <span class="eng-word">computer software</span> المتطورة جداً في تعديل الصور
+                        والملفات.</li>
+                    <li>الطابعات الحديثة عالية الدقة والـ <span class="eng-word">printers</span> اللي بتطلع شهادات
+                        وفواتير كأنها أصلية بالمللي.</li>
+                    <li>الماسحات الضوئية (<span class="eng-word">scanners</span>) والـ <span
+                            class="eng-word">cameras</span> اللي بتنسخ أي مستند بجودة متناهية.</li>
+                    <li>الموبايلات الذكية والـ <span class="eng-word">mobiles</span> وأدوات التعديل السريعة التانية.
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="sub-heading">أحمي نفسي إزاي من التزوير والنصب الرقمي؟ (Fraud Defense Strategy)</h3>
+            <ul class="cyber-list">
+                <li>إوعى تدي أي بيانات شخصية (الاسم، العنوان، تفاصيل البنك، الإيميل، رقم التليفون) لأي جهة أو شخص إلا
+                    لما تتأكد الأول من هويته وتعمل <span class="eng-word">verifying their credentials</span>.</li>
+                <li>افتكر دايماً إن البنوك والمؤسسات المالية والـ <span class="eng-word">financial institutions</span>
+                    <b>مستحيل تبعتلك إيميل تطلب منك تضغط على لينك وتأكد بياناتك البنكية الحساسة!</b></li>
+                <li>تخلص فوراً ومزق أي فواتير أو وصولات ورقية (<span class="eng-word">receipts</span>) عليها تفاصيل
+                    كارتك البنكي أو اسمك وعنوانك عشان Spammers ومزوري الهويات ميعرفوش يوصلولها.</li>
+                <li>احذر من الـ <span class="eng-red">Recovery Fraud</span>: ده احتيال ونصب صايع جداً، الهاكر فيه بيستغل
+                    إنك اتسرقت واتنصب عليك فعلاً، فيكلمك وينتحل شخصية محامي أو رجل قانون (<span class="eng-word">pretend
+                        to be a lawyer or law enforcement officer</span>) ويقنعك إنه هيساعدك ترجع فلوسك المسروقة بس لازم
+                    تدفع رسوم إدارية أولاً.. فيقوم سارقك لثاني مرة!</li>
+            </ul>
+        </div>
+
+        <!-- 6. Cyberattacks Mind Map -->
+        <div class="section-panel" style="animation-delay: 0.6s; border-color: #00e5ff;">
+            <h2 class="cyber-heading" style="color: #00e5ff;">6. Cyberattacks Mind Map <span class="badge">CIA
+                    CLASSIFICATION</span></h2>
+
+            <div class="ar-text">
+                تصنيف الهجمات دي كلها مبني على أساس ضلع مثلث الـ <span class="eng-word">CIA Triad</span> اللي بينضرب
+                ويتبهدل بسببه. تعال نفصصها ونفهمها واحدة واحدة عشان تفهم ليه كل هجوم محطوط في مكانه بالظبط:
+            </div>
+
+            <div class="image-container">
+                <img src="images/cyberattacks_mindmap.png" alt="Cyberattacks Mind Map Diagram"
+                    style="max-height: 450px;">
+                <span class="image-caption">> Cyberattacks Categorized by CIA Triad Diagram _</span>
+            </div>
+
+            <!-- Deep explanation cards of the classification -->
+            <div class="explanation-card" style="border-right: 3px solid #00e5ff; background: rgba(0, 229, 255, 0.03);">
+                <div class="explanation-card-title" style="color: #00e5ff;">1. Attacks on Confidentiality (سرية البيانات
+                    والخصوصية)</div>
+                بص يا صاحبي، الـ <span class="eng-word">Confidentiality</span> معناها إن محدش يشوف الداتا إلا المرخص ليه
+                فقط. الهجمات دي بتضرب الضلع ده في مقتل لأنها بتراقب وبتتجسس وتسرق البيانات الحساسة من غير إذن:
+                <ul class="cyber-list" style="margin-top:10px;">
+                    <li><span class="eng-word">Traffic analysis & Eavesdropping:</span> التنصت على الشبكة وسحب ومراقبة
+                        حزم البيانات المبعوتة.</li>
+                    <li><span class="eng-word">Snooping & Password attacks:</span> التطفل ومحاولات سرقة الباسوردات
+                        بمختلف هجمات التخمين.</li>
+                    <li><span class="eng-word">Keylogger:</span> برنامج خبيث بيسجل كل حرف بتكتبه على الكيبورد عشان يسرق
+                        حساباتك.</li>
+                    <li><span class="eng-word">Social engineering:</span> الهندسة الاجتماعية واللعب بعقول البشر للحصول
+                        على الباسوردات.</li>
+                </ul>
+            </div>
+
+            <div class="explanation-card"
+                style="border-right: 3px solid #a855f7; background: rgba(168, 85, 247, 0.03);">
+                <div class="explanation-card-title" style="color: #a855f7;">2. Attacks on Integrity (سلامة البيانات ومنع
+                    التعديل والتزوير)</div>
+                الـ <span class="eng-word">Integrity</span> بتضمن إن البيانات متتعدلش ولا تتغير أثناء نقلها أو تخزينها.
+                الهجمات دي بتلعب في الداتا وبتغير قيمها وقوانين عملها:
+                <ul class="cyber-list" style="margin-top:10px;">
+                    <li><span class="eng-word">Salami attack:</span> هجوم السلامي، سرقة مبالغ مالية متناهية الصغر (كسور
+                        القرش) من ملايين الحسابات البنكية وتجميعها في حساب الهاكر، وده تعديل خبيث في الحسابات.</li>
+                    <li><span class="eng-word">Data diddling attack:</span> تعديل الداتا وتخريبها مباشرة قبل إدخالها في
+                        الكمبيوتر أو السيرفر.</li>
+                    <li><span class="eng-word">Cross-site scripting (XSS):</span> حقن كود خبيث في صفحات الويب لتعديل
+                        منطق عملها وتوجيه المستخدمين.</li>
+                    <li><span class="eng-word">SQL injection:</span> حقن كود SQL لتخريب استعلامات الداتابيز وتعديل
+                        البيانات المخزنة وتعديل الصلاحيات.</li>
+                    <li><span class="eng-word">Session hijacking:</span> سرقة واختطاف الجلسة النشطة للتلاعب بالبيانات
+                        باسم المستخدم المخترق.</li>
+                </ul>
+            </div>
+
+            <div class="explanation-card" style="border-right: 3px solid #ef4444; background: rgba(239, 68, 68, 0.03);">
+                <div class="explanation-card-title" style="color: #ef4444;">3. Attacks on Availability (إتاحة الخدمة
+                    للمستخدمين)</div>
+                الـ <span class="eng-word">Availability</span> معناها إن الموقع أو السيرفر يفضل شغال 24 ساعة بدون
+                انقطاع. الهجمات دي هدفها الأساسي تعطيل وإيقاف وخنق السيرفرات عشان تقع خالص:
+                <ul class="cyber-list" style="margin-top:10px;">
+                    <li><span class="eng-word">DoS / DDoS:</span> حجب الخدمة العادي والموزع اللي بيخنق موارد السيرفر
+                        بالـ Botnets.</li>
+                    <li><span class="eng-word">TCP SYN attack:</span> استغلال المصافحة وتعليق الاتصالات حتى شلل موارد
+                        النظام.</li>
+                    <li><span class="eng-word">UDP, ICMP, & HTTP attacks:</span> إغراق السيرفر بطلبات وبوروتوكولات وهمية
+                        سريعة ومفرطة لإرهاق الذاكرة والمعالج.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        // SQL Injection Video Simulator Logic
+        let sqliTimer = 0;
+        let sqliInterval = null;
+        let sqliPlaying = true;
+        const sqliSteps = [
+            { time: 0, text: "بص يا صاحبي، هنا صفحة تسجيل الدخول العادية اللي في أي ويب سايت...", user: "", pass: "", alert: "", alertClass: "", inputClass: false },
+            { time: 4, text: "لو مستخدم عادي كتب اسمه وباسورد غلط وجرب يدخل...", user: "Ahmed_User", pass: "", alert: "", alertClass: "", inputClass: false },
+            { time: 6, text: "السيرفر هيرفض الدخول فوراً ويطلع له خطأ (Access Denied).", user: "Ahmed_User", pass: "123456", alert: "ACCESS DENIED ❌", alertClass: "danger", inputClass: false },
+            { time: 10, text: "جميل؟ دلوقتي بقى الهاكر هيحاول يخترق الصفحة باستغلال ثغرة الـ SQL Injection...", user: "Ahmed_User", pass: "123456", alert: "", alertClass: "", inputClass: false },
+            { time: 15, text: "الهاكر هيكتب كود SQL خبيث في خانة الاسم بدال ما يكتب اسم عادي!", user: "' OR '1'='1", pass: "", alert: "", alertClass: "", inputClass: true },
+            { time: 20, text: "وهيكتب أي باسوورد وهمي، مش فارق معاه...", user: "' OR '1'='1", pass: "hacked123", alert: "", alertClass: "", inputClass: true },
+            { time: 24, text: "هيدوس دخول.. وبوم! كود الـ SQL الخبيث بيتنفذ ويخترق النظام ويدخله كأنه الآدمن!", user: "' OR '1'='1", pass: "hacked123", alert: "ACCESS GRANTED! WELCOME ADMIN! 🔓", alertClass: "success", inputClass: true },
+            { time: 30, text: "كده اللفة خلصت، وهتبدأ تاني من الأول تلقائياً عشان تركز فيها...", user: "", pass: "", alert: "", alertClass: "", inputClass: false }
+        ];
+
+        function runSqliSim() {
+            // Update Progress Bar
+            document.getElementById("sqli-progress").style.width = (sqliTimer / 30 * 100) + "%";
+            // Update Time display
+            let seconds = Math.floor(sqliTimer);
+            document.getElementById("sqli-timer").innerHTML = "00:" + (seconds < 10 ? "0" + seconds : seconds);
+
+            // Find current active step
+            let activeStep = sqliSteps[0];
+            for (let step of sqliSteps) {
+                if (sqliTimer >= step.time) {
+                    activeStep = step;
+                }
+            }
+
+            // Apply values
+            document.getElementById("sqli-narration").innerHTML = activeStep.text;
+            document.getElementById("sqli-user-input").value = activeStep.user;
+            document.getElementById("sqli-pass-input").value = activeStep.pass;
+
+            let alertBox = document.getElementById("sqli-alert-box");
+            if (activeStep.alert) {
+                alertBox.innerHTML = activeStep.alert;
+                alertBox.className = "sim-alert " + activeStep.alertClass;
+            } else {
+                alertBox.className = "sim-alert";
+                alertBox.innerHTML = "";
+            }
+
+            let userInput = document.getElementById("sqli-user-input");
+            if (activeStep.inputClass) {
+                userInput.classList.add("injected");
+            } else {
+                userInput.classList.remove("injected");
+            }
+        }
+
+        function updateSqliTimer() {
+            if (!sqliPlaying) return;
+            sqliTimer += 0.5;
+            if (sqliTimer > 30) sqliTimer = 0;
+            runSqliSim();
+        }
+
+        sqliInterval = setInterval(updateSqliTimer, 500);
+
+        document.getElementById("sqli-play-pause").addEventListener("click", function () {
+            sqliPlaying = !sqliPlaying;
+            this.innerHTML = sqliPlaying ? "PAUSE" : "PLAY";
+        });
+
+        // Scrubbing/Seeking support for SQLi
+        document.getElementById("sqli-progress-container").addEventListener("click", function (e) {
+            const rect = this.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            sqliTimer = (clickX / width) * 30;
+            runSqliSim();
+        });
+
+
+        // Phishing Video Simulator Logic
+        let phishTimer = 0;
+        let phishInterval = null;
+        let phishPlaying = true;
+        const phishSteps = [
+            { time: 0, text: "بص في الإيميل ده كويس يا صاحبي، للوهلة الأولى هتشوفه كأنه من شركة PayPal فعلاً...", sender: "security@paypal.com", senderClass: false, btnClass: false, subject: "Urgent: Account Suspension Notice" },
+            { time: 5, text: "لكن خد بالك من أول ثغرة! الهاكر باعت من عنوان غريب ومزور مش موقعهم الرسمي...", sender: "security@paypa1-security.com", senderClass: true, btnClass: false, subject: "Urgent: Account Suspension Notice" },
+            { time: 12, text: "تاني ثغرة هي أسلوب التهديد والسرعة: 'Urgent: Account Suspension Notice' عشان يخوفك تضغط بسرعة من غير تفكير.", sender: "security@paypa1-security.com", senderClass: false, btnClass: false, subject: "Urgent: Account Suspension Notice" },
+            { time: 18, text: "تالت ثغرة وأخطرهم: زرار 'CONFIRM BANK DETAILS'.. لو وقفت عليه بالماوس هيظهرلك إنه بيوديك لينك خارجي مشبوه تماماً!", sender: "security@paypa1-security.com", senderClass: false, btnClass: true, subject: "Urgent: Account Suspension Notice" },
+            { time: 25, text: "الهدف من اللعبة دي كلها إنه يسرق حسابك البنكي والـ ATM PIN كودز بتاعتك.", sender: "security@paypa1-security.com", senderClass: false, btnClass: false, subject: "Urgent: Account Suspension Notice" },
+            { time: 30, text: "كده لفة التحليل خلصت، وهتبدأ تاني من الأول تلقائياً...", sender: "security@paypal.com", senderClass: false, btnClass: false, subject: "Urgent: Account Suspension Notice" }
+        ];
+
+        function runPhishSim() {
+            // Update Progress Bar
+            document.getElementById("phishing-progress").style.width = (phishTimer / 30 * 100) + "%";
+            // Update Time display
+            let seconds = Math.floor(phishTimer);
+            document.getElementById("phishing-timer").innerHTML = "00:" + (seconds < 10 ? "0" + seconds : seconds);
+
+            // Find current active step
+            let activeStep = phishSteps[0];
+            for (let step of phishSteps) {
+                if (phishTimer >= step.time) {
+                    activeStep = step;
+                }
+            }
+
+            // Apply values
+            document.getElementById("phishing-narration").innerHTML = activeStep.text;
+            document.getElementById("phish-sender").innerHTML = activeStep.sender;
+            document.getElementById("phish-subject").innerHTML = activeStep.subject;
+
+            let senderEl = document.getElementById("phish-sender");
+            if (activeStep.senderClass) {
+                senderEl.classList.add("highlight-pulse");
+                senderEl.style.color = "#ef4444";
+            } else {
+                senderEl.classList.remove("highlight-pulse");
+                senderEl.style.color = "";
+            }
+
+            let btnEl = document.getElementById("phish-btn");
+            if (activeStep.btnClass) {
+                btnEl.classList.add("highlight-pulse");
+            } else {
+                btnEl.classList.remove("highlight-pulse");
+            }
+        }
+
+        function updatePhishTimer() {
+            if (!phishPlaying) return;
+            phishTimer += 0.5;
+            if (phishTimer > 30) phishTimer = 0;
+            runPhishSim();
+        }
+
+        phishInterval = setInterval(updatePhishTimer, 500);
+
+        document.getElementById("phishing-play-pause").addEventListener("click", function () {
+            phishPlaying = !phishPlaying;
+            this.innerHTML = phishPlaying ? "PAUSE" : "PLAY";
+        });
+
+        // Scrubbing/Seeking support for Phishing
+        document.getElementById("phishing-progress-container").addEventListener("click", function (e) {
+            const rect = this.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            phishTimer = (clickX / width) * 30;
+            runPhishSim();
+        });
+
+
+        // Spamming Video Simulator Logic
+        let spamTimer = 0;
+        let spamInterval = null;
+        let spamPlaying = true;
+        const spamSteps = [
+            { time: 0, text: "في الحالة الطبيعية، سيرفر الإيميل بيعالج الإيميلات الحقيقية بهدوء وبأقل استهلاك للموارد.", normal: 5, junk: 0, cpu: "5%", storage: "12%", cpuDanger: false },
+            { time: 5, text: "هنا بيبدأ الـ Spammer يطلق حملة إرسال إيميلات عشوائية ضخمة جداً (In Bulk) للضحايا بدون موافقتهم.", normal: 12, junk: 450, cpu: "28%", storage: "18%", cpuDanger: false },
+            { time: 12, text: "حجم الضغط بيزيد، ومرسل السبام بيبدأ يستهلك موارد السيرفر ويبطئه تماماً، الداتا بتملى الـ Storage والمساحة.", normal: 18, junk: 3500, cpu: "65%", storage: "48%", cpuDanger: false },
+            { time: 20, text: "الموارد انتهت بالكامل (CPU = 99%)! السيرفر واقع وغير قادر على الاستجابة لـ Legitimate users.", normal: 18, junk: 14500, cpu: "99%", storage: "89%", cpuDanger: true },
+            { time: 30, text: "كده اللفة التوضيحية انتهت، وهتبدأ تاني من الأول...", normal: 5, junk: 0, cpu: "5%", storage: "12%", cpuDanger: false }
+        ];
+
+        function runSpamSim() {
+            // Update Progress Bar
+            document.getElementById("spamming-progress").style.width = (spamTimer / 30 * 100) + "%";
+            // Update Time display
+            let seconds = Math.floor(spamTimer);
+            document.getElementById("spamming-timer").innerHTML = "00:" + (seconds < 10 ? "0" + seconds : seconds);
+
+            // Find active step
+            let activeStep = spamSteps[0];
+            for (let step of spamSteps) {
+                if (spamTimer >= step.time) {
+                    activeStep = step;
+                }
+            }
+
+            // Apply values
+            document.getElementById("spamming-narration").innerHTML = activeStep.text;
+            document.getElementById("spam-normal-mails").innerHTML = activeStep.normal;
+            document.getElementById("spam-junk-mails").innerHTML = activeStep.junk;
+
+            let cpuEl = document.getElementById("spam-cpu-load");
+            cpuEl.innerHTML = activeStep.cpu;
+            if (activeStep.cpuDanger) {
+                cpuEl.classList.add("danger");
+            } else {
+                cpuEl.classList.remove("danger");
+            }
+
+            document.getElementById("spam-storage").innerHTML = activeStep.storage;
+        }
+
+        function updateSpamTimer() {
+            if (!spamPlaying) return;
+            spamTimer += 0.5;
+            if (spamTimer > 30) spamTimer = 0;
+            runSpamSim();
+        }
+
+        spamInterval = setInterval(updateSpamTimer, 500);
+
+        document.getElementById("spamming-play-pause").addEventListener("click", function () {
+            spamPlaying = !spamPlaying;
+            this.innerHTML = spamPlaying ? "PAUSE" : "PLAY";
+        });
+
+        // Scrubbing/Seeking support for Spamming
+        document.getElementById("spamming-progress-container").addEventListener("click", function (e) {
+            const rect = this.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            spamTimer = (clickX / width) * 30;
+            runSpamSim();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 8: Cyberattacks & Vulnerabilities Part II (MITM Focus)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[CH.08] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        /* Typography Elements */
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 15px 20px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* Utility Colors */
+        .eng-word {
+            font-family: var(--font-code);
+            color: #00e5ff;
+            font-weight: bold;
+        }
+
+        .eng-red {
+            font-family: var(--font-code);
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .eng-purple {
+            font-family: var(--font-code);
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .eng-orange {
+            font-family: var(--font-code);
+            color: #f97316;
+            font-weight: bold;
+        }
+
+        .eng-green {
+            font-family: var(--font-code);
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .eng-yellow {
+            font-family: var(--font-code);
+            color: #eab308;
+            font-weight: bold;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--secondary-color);
+            padding: 20px;
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .accent-box {
+            border-left: 4px solid #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+            padding: 15px;
+        }
+
+        ul.cyber-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 20px;
+        }
+
+        ul.cyber-list li {
+            margin-bottom: 15px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        ul.cyber-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            right: -25px;
+            font-weight: bold;
+            font-family: var(--font-code);
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+            direction: rtl;
+            text-align: right;
+        }
+
+        .cyber-table th,
+        .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Image Box Styling */
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px auto;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+            filter: brightness(0.9) contrast(1.1);
+            transition: 0.3s;
+        }
+
+        .image-container img:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            filter: brightness(1.0);
+        }
+
+        .image-caption {
+            color: var(--primary-color);
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Simulated Video Player Components */
+        .video-simulator {
+            border: 2px solid var(--primary-color);
+            background: #060913;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
+            position: relative;
+            font-family: var(--font-code);
+            overflow: hidden;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .video-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .video-title {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .video-screen {
+            background: #02040a;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 20px;
+            min-height: 220px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .narration-box {
+            background: rgba(0, 229, 255, 0.08);
+            border-right: 3px solid var(--primary-color);
+            padding: 12px 15px;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.05rem;
+            direction: rtl;
+            text-align: right;
+            min-height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            background: #1e293b;
+            height: 6px;
+            margin: 0 15px;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress-bar-container:hover {
+            height: 8px;
+        }
+
+        .progress-bar {
+            background: var(--primary-color);
+            height: 100%;
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        .play-btn {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .play-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        /* WiFi Sniffer Monitor styles */
+        .wifi-monitor {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            text-align: left;
+            direction: ltr;
+        }
+
+        .wifi-line {
+            background: #0b0f19;
+            border: 1px solid #1e293b;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+        }
+
+        .wifi-line.danger {
+            border-color: #ef4444;
+            color: #ef4444;
+            box-shadow: inset 0 0 5px rgba(239, 68, 68, 0.2);
+        }
+
+        .wifi-line.secure {
+            border-color: #10b981;
+            color: #10b981;
+            box-shadow: inset 0 0 5px rgba(16, 185, 129, 0.2);
+        }
+
+        @keyframes pulse {
+            from {
+                opacity: 0.5;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CHAPTER 8" style="font-size: 4rem; color: #fff;">CHAPTER 8</h1>
+            </div>
+            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">ADVANCED CYBERATTACKS (PART
+                II - MITM FOCUS)</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: EXPLOITING COMMUNICATION |
+                CLEARANCE: ARCHITECT</div>
+        </header>
+
+        <!-- 1. MITM Attacks Overview -->
+        <div class="section-panel" style="animation-delay: 0.1s; border-color: #00e5ff;">
+            <h2 class="cyber-heading" style="color: #00e5ff;">1. Man-In-The-Middle (MITM) <span class="badge">ATTACK
+                    OVERVIEW</span></h2>
+
+            <div class="ar-text">
+                بص يا صاحبي، الـ <span class="eng-word">Man-In-The-Middle (MITM)</span> ده عبارة عن هجوم خبيث وسري جداً. الهاكر فيه بيقحم نفسه في النص بينك وبين الموقع أو السيرفر اللي بتكلمه من غير ما حد فيكم يحس! الهاكر بيعمل <span class="eng-word">intercepts the normal connection</span> بهدف التجسس، أو سرقة البيانات، أو التعديل عليها قبل ما توصل للطرف التاني.
+            </div>
+
+            <div class="en-def">
+                <b>Man-In-The-Middle (MITM) Definition:</b> "The hacker intercepts the normal connection between the
+                user and the web server without any knowledge of both user and server. The legitimate communication link
+                between the two entities is exploited, intercepted, and decrypted to steal the personal information for
+                malicious use."
+            </div>
+
+            <div class="image-container">
+                <img src="images/mitm_attack_flow.png" alt="MITM Attack Flow Diagram">
+                <span class="image-caption">> MITM Interception and Key Hijacking Flow Diagram _</span>
+            </div>
+        </div>
+
+        <!-- 2. MITM Attack Types -->
+        <div class="section-panel" style="animation-delay: 0.2s; border-color: #a855f7;">
+            <h2 class="cyber-heading" style="color: #a855f7;">2. MITM Attack Subtypes <span class="badge"
+                    style="color:#a855f7; border-color:#a855f7; background:rgba(168, 85, 247, 0.1);">VECTORS</span></h2>
+
+            <div class="ar-text" style="border-right-color: #a855f7;">
+                الـ MITM مش مجرد هجوم واحد، ده عائلة كاملة من التكتيكات المتخصصة في الخطف والمراقبة. تعال نفصص أشهر 7 أنواع مقررة عليك:
+            </div>
+
+            <!-- DNS Spoofing -->
+            <h3 class="sub-heading" style="color: #00e5ff; border-left-color: #00e5ff;">1. DNS Spoofing</h3>
+            <div class="en-def" style="border-left-color:#00e5ff;">
+                <b>DNS Spoofing:</b> "When hackers trick your computer into going to a fake website instead of the real
+                one by manipulating the internet's phonebook (DNS). DNS translates human-readable domain names
+                (google.com) into numerical IP addresses."
+            </div>
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/dns_spoofing.png" alt="DNS Spoofing Diagram">
+                    <span class="image-caption">> DNS Spoofing Manipulation _</span>
+                </div>
+                <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                    الـ <span class="eng-word">DNS</span> هو دفتر تليفونات النت اللي بيترجم اسم الموقع لـ <span class="eng-word">numerical IP address</span>. الهاكر هنا بيلعب في الدفتر ده ويزور العنوان، فلما تيجي تكتب أي موقع تلاقي جهازك راح لـ <span class="eng-red">Fake website IP</span> من غير ما تحس!
+                </div>
+            </div>
+
+            <!-- HTTP Spoofing -->
+            <h3 class="sub-heading" style="color: #eab308; border-left-color: #eab308;">2. HTTP Spoofing</h3>
+            <div class="en-def" style="border-left-color:#eab308;">
+                <b>HTTP Spoofing:</b> "When hacker creates a fake copy of a real website to trick users into giving up
+                personal information."
+            </div>
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/http_spoofing.png" alt="HTTP Spoofing Diagram">
+                    <span class="image-caption">> HTTP Spoofing Mimicry _</span>
+                </div>
+                <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                    الهاكر بيعمل <span class="eng-yellow">fake copy</span> نسخة محاكية تماماً ومطابقة للموقع الأصلي، الطالب أو الضحية يفتكره الموقع الحقيقي فيكتب باسوورده أو بيانات كارت البنك، فيقوم الهاكر سارقها فوراً.
+                </div>
+            </div>
+
+            <!-- IP Spoofing -->
+            <h3 class="sub-heading" style="color: #ef4444; border-left-color: #ef4444;">3. IP Spoofing</h3>
+            <div class="en-def" style="border-left-color:#ef4444;">
+                <b>IP Spoofing:</b> "An attacker manipulates the source IP address in network packets to make it appear
+                that the packets come from a trusted source."
+            </div>
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/ip_spoofing.png" alt="IP Spoofing Diagram">
+                    <span class="image-caption">> IP Spoofing Ingress Bypass _</span>
+                </div>
+                <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                    الهاكر بيلعب في الـ <span class="eng-red">source IP address</span> في الداتا اللي باعتها للشبكة، فيخلي الجهاز بتاعه يبان للسيرفر كأنه جهاز موثوق وصديق جوة الشبكة الداخلية فيديله صلاحيات دخول من غير فحص.
+                </div>
+            </div>
+
+            <!-- SSL Hacking -->
+            <h3 class="sub-heading" style="color: #a855f7; border-left-color: #a855f7;">4. SSL Hacking (SSL/TLS
+                Hijacking)</h3>
+            <div class="en-def" style="border-left-color:#a855f7;">
+                <b>SSL Hacking:</b> "Attackers exploit weaknesses in the Secure Sockets Layer (SSL) or Transport Layer
+                Security (TLS), to intercept, decrypt, or manipulate encrypted communication between a user and a
+                website."
+            </div>
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/ssl_hacking.png" alt="SSL Hacking Diagram">
+                    <span class="image-caption">> SSL Decryption Hijack _</span>
+                </div>
+                <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                    الهاكر بيستغل نقط الضعف في بروتوكول التشفير الآمن <span class="eng-purple">SSL/TLS</span> عشان يقدر يفك تشفير الاتصال (<span class="eng-word">decrypt</span>) ويقرأ ويعدل على الرسايل المشفرة وهي ماشية في السلك.
+                </div>
+            </div>
+
+            <!-- Email Hijacking & WiFi Eavesdropping & Cookie Stealing -->
+            <h3 class="sub-heading" style="color: #10b981; border-left-color: #10b981;">5. Email Hijacking, Wi-Fi
+                Eavesdropping & Cookie Stealing</h3>
+
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/email_hijacking.png" alt="Email Hijacking Diagram">
+                    <span class="image-caption">> Email Account Hijacking _</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/wifi_eavesdropping.png" alt="Wi-Fi Eavesdropping Diagram">
+                    <span class="image-caption">> Wi-Fi Sniffing & Eavesdropping _</span>
+                </div>
+            </div>
+
+            <div class="ar-text" style="margin-top:15px;">
+                - <b>الـ Email Hijacking:</b> الهاكر بيسيطر بالكامل على الـ email account بتاع المستخدم عشان يقرأ رسايله
+                أو يبعت رسايل احتيالية باسمه.<br>
+                - <b>الـ Wi-Fi Eavesdropping (التنصت على الواي فاي):</b> الهاكر بيشم ويسرق الداتا الحساسة لما الضحية
+                يدخل شبكة واي فاي عامة وغير محمية (<span class="eng-word">public or unsecured Wi-Fi network</span>).<br>
+                - <b>سرقة الكوكيز (Stealing cookies browsers):</b> الهاكر بيدخل لملفات الكاش والـ cookies المخزنة في
+                المتصفح ويسرقها عشان يدخل على حساباتك من غير ما يطلب باسوورد أصلاً لأن معاه الجلسة النشطة (<span
+                    class="eng-word">Active Session</span>).
+            </div>
+
+            <div class="image-container" style="max-width: 600px; margin: 20px auto;">
+                <img src="images/cookie_stealing.png" alt="Cookie Stealing Diagram">
+                <span class="image-caption">> Browser Cookie Theft Mechanism _</span>
+            </div>
+        </div>
+
+        <!-- 3. Interactive Wi-Fi Eavesdropping Lab -->
+        <div class="section-panel" style="animation-delay: 0.3s; border-color: #ef4444;">
+            <h2 class="cyber-heading" style="color: #ef4444;">3. Wi-Fi Eavesdropping Lab <span class="badge"
+                    style="color:#ef4444; border-color:#ef4444; background:rgba(239, 68, 68, 0.1);">INTERACTIVE</span>
+            </h2>
+
+            <div class="ar-text">
+                شغل المحاكي التفاعلي تحت عشان تشوف إزاي الهاكر بيشم البيانات الحساسة على الشبكة المفتوحة، وإزاي الـ VPN بيحمي اتصالك بتشفير كامل:
+            </div>
+
+            <div class="video-simulator" id="wifi-video"
+                style="border-color:#ef4444; box-shadow:0 0 25px rgba(239, 68, 68, 0.2);">
+                <div class="video-header">
+                    <span class="video-title" style="color:#ef4444;">> WiFi_Eavesdropping_Lab.mp4 _</span>
+                    <div>
+                        <span class="video-dot"></span>
+                        <span style="color:#64748b; font-size:0.8rem;">AUTOPLAYING</span>
+                    </div>
+                </div>
+                <div class="video-screen">
+                    <div class="wifi-monitor">
+                        <div class="wifi-line" id="wifi-step-1">
+                            <span>Connection: Open Public Wi-Fi (CoffeeShop)</span>
+                            <span style="color:#eab308;">UNSECURED</span>
+                        </div>
+                        <div class="wifi-line" id="wifi-step-2">
+                            <span>Browser Request: http://mybank.com/login</span>
+                            <span style="color:#ef4444;">HTTP UNENCRYPTED</span>
+                        </div>
+                        <div class="wifi-line" id="wifi-step-3">
+                            <span>Sniffed Credentials: User=Admin, Pass=SuperSecret</span>
+                            <span style="color:#ef4444;" id="wifi-hacker-status">CAPTURED BY HACKER</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="narration-box" id="wifi-narration"
+                    style="border-right-color:#ef4444; background:rgba(239, 68, 68, 0.08);">
+                    المستخدم كونكت على شبكة واي فاي مفتوحة من غير باسورد...
+                </div>
+                <div class="video-controls">
+                    <button class="play-btn" id="wifi-play-pause"
+                        style="border-color:#ef4444; color:#ef4444;">PAUSE</button>
+                    <div class="progress-bar-container" id="wifi-progress-container">
+                        <div class="progress-bar" id="wifi-progress" style="background:#ef4444;"></div>
+                    </div>
+                    <span id="wifi-timer">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. MITM Prevention -->
+        <div class="section-panel" style="animation-delay: 0.4s; border-color: #10b981;">
+            <h2 class="cyber-heading" style="color: #10b981;">4. Avoiding MITM & Wi-Fi Attacks <span class="badge"
+                    style="color:#10b981; border-color:#10b981; background:rgba(16, 185, 129, 0.1);">DEFENSE</span></h2>
+
+            <div class="ar-text" style="border-right-color: #10b981;">
+                زي ما اتعلمنا، أي هجوم في السايبر له طريقة صد دفاعية. تعال نشوف أهم 6 خطوات لتفادي هجمات رجل في المنتصف والواي فاي:
+            </div>
+
+            <div class="grid-2">
+                <div class="image-container">
+                    <img src="images/mitm_defense.png" alt="MITM Prevention Steps">
+                    <span class="image-caption">> General MITM Avoidance Checklist _</span>
+                </div>
+                <div class="image-container">
+                    <img src="images/wifi_defense.png" alt="WiFi Protection Steps">
+                    <span class="image-caption">> Wi-Fi Eavesdropping Protection Protocol _</span>
+                </div>
+            </div>
+
+            <h3 class="sub-heading">ملخص الحماية الأكاديمي (Defense Rules)</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-green">1. Use a spam filter:</span> لمنع الإيميلات الاحتيالية التي تحتوي على روابط spoofed.</li>
+                <li><span class="eng-green">2. Don't click links:</span> تجنب الضغط على الروابط أو الملفات المرفقة مجهولة المصدر.</li>
+                <li><span class="eng-green">3. Use bookmarks:</span> احفظ المواقع الرسمية في الـ bookmarks وتجنب كتابتها يدوياً لتفادي الـ DNS spoofing.</li>
+                <li><span class="eng-green">4. Search manually:</span> اكتب روابط البنوك والحسابات الحساسة بيدك مباشرة وتأكد من الـ HTTPS.</li>
+                <li><span class="eng-green">5. Use a trusted Antivirus:</span> تثبيت برامج حماية وجدار حماية قوي.</li>
+                <li><span class="eng-green">6. Use a VPN:</span> عند الاتصال بأي شبكة عامة لتشفير كل الداتا المبعوتة فلا يراها الهاكر.</li>
+            </ul>
+        </div>
+
+
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        // WiFi Sniffer Video Simulator Logic
+        let wifiTimer = 0;
+        let wifiInterval = null;
+        let wifiPlaying = true;
+        const wifiSteps = [
+            { time: 0, text: "المستخدم يتصل بشبكة واي فاي عامة ومفتوحة بدون كلمة مرور في أحد المقاهي...", step1: "Connection: Open Public Wi-Fi (CoffeeShop) [UNSECURED]", step2: "Browser Request: ---", step3: "Sniffed Credentials: ---", step1Class: "", step2Class: "", step3Class: "", hacker: "LISTENING..." },
+            { time: 6, text: "المستخدم يحاول فتح صفحة الخدمات المصرفية الخاصة به، لكن الاتصال يمر عبر بروتوكول HTTP غير المشفر!", step1: "Connection: Open Public Wi-Fi (CoffeeShop) [UNSECURED]", step2: "Browser Request: http://mybank.com/login [HTTP UNENCRYPTED]", step3: "Sniffed Credentials: ---", step1Class: "", step2Class: "danger", step3Class: "", hacker: "SNIFFING PACKETS..." },
+            { time: 14, text: "بسبب غياب التشفير، يتمكن المهاجم من اعتراض حزم البيانات والحصول على اسم المستخدم وكلمة المرور بسهولة!", step1: "Connection: Open Public Wi-Fi (CoffeeShop) [UNSECURED]", step2: "Browser Request: http://mybank.com/login [HTTP UNENCRYPTED]", step3: "Sniffed Credentials: User=Admin, Pass=SuperSecret", step1Class: "", step2Class: "danger", step3Class: "danger", hacker: "CAPTURED BY HACKER 😈" },
+            { time: 22, text: "يقوم المستخدم بتفعيل خدمة الـ VPN فوراً لتشفير حركة البيانات بالكامل، مما يمنع المهاجم من اعتراض أي معلومات إضافية!", step1: "Connection: Secured via VPN [ENCRYPTED TUNNEL]", step2: "Browser Request: https://mybank.com/login [HTTPS SECURE]", step3: "Sniffed Credentials: [ENCRYPTED PACKETS - UNREADABLE]", step1Class: "secure", step2Class: "secure", step3Class: "secure", hacker: "BLOCKED / NO DATA 🚫" },
+            { time: 30, text: "تمت محاكاة سيناريو الاختراق والتأمين الفوري عبر الـ VPN، وستتم إعادة تشغيل المحاكاة تلقائياً...", step1: "Connection: Open Public Wi-Fi (CoffeeShop) [UNSECURED]", step2: "Browser Request: ---", step3: "Sniffed Credentials: ---", step1Class: "", step2Class: "", step3Class: "", hacker: "LISTENING..." }
+        ];
+
+        function runWifiSim() {
+            // Update Progress Bar
+            document.getElementById("wifi-progress").style.width = (wifiTimer / 30 * 100) + "%";
+            // Update Time display
+            let seconds = Math.floor(wifiTimer);
+            document.getElementById("wifi-timer").innerHTML = "00:" + (seconds < 10 ? "0" + seconds : seconds);
+
+            // Find active step
+            let activeStep = wifiSteps[0];
+            for (let step of wifiSteps) {
+                if (wifiTimer >= step.time) {
+                    activeStep = step;
+                }
+            }
+
+            // Apply values
+            document.getElementById("wifi-narration").innerHTML = activeStep.text;
+
+            let el1 = document.getElementById("wifi-step-1");
+            el1.innerHTML = activeStep.step1;
+            el1.className = "wifi-line " + activeStep.step1Class;
+
+            let el2 = document.getElementById("wifi-step-2");
+            el2.innerHTML = activeStep.step2;
+            el2.className = "wifi-line " + activeStep.step2Class;
+
+            let el3 = document.getElementById("wifi-step-3");
+            el3.innerHTML = activeStep.step3;
+            el3.className = "wifi-line " + activeStep.step3Class;
+
+            document.getElementById("wifi-hacker-status").innerHTML = activeStep.hacker;
+        }
+
+        function updateWifiTimer() {
+            if (!wifiPlaying) return;
+            wifiTimer += 0.5;
+            if (wifiTimer > 30) wifiTimer = 0;
+            runWifiSim();
+        }
+
+        wifiInterval = setInterval(updateWifiTimer, 500);
+
+        document.getElementById("wifi-play-pause").addEventListener("click", function () {
+            wifiPlaying = !wifiPlaying;
+            this.innerHTML = wifiPlaying ? "PAUSE" : "PLAY";
+        });
+
+        // Scrubbing/Seeking support for WiFi Sniffer
+        document.getElementById("wifi-progress-container").addEventListener("click", function (e) {
+            const rect = this.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            wifiTimer = (clickX / width) * 30;
+            runWifiSim();
+        });
+    </script>
+</body>
+
+</html>

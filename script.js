@@ -51,6 +51,24 @@ const modules = [
         link: "chapter5.html"
     },
     {
+        id: "CH-6",
+        title: "Cyberattacks & Vulnerabilities Part II",
+        description: "Explore the depths of modern threats. Master SQL Injection, Spamming mechanics, Zero-Day Exploitations, Phishing variants (Vishing, Smishing), and Cyber Frauds.",
+        link: "chapter6.html"
+    },
+    {
+        id: "CH-8",
+        title: "Advanced Cyberattacks (MITM focus)",
+        description: "Master Man-in-the-Middle (MITM) attack mechanics, including DNS/HTTP/IP spoofing, SSL Hacking, WiFi Sniffing, and Cookie Theft with VPN solutions.",
+        link: "chapter8.html"
+    },
+    {
+        id: "CH-9",
+        title: "Malware & System Threats",
+        description: "Master the dark world of malicious software. Understand the differences between Viruses, Trojans, Worms, Rootkits, and Ransomware with custom simulations.",
+        link: "chapter9.html"
+    },
+    {
         id: "DICT",
         title: "Cyber Dictionary & Glossary",
         description: "A comprehensive dual-language (English/Arabic) dictionary of every term taught. Search, filter, and study hardware, networking, and cryptography concepts.",

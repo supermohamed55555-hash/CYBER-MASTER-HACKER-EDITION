@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 9: Malware & System Threats (Viruses, Trojans, Worms, Rootkits & Ransomware)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[CH.09] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        /* Typography Elements */
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 15px 20px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        /* Utility Colors */
+        .eng-word {
+            font-family: var(--font-code);
+            color: #00e5ff;
+            font-weight: bold;
+        }
+
+        .eng-red {
+            font-family: var(--font-code);
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .eng-purple {
+            font-family: var(--font-code);
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .eng-orange {
+            font-family: var(--font-code);
+            color: #f97316;
+            font-weight: bold;
+        }
+
+        .eng-green {
+            font-family: var(--font-code);
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .eng-yellow {
+            font-family: var(--font-code);
+            color: #eab308;
+            font-weight: bold;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--secondary-color);
+            padding: 20px;
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .accent-box {
+            border-left: 4px solid #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+            padding: 15px;
+        }
+
+        ul.cyber-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 20px;
+        }
+
+        ul.cyber-list li {
+            margin-bottom: 15px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        ul.cyber-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            right: -25px;
+            font-weight: bold;
+            font-family: var(--font-code);
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+            direction: rtl;
+            text-align: right;
+        }
+
+        .cyber-table th,
+        .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Image Box Styling */
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px auto;
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+            filter: brightness(0.9) contrast(1.1);
+            transition: 0.3s;
+        }
+
+        .image-container img:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            filter: brightness(1.0);
+        }
+
+        .image-caption {
+            color: var(--primary-color);
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Simulated Video Player Components */
+        .video-simulator {
+            border: 2px solid var(--primary-color);
+            background: #060913;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
+            position: relative;
+            font-family: var(--font-code);
+            overflow: hidden;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .video-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        .video-title {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .video-screen {
+            background: #02040a;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 20px;
+            min-height: 250px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: background-color 0.5s ease;
+        }
+
+        .narration-box {
+            background: rgba(0, 229, 255, 0.08);
+            border-right: 3px solid var(--primary-color);
+            padding: 12px 15px;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            margin-top: 15px;
+            font-size: 1.05rem;
+            direction: rtl;
+            text-align: right;
+            min-height: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .video-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            background: #1e293b;
+            height: 6px;
+            margin: 0 15px;
+            border-radius: 3px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress-bar-container:hover {
+            height: 8px;
+        }
+
+        .progress-bar {
+            background: var(--primary-color);
+            height: 100%;
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        .play-btn {
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .play-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        /* Sandbox File Monitor */
+        .sandbox-monitor {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+            direction: ltr;
+        }
+
+        .file-icon {
+            background: #0b0f19;
+            border: 1px solid #1e293b;
+            padding: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .file-icon:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .file-name {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+        }
+
+        .file-status {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            from {
+                opacity: 0.5;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; pointer-events:none; background:linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%); background-size:100% 4px;">
+    </div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CHAPTER 9" style="font-size: 4rem; color: #fff;">CHAPTER 9</h1>
+            </div>
+            <p style="color: var(--primary-color); font-size: 1.8rem; letter-spacing: 2px;">MALWARE & SYSTEM THREATS</p>
+            <div style="margin-top:20px; font-family:var(--font-code); color:#888;">STATUS: ANALYZING INFECTIONS | CLEARANCE: ARCHITECT</div>
+        </header>
+
+        <!-- 1. Malware Overview -->
+        <div class="section-panel" style="animation-delay: 0.1s; border-color: #00e5ff;">
+            <h2 class="cyber-heading" style="color: #00e5ff;">1. What is Malware? <span class="badge">OVERVIEW</span></h2>
+            
+            <div class="ar-text">
+                بص يا صاحبي، الـ <span class="eng-word">Malware</span> هو اختصار لـ <span class="eng-word">Malicious Software</span>. ده الاسم المظلة أو العيلة الكبيرة اللي بتضم أي برنامج خبيث أو كود غير مرغوب فيه بيتم زرعه أو تشغيله على جهاز الضحية (سواء كمبيوتر، سيرفر، أو شبكة كاملة) من غير ما يعرف ولا يوافق، بهدف سرقة البيانات، التجسس، تشفير الملفات لطلب فدية، أو حتى تخريب وتدمير السيستم بالكامل. دراسة وفهم أنواع الـ Malware هي أول خطوة في الحماية والدفاع عن الشبكات وأنظمة التشغيل.
+            </div>
+            
+            <div class="en-def">
+                <b>Malware Definition:</b> "A broad term that refers to any software designed to infiltrate, damage, or disrupt computers, servers, or networks without the user's consent or knowledge."
+            </div>
+        </div>
+
+        <!-- 2. Viruses vs Worms -->
+        <div class="section-panel" style="animation-delay: 0.2s; border-color: #a855f7;">
+            <h2 class="cyber-heading" style="color: #a855f7;">2. Viruses vs. Worms <span class="badge" style="color:#a855f7; border-color:#a855f7; background:rgba(168, 85, 247, 0.1);">PROPAGATION</span></h2>
+            
+            <div class="ar-text" style="border-right-color: #a855f7;">
+                السؤال ده بيعشقوه في الامتحانات وبيتكرر كتير جداً! إيه الفرق الجوهري في طريقة التكاثر والانتشار بين الـ <span class="eng-word">Viruses</span> والـ <span class="eng-word">Worms</span>؟
+            </div>
+
+            <!-- Viruses -->
+            <h3 class="sub-heading" style="color: #00e5ff; border-left-color: #00e5ff;">Computer Viruses</h3>
+            <div class="en-def" style="border-left-color:#00e5ff;">
+                <b>Virus:</b> "A malicious program that alters how a computer operates and is designed to spread from one computer to another by attaching itself to a legitimate program. It REQUIRES user action to execute and replicate."
+            </div>
+            <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                الـ <span class="eng-word">Virus</span> عبارة عن كود خبيث مش بيقدر يعيش لوحده، لازم يربط نفسه بملف أو برنامج سليم وتنفيدي (زي ملفات الـ `.exe` أو المستندات). 
+                <br>**القاعدة الذهبية للفيروس:** **مش بيتنشط ولا ينتشر ولا يتكاثر إلا لو المستخدم غلّط وضغط عليه بنفسه وشغله بالخطأ!**
+                <br>الفيروسات بتنتشر عن طريق نقل الفلاشات (USB) المصابة، أو تحميل كراكات ملغومة من النت، أو فتح مرفقات إيميل مجهولة.
+                <br>أشهر الأمثلة اللي بتجيلك في الامتحان: عائلة الـ <span class="eng-red">Mydoom</span> الشهيرة (زي ملفات `Mydoom.A.exe` أو `Mydoom.AD.exe` اللي كانت بتنزل وتضلل المستخدم)، وأيضاً فيروسات زي <span class="eng-word">Klez</span> و <span class="eng-word">Sasser</span> و <span class="eng-word">Nimda</span>.
+            </div>
+
+            <!-- Worms -->
+            <h3 class="sub-heading" style="color: #10b981; border-left-color: #10b981;">Computer Worms</h3>
+            <div class="en-def" style="border-left-color:#10b981;">
+                <b>Worm:</b> "A self-replicating program that can spread across networks without any human intervention. It exploits security vulnerabilities to automatically infect other systems."
+            </div>
+            <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                أما الـ <span class="eng-word">Worm</span> بقا، فدي وحش الانتشار والتكاثر الذاتي! **مش محتاجة أي تدخل بشري ولا ضغط كليك من الضحية عشان تنتشر.**
+                <br>بمجرد ما تصيب جهاز واحد مربوط على شبكة محلية أو عامة، بتبدأ تعمل فحص تلقائي (Scanning) للشبكة، وبتستغل الثغرات والـ vulnerabilities المفتوحة في أنظمة تشغيل الأجهزة التانية، وتبعت نسخ من نفسها وتخترقها في ثواني!
+                <br>**الضرر الأساسي للديدان:** مش بس تدمير الملفات، هي بتستهلك موارد الشبكة بالكامل (بتاكل الباندويدث <span class="eng-green">Bandwidth</span> والذاكرة والهارد) من كتر ما بتنسخ نفسها وتتحرك في السلك، لحد ما الشبكة تتهنج وتقع خالص!
+                <br>أشهر الأمثلة الأسطورية: دودة <span class="eng-red">Blaster</span> الشهيرة (اللي كانت بتستغل ثغرة RPC وتظهر رسالة قفل الويندوز الإجباري للضحية خلال 60 ثانية) ودودة <span class="eng-word">Code Red</span> ودودة <span class="eng-word">ILOVEYOU</span>.
+            </div>
+
+            <div class="image-container">
+                <img src="images/blaster_worm.png" alt="Blaster Worm Shutdown Alert Screenshot">
+                <span class="image-caption">> Historical Blaster Worm RPC Shutdown Dialog (2003) _</span>
+            </div>
+        </div>
+
+        <!-- 3. Trojans & Rootkits -->
+        <div class="section-panel" style="animation-delay: 0.3s; border-color: #eab308;">
+            <h2 class="cyber-heading" style="color: #eab308;">3. Trojans & Rootkits <span class="badge" style="color:#eab308; border-color:#eab308; background:rgba(234, 179, 8, 0.1);">STEALTH & ACCESS</span></h2>
+
+            <!-- Trojans -->
+            <h3 class="sub-heading" style="color: #eab308; border-left-color: #eab308;">Trojan Horse</h3>
+            <div class="en-def" style="border-left-color:#eab308;">
+                <b>Trojan Horse:</b> "A malicious program disguised as legitimate, useful software. Once installed, it opens a backdoor for attackers. It CANNOT replicate or spread on its own."
+            </div>
+            <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                مستوحى بالكامل من حصان طروادة الخشبي التاريخي! الـ <span class="eng-word">Trojan</span> هو كود خبيث بيخدعك عن طريق التنكر في شكل برنامج مفيد وسليم جداً (زي لعبة مجانية، أو أداة لتسريع المتصفح، أو برنامج تعديل صور)، وأول ما الضحية يثق فيه ويسطبه، بيقوم التروجان بفتح باب خلفي (<span class="eng-yellow">Backdoor</span>) أو ينزل برامج اختراق تانية تمكن الهكر من السيطرة التامة على الجهاز وسرقة الداتا وتثبيت أدوات تجسس.
+                <br>**معلومة هامة للامتحان:** التروجان **لا يتضاعف ولا يتكاثر ولا ينتشر تلقائياً** (Cannot Replicate or spread on its own) بعكس الديدان والفيروسات.
+                <br>التروجانز بتعتبر من التهديدات الأكثر انتشاراً: في سنة 2016 كانت مسؤولة عن **74.99%** من كل إصابات الأجهزة والـ Malware حول العالم! والـ <span class="eng-word">Trojan Dropper</span> (النوع المسؤول عن تنزيل ملفات ضارة تانية) كان تاني أكبر تهديد في 2018.
+            </div>
+
+            <!-- Rootkits -->
+            <h3 class="sub-heading" style="color: #ef4444; border-left-color: #ef4444;">Rootkits</h3>
+            <div class="en-def" style="border-left-color:#ef4444;">
+                <b>Rootkit:</b> "A collection of software tools that enables an unauthorized user to gain control (Administrator-level privileges) of a computer system without being detected. It hides itself by altering system calls."
+            </div>
+            <div class="ar-text" style="background:none; border:none; padding:0; line-height:1.8;">
+                ده بقا أخبث وأخطر نوع في شجرة عيلة الـ Malware! الـ <span class="eng-word">Rootkit</span> وظيفته الأساسية هي إعطاء الهكر صلاحيات المدير بالكامل للتحكم بالسيستم (<span class="eng-red">Administrator-level privileges</span>) مع الاختفاء والتمويه التام عشان الأنتي فيرس ما يشفهوش نهائي!
+                <br>لما الأنتي فيرس ييجي يعمل فحص، الـ Rootkit بيعدل في مسار الطلبات (<span class="eng-word">System Calls / APIs</span>) ويرد على الأنتي فيرس بـ **Fake Responses** (ردود مزيفة) تقوله: "كله تمام يا باشا ومفيش أي كود خبيث!" وبالتالي بيفضل شغال في صمت تام.
+                <br>**ترتيب صلاحيات ومستويات الـ Rootkits (من الأضعف للأخطر والأقوى):**
+                <br><span class="eng-word">User-mode</span> (الأقل صلاحية) &rarr; <span class="eng-word">Application</span> &rarr; <span class="eng-word">Memory</span> &rarr; <span class="eng-word">Hardware</span> &rarr; <span class="eng-word">Bootloader</span> &rarr; <span class="eng-red">Kernel-mode</span> (الأخطر والمسيطر على نواة نظام التشغيل بالكامل).
+                <br>**أعراض الإصابة بالـ Rootkit:**
+                <br>1. تعديل تلقائي غريب في تاريخ ووقت جهاز الكمبيوتر.
+                <br>2. بطء شديد جداً ومفاجئ في الأداء وظهور شاشة الموت الزرقاء (<span class="eng-word">BSOD</span>) بشكل متكرر.
+                <br>3. توقف كامل لعمل برنامج الأنتي فيرس وعدم استجابته للتشغيل.
+                <br>للكشف عنه بنحتاج أدوات فحص متقدمة زي تقنيات <span class="eng-word">STAR</span> (Security Technology and Response) المخصصة.
+            </div>
+        </div>
+
+        <!-- 4. Interactive Malware Simulator -->
+        <div class="section-panel" style="animation-delay: 0.4s; border-color: #ef4444;">
+            <h2 class="cyber-heading" style="color: #ef4444;">4. Interactive Ransomware & Backup Lab <span class="badge" style="color:#ef4444; border-color:#ef4444; background:rgba(239, 68, 68, 0.1);">SANDBOX SIMULATOR</span></h2>
+            
+            <div class="ar-text">
+                شغل المحاكي التفاعلي تحت عشان تعيش تجربة هجوم الـ **Ransomware** (فيروس الفدية) الحقيقية! جرب تفتح الملف الملغوم وشوف إزاي بيقفل الملفات ويشفرها لملفات وامتدادات مشفرة زي `.locky` و `.crypt` ويطلب فدية بالبيتكوين، وإزاي الـ **Backup** بينقذك فوراً:
+            </div>
+
+            <div class="video-simulator" id="malware-video" style="border-color:#ef4444; box-shadow:0 0 25px rgba(239, 68, 68, 0.2);">
+                <div class="video-header">
+                    <span class="video-title" style="color:#ef4444;">> Ransomware_Simulation_Sandbox.exe _</span>
+                    <div>
+                        <span class="video-dot"></span>
+                        <span style="color:#64748b; font-size:0.8rem;">AUTOPLAYING</span>
+                    </div>
+                </div>
+                <div class="video-screen" id="sandbox-screen">
+                    <div class="sandbox-monitor" id="file-grid">
+                        <div class="file-icon" id="file-1" onclick="triggerInfection()">
+                            <span style="font-size: 2.5rem;">📄</span>
+                            <span class="file-name">invoice_details.pdf.exe</span>
+                            <span class="file-status" style="color:#eab308;">SUSPICIOUS</span>
+                        </div>
+                        <div class="file-icon" id="file-2">
+                            <span style="font-size: 2.5rem;">📁</span>
+                            <span class="file-name">my_photos.zip</span>
+                            <span class="file-status" style="color:#10b981;">SAFE</span>
+                        </div>
+                        <div class="file-icon" id="file-3">
+                            <span style="font-size: 2.5rem;">💾</span>
+                            <span class="file-name">system_backup.tar</span>
+                            <span class="file-status" style="color:#10b981;">SAFE</span>
+                        </div>
+                    </div>
+                    <div id="ransom-note" style="display:none; text-align:center; color:#ef4444; font-family:'Share Tech Mono', monospace; direction:ltr;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 10px; animation: blink 1s infinite;">⚠️ YOUR FILES HAVE BEEN ENCRYPTED! ⚠️</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 15px;">All your photos, documents, and databases have been locked with .locky extensions.<br>To decrypt, send 0.05 BTC to wallet: 1HpG2J...</p>
+                        <button class="play-btn" onclick="restoreBackup()" style="border-color:#10b981; color:#10b981; font-weight:bold; font-size:1rem; padding: 10px 20px;">RESTORE FROM BACKUP</button>
+                    </div>
+                </div>
+                <div class="narration-box" id="malware-narration" style="border-right-color:#ef4444; background:rgba(239, 68, 68, 0.08);">
+                    المستخدم لقى إيميل جاي له فيه ملف مرفق اسمه invoice_details.pdf.exe يفتكره فاتورة عادية...
+                </div>
+                <div class="video-controls">
+                    <button class="play-btn" id="malware-play-pause" style="border-color:#ef4444; color:#ef4444;">PAUSE</button>
+                    <div class="progress-bar-container" id="malware-progress-container">
+                        <div class="progress-bar" id="malware-progress" style="background:#ef4444;"></div>
+                    </div>
+                    <span id="malware-timer">00:00</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Ransomware & Defenses -->
+        <div class="section-panel" style="animation-delay: 0.5s; border-color: #10b981;">
+            <h2 class="cyber-heading" style="color: #10b981;">5. Ransomware & Defense Protocols <span class="badge" style="color:#10b981; border-color:#10b981; background:rgba(16, 185, 129, 0.1);">MITIGATION</span></h2>
+            
+            <div class="ar-text" style="border-right-color: #10b981;">
+                الـ <span class="eng-word">Ransomware</span> هو هجوم ابتزازي بيقوم بتشفير ملفات جهازك بالكامل ويغير امتدادها، ويقفل شاشة جهازك ويعرض رسالة تهديد تطالبك بدفع مبالغ مالية أو فدية بعملة مشفرة زي البيتكوين (<span class="eng-word">Bitcoin</span>) خلال مهلة زمنية قصيرة، وإلا هيتم تدمير ومسح الملفات نهائياً!
+                <br>**أشهر الامتدادات اللي بتشوفها في فيروس الفدية (مهمة للامتحان):**
+                <br><span class="eng-yellow">.locky, .crypt, .zepto, .cerber, .odin, .wallet, .crySiS, .arena, .zzzzz, .vvv, .xtbl, .exx, .mole, .phobos, .makop, .djvu, .tor</span>.
+            </div>
+
+            <div class="image-container">
+                <img src="images/wannacry_ransomware.png" alt="WannaCry Ransomware Alert Screenshot">
+                <span class="image-caption">> Live WannaCry Ransomware Decryptor Screen (2017) _</span>
+            </div>
+
+            <h3 class="sub-heading">قواعد الذهب للحماية من الـ Malware والـ Ransomware</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-green">1. Backups (النسخ الاحتياطي الدوري):</span> ده السلاح الأقوى على الإطلاق! لو ملفاتك اتلغت أو اتشفرت، هتعمل فورمات وترجع نسختك الاحتياطية بدون ما تدفع مليم للهكر.</li>
+                <li><span class="eng-green">2. Multi-Factor Authentication (MFA):</span> تفعيل المصادقة الثنائية لمنع الهكرز من سرقة حساباتك حتى لو معاهم الباسورد.</li>
+                <li><span class="eng-green">3. Anti-virus & OS Updates:</span> تحديث نظام التشغيل وتثبيت برامج مكافحة فيروسات موثوقة وجدار حماية لتسكير الثغرات.</li>
+                <li><span class="eng-green">4. Don't Open Suspicious Attachments:</span> تجنب تحميل أي ملفات تنفيذية غامضة أو فتح مرفقات إيميل غير معروفة.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const letters = "01ABCDEXFYZ*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+        // Malware Simulator Logic
+        let malwareTimer = 0;
+        let malwareInterval = null;
+        let malwarePlaying = true;
+        let infected = false;
+
+        const malwareSteps = [
+            { time: 0, text: "المستخدم لقى إيميل فيه ملف مرفق اسمه invoice_details.pdf.exe يفتكره فاتورة عادية...", state: "normal" },
+            { time: 8, text: "المستخدم ضغط دبل كليك عشان يفتح الفاتورة.. بوم! اشتغل فيروس الفدية (Ransomware) المتخفي جوه التروجان!", state: "warning" },
+            { time: 16, text: "الفيروس مسك كل الملفات والصور وشفرها لامتدادات مشفرة (.locky) وقفل شاشة الجهاز برسالة فدية بالبيتكوين!", state: "infected" },
+            { time: 24, text: "المستخدم طلع ذكي، وعمل فورمات ورجع كل الملفات السليمة من النسخة الاحتياطية (Backup) وعلم على الهكر إكس!", state: "restored" },
+            { time: 30, text: "المحاكاة خلصت، تقدر تضغط على أي خطوة في التايم لاين تحت عشان تعيد اللقطات...", state: "normal" }
+        ];
+
+        function runMalwareSim() {
+            document.getElementById("malware-progress").style.width = (malwareTimer / 30 * 100) + "%";
+            let seconds = Math.floor(malwareTimer);
+            document.getElementById("malware-timer").innerHTML = "00:" + (seconds < 10 ? "0" + seconds : seconds);
+
+            let activeStep = malwareSteps[0];
+            for (let step of malwareSteps) {
+                if (malwareTimer >= step.time) {
+                    activeStep = step;
+                }
+            }
+
+            document.getElementById("malware-narration").innerHTML = activeStep.text;
+            applyState(activeStep.state);
+        }
+
+        function applyState(state) {
+            const screen = document.getElementById("sandbox-screen");
+            const grid = document.getElementById("file-grid");
+            const note = document.getElementById("ransom-note");
+            
+            const file1 = document.getElementById("file-1");
+            const file2 = document.getElementById("file-2");
+            const file3 = document.getElementById("file-3");
+
+            if (state === "normal") {
+                screen.style.backgroundColor = "#02040a";
+                grid.style.display = "grid";
+                note.style.display = "none";
+                file1.querySelector(".file-name").innerHTML = "invoice_details.pdf.exe";
+                file1.querySelector(".file-status").innerHTML = "SUSPICIOUS";
+                file1.querySelector(".file-status").style.color = "#eab308";
+                file2.querySelector(".file-name").innerHTML = "my_photos.zip";
+                file2.querySelector(".file-status").innerHTML = "SAFE";
+                file2.querySelector(".file-status").style.color = "#10b981";
+                file3.querySelector(".file-name").innerHTML = "system_backup.tar";
+                file3.querySelector(".file-status").innerHTML = "SAFE";
+                file3.querySelector(".file-status").style.color = "#10b981";
+            } else if (state === "warning") {
+                screen.style.backgroundColor = "#2d1f10";
+                grid.style.display = "grid";
+                note.style.display = "none";
+                file1.querySelector(".file-status").innerHTML = "RUNNING...";
+                file1.querySelector(".file-status").style.color = "#ef4444";
+            } else if (state === "infected") {
+                screen.style.backgroundColor = "#3b0707";
+                grid.style.display = "none";
+                note.style.display = "block";
+            } else if (state === "restored") {
+                screen.style.backgroundColor = "#062016";
+                grid.style.display = "grid";
+                note.style.display = "none";
+                file1.querySelector(".file-name").innerHTML = "[DELETED VIRUS]";
+                file1.querySelector(".file-status").innerHTML = "CLEANED";
+                file1.querySelector(".file-status").style.color = "#10b981";
+                file2.querySelector(".file-status").innerHTML = "RESTORED";
+                file2.querySelector(".file-status").style.color = "#10b981";
+                file3.querySelector(".file-status").innerHTML = "RESTORED";
+                file3.querySelector(".file-status").style.color = "#10b981";
+            }
+        }
+
+        function triggerInfection() {
+            malwareTimer = 8;
+            runMalwareSim();
+        }
+
+        function restoreBackup() {
+            malwareTimer = 24;
+            runMalwareSim();
+        }
+
+        function updateMalwareTimer() {
+            if (!malwarePlaying) return;
+            malwareTimer += 0.5;
+            if (malwareTimer > 30) malwareTimer = 0;
+            runMalwareSim();
+        }
+
+        malwareInterval = setInterval(updateMalwareTimer, 500);
+
+        document.getElementById("malware-play-pause").addEventListener("click", function () {
+            malwarePlaying = !malwarePlaying;
+            this.innerHTML = malwarePlaying ? "PAUSE" : "PLAY";
+        });
+
+        document.getElementById("malware-progress-container").addEventListener("click", function (e) {
+            const rect = this.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            malwareTimer = (clickX / width) * 30;
+            runMalwareSim();
+        });
+    </script>
+</body>
+
+</html>
