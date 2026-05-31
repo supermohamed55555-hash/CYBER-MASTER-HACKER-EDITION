@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 11 & 12: Wireless Network Security & Standards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[CH.11-12] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 15px 20px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
+        .eng-red   { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
+        .eng-purple{ font-family: var(--font-code); color: #a855f7; font-weight: bold; }
+        .eng-orange{ font-family: var(--font-code); color: #f97316; font-weight: bold; }
+        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
+        .eng-yellow{ font-family: var(--font-code); color: #eab308; font-weight: bold; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--secondary-color);
+            padding: 20px;
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        ul.cyber-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 20px;
+        }
+
+        ul.cyber-list li {
+            margin-bottom: 15px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        ul.cyber-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            right: -25px;
+            font-weight: bold;
+            font-family: var(--font-code);
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cyber-table th, .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 12px 15px;
+            font-size: 0.95rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Image Box */
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 229, 255, 0.15);
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px auto;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
+            border: 1px solid var(--secondary-color);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+            filter: brightness(0.9) contrast(1.1);
+            transition: 0.3s;
+        }
+
+        .image-container img:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            filter: brightness(1.0);
+        }
+
+        .image-caption {
+            color: var(--primary-color);
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align:center;margin-bottom:50px;border-bottom:1px solid #333;padding-bottom:30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="CHAPTER 11 & 12" style="font-size:4rem;color:#fff;">CHAPTER 11 & 12</h1>
+            </div>
+            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">WIRELESS SECURITY &amp; STANDARDS</p>
+            <p style="color:#a855f7;font-size:1.1rem;margin-top:8px;font-family:var(--font-code);">Wireless Networks · IoT · ISO Standards · WWAN Protocols</p>
+            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: WIRELESS AUDITING MODE | CLEARANCE: ARCHITECT</div>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 1. WIRELESS NETWORK SECURITY INTRODUCTION        -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.1s;border-color:#00e5ff;">
+            <h2 class="cyber-heading" style="color:#00e5ff;">1. Wireless Network Security Introduction <span class="badge" style="color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.1);">WIFI PROTOCOLS</span></h2>
+
+            <div class="ar-text" style="border-right-color:#00e5ff;">
+                أكبر مشكلة في الشبكات اللاسلكية (<span class="eng-word">Wireless Networks</span>) إن الإشارة بتمشي في الهوا! يعني أي حد في مدى الإشارة يقدر يلتقطها بكل سهولة ويتجسس عليها. عشان كده تأمينها بيعتمد بالكامل على تشفير البيانات وتأمين نقاط الوصول الـ <span class="eng-purple">Access Points (APs)</span> وكروت الواي فاي. بروتوكولات الواي فاي زي <span class="eng-word">IEEE 802.11 b/g/n</span> بتشتغل في الطبقة الأولى والثانية من نموذج الـ OSI (<span class="eng-word">Physical & Data Link Layers</span>).
+            </div>
+
+            <!-- Vulnerability Points -->
+            <h3 class="sub-heading" style="color:#00e5ff;border-left-color:#00e5ff;">Threat Points of Wireless Networks — نقاط الضعف الأساسية</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-purple">Wireless Network Cards:</span> كروت الواي فاي في الأجهزة ممكن تتعرض لمحاولات تزييف أو اختراق.</li>
+                <li><span class="eng-purple">Bluetooth Connection (Classic & BLE):</span> اتصالات البلوتوث العادية والـ Bluetooth Low Energy المستخدم في الأجهزة الذكية سهلة الالتقاط والاختراق.</li>
+                <li><span class="eng-purple">Wireless Access Point (AP):</span> الـ Router أو الـ AP هو نقطة الدخول الرئيسية، وإذا تم اختراقه تسقط الشبكة بالكامل.</li>
+            </ul>
+
+            <!-- Encryption Standards -->
+            <h3 class="sub-heading" style="color:#00e5ff;border-left-color:#00e5ff;">Wireless Encryption Standards — معايير تشفير الواي فاي</h3>
+            <div class="code-box" style="border-color:rgba(0,229,255,0.4);">
+[1] WEP (Wired Equivalent Privacy):
+    > القديم جداً، مليان ثغرات ويمكن كسره في ثوانٍ معدودة.
+[2] WPA (Wi-Fi Protected Access):
+    > تم تطويره كحل مؤقت بديل لـ WEP، ويستخدم بروتوكول TKIP.
+[3] WPA2:
+    > المعيار الأشهر، يعتمد على تشفير قوي جداً وهو AES (Advanced Encryption Standard).
+[4] WPA3:
+    > المعيار الأحدث، بيقدم حماية قوية جداً ضد هجمات الـ Brute Force ويحمي حتى لو كلمة المرور ضعيفة.
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 2. TYPES OF WIRELESS ATTACKS                     -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.2s;border-color:#10b981;">
+            <h2 class="cyber-heading" style="color:#10b981;">2. Types of Wireless Network Attacks <span class="badge" style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">ATTACK TYPES</span></h2>
+
+            <div class="ar-text" style="border-right-color:#10b981;">
+                الهجمات على الشبكات اللاسلكية بتتقسم لنوعين أساسيين: هجمات سلبية (غير مؤثرة على البيانات) وهجمات إيجابية (بتعدل أو بتعطل البيانات).
+            </div>
+
+            <div class="grid-2">
+                <div class="code-box" style="border-color:rgba(16,185,129,0.4);">
+// 1. Passive Attacks (الهجمات السلبية)
+> الهدف: التجسس وقراءة البيانات فقط (Eavesdropping).
+> لا يتم تعديل البيانات.
+> أمثلة:
+  - Interception: التقاط الإشارات والبيانات في الهوا.
+  - Traffic Analysis: تتبع سلوك الاتصال لمعرفة الأطراف.
+> الدفاع: التركيز على التشفير القوي (Trivial to prevent, hard to detect).
+                </div>
+                <div class="code-box" style="border-color:rgba(239,68,68,0.4);">
+// 2. Active Attacks (الهجمات الإيجابية)
+> الهدف: تعديل البيانات، قطع الخدمة، أو تزييف الهوية.
+> أمثلة:
+  - Interruption (DoS): قطع الاتصال ومنع وصول الرسائل.
+  - Masquerade: انتحال شخصية أو جهاز آخر على الشبكة.
+  - Replay: إعادة إرسال حزم بيانات تم التقاطها لخداع النظام.
+  - Modification: تعديل محتوى الرسائل المرسلة.
+> الدفاع: التركيز على الكشف والاسترجاع (Hard to prevent, easy to detect).
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 3. WWAN & AUTHENTICATION PROTOCOLS              -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.3s;border-color:#eab308;">
+            <h2 class="cyber-heading" style="color:#eab308;">3. Wireless Wide Area Networks (WWAN) <span class="badge" style="color:#eab308;border-color:#eab308;background:rgba(234,179,8,0.1);">MOBILE NETWORKS</span></h2>
+
+            <div class="ar-text" style="border-right-color:#eab308;">
+                الـ <span class="eng-word">WWANs</span> هي شبكات الموبايل ممتدة المساحة (زي 2G, 3G, 4G, 5G). بتتقسم لنوعين: شبكات تعتمد على الـ <span class="eng-yellow">Circuit-switched</span> (خط اتصال مخصص ومستمر) وشبكات الـ <span class="eng-yellow">Packet-switched</span> (تقسيم البيانات لحزم وإرسالها بشكل مستقل).
+            </div>
+
+            <h3 class="sub-heading" style="color:#eab308;border-left-color:#eab308;">Authentication Protocols — بروتوكولات التحقق وحمايتها من التجسس</h3>
+            
+            <div style="overflow-x:auto;">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>Protocol</th>
+                            <th>Protection from Passive Attacks</th>
+                            <th>How it works?</th>
+                            <th>Main Problem (Vulnerability)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color:#ef4444; font-weight:bold;">PAP (Password Authentication Protocol)</td>
+                            <td style="color:#ef4444;">None</td>
+                            <td style="color:#94a3b8;">Transmits passwords in readable plaintext.</td>
+                            <td style="color:#ef4444;">No encryption; anyone watching the traffic can easily steal your password.</td>
+                        </tr>
+                        <tr>
+                            <td style="color:#eab308; font-weight:bold;">SPAP (Shiva PAP)</td>
+                            <td style="color:#eab308;">Partial</td>
+                            <td style="color:#94a3b8;">Encrypts the password before transmission.</td>
+                            <td style="color:#eab308;">Password is encrypted but the method is weak; vulnerable to replay attacks.</td>
+                        </tr>
+                        <tr>
+                            <td style="color:#10b981; font-weight:bold;">CHAP (Challenge-Handshake)</td>
+                            <td style="color:#10b981;">High</td>
+                            <td style="color:#94a3b8;">Uses a three-way challenge-handshake. The password itself is NEVER sent over the network.</td>
+                            <td style="color:#10b981;">Secure, but relies on proper setup and cryptographic key configuration.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 4. INTERNET OF THINGS (IoT)                     -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.4s;border-color:#a855f7;">
+            <h2 class="cyber-heading" style="color:#a855f7;">4. Internet of Things (IoT) <span class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.1);">SMART DEVICES</span></h2>
+
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                الـ <span class="eng-purple">IoT</span> أو إنترنت الأشياء هو عبارة عن الأجهزة المنزلية والذكية المتصلة بالإنترنت (زي الكاميرات، الأقفال الذكية، التكييف، الثلاجات). الأجهزة دي بتكون صيد سهل للهكرز لأن قوتها المعالجة ضعيفة، ومعظم المستخدمين بيسيبوا باسوورداتها الافتراضية زي ما هي، ومش بتنزلها تحديثات أمان بانتظام.
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 5. STANDARDS & AWARENESS                        -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="animation-delay:0.5s;border-color:#ef4444;">
+            <h2 class="cyber-heading" style="color:#ef4444;">5. Cybersecurity Standards &amp; Awareness <span class="badge" style="color:#ef4444;border-color:#ef4444;background:rgba(239,68,68,0.1);">ISO STANDARDS</span></h2>
+
+            <div class="ar-text" style="border-right-color:#ef4444;">
+                منع الاختراقات وتكلفة الهجمات بمليارات الدولارات خلى الوعي الأمني أساسي لكل مؤسسة. المعايير الدولية بتساعد الشركات على فرض ضوابط أمنية قوية.
+            </div>
+
+            <h3 class="sub-heading" style="color:#ef4444;border-left-color:#ef4444;">ISO/IEC 27001 &amp; 27002 Standards</h3>
+            <div class="code-box" style="border-color:rgba(239,68,68,0.4);">
+[+] ISO/IEC 27001 & 27002:
+    > معايير دولية مخصصة لإدارة أمن المعلومات (ISMS).
+    > الأهداف:
+      1. وضع ضوابط أمن المعلومات وتطويرها.
+      2. تقليل وتقليل المخاطر الأمنية.
+      3. إدارة وتطبيق ومراقبة أدوات الحماية في الشركات.
+            </div>
+
+            <h3 class="sub-heading" style="color:#ef4444;border-left-color:#ef4444;">Cybersecurity Awareness Factors — عوامل زيادة الوعي الأمني</h3>
+            <ul class="cyber-list">
+                <li><span class="eng-red">Continuous education:</span> التدريب والتعليم المستمر للموظفين على أحدث الهجمات.</li>
+                <li><span class="eng-red">Password security:</span> أهمية تعقيد كلمات المرور وتغييرها دورياً وعدم مشاركتها.</li>
+                <li><span class="eng-red">Keeping software updated:</span> أهمية تحديث جميع البرامج وأنظمة التشغيل فوراً.</li>
+                <li><span class="eng-red">Dealing with unknown emails:</span> إرشادات التعامل بحذر مع الروابط والمرفقات المجهولة.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "WIFIWEPWPAWPA2WPA3PAPSPAPCHAP10*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+
+</html>

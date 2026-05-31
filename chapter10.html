@@ -964,45 +964,6 @@
                 </table>
             </div>
         </div>
-
-        <!-- ═══════════════════════════════════════════════ -->
-        <!-- 6. CRYPTOGRAPHY PRACTICE                        -->
-        <!-- ═══════════════════════════════════════════════ -->
-        <div class="section-panel" style="animation-delay:0.6s;border-color:#f97316;">
-            <h2 class="cyber-heading" style="color:#f97316;">6. Cryptography Practice <span class="badge" style="color:#f97316;border-color:#f97316;background:rgba(249,115,22,0.1);">BONUS TASK</span></h2>
-            
-            <div class="ar-text" style="border-right-color:#f97316;">
-                دي مهمة الـ Cryptography اللي جت في آخر المحاضرة — تدريب عملي على ما اتعلمناه في المحاضرات السابقة:
-            </div>
-            <div class="code-box" style="border-color:rgba(249,115,22,0.5);">
-Task 1: Affine Cipher
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Plaintext: "Attack Amazon Website"
-Key: K = (5, 22)
-Formula: E(x) = (5x + 22) mod 26
-
-A=0,B=1,...,Z=25
-[A(0)]  → (5×0  + 22) mod 26 = 22 → W
-[T(19)] → (5×19 + 22) mod 26 = 117 mod 26 = 13 → N
-[T(19)] → 13 → N
-[A(0)]  → 22 → W
-[C(2)]  → (5×2  + 22) mod 26 = 32 mod 26 = 6  → G
-[K(10)] → (5×10 + 22) mod 26 = 72 mod 26 = 20 → U
-...
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Task 2: Hill Cipher (2×2 Key from GYBNQKURP)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Plaintext: ACT
-Key: GYBNQKURP → Key Matrix K = | 6  24  1 |
-                                  | 13 16 10 |
-                                  | 20  17  5 |
-
-A=0, C=2, T=19  → Column Vector [0, 2, 19]ᵀ
-Ciphertext = K × P (mod 26)
-            </div>
-        </div>
-
     </div>
 
     <script>

@@ -75,6 +75,19 @@ const modules = [
         link: "chapter10.html"
     },
     {
+        id: "CH-11-12",
+        title: "Wireless Network Security & Standards",
+        description: "Explore WEP, WPA, WPA2, WPA3, IoT vulnerabilities, active/passive wireless attacks, cellular WWAN protocols (PAP, SPAP, CHAP) and ISO standards.",
+        link: "chapter11_12.html"
+    },
+    {
+        id: "COMPARE",
+        title: "Ultimate Comparisons Cheat Sheet",
+        description: "A dedicated chapter comparing Sniffing, Spoofing, Spamming, PAP vs CHAP, Active vs Passive attacks, and Symmetric vs Asymmetric cryptography.",
+        link: "chapter_comparisons.html",
+        special: true
+    },
+    {
         id: "DICT",
         title: "Cyber Dictionary & Glossary",
         description: "A comprehensive dual-language (English/Arabic) dictionary of every term taught. Search, filter, and study hardware, networking, and cryptography concepts.",

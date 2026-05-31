@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dedicated Chapter: Ultimate Cyber Comparisons Cheat Sheet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[COMPARE] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
+        .eng-red   { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
+        .eng-purple{ font-family: var(--font-code); color: #a855f7; font-weight: bold; }
+        .eng-orange{ font-family: var(--font-code); color: #f97316; font-weight: bold; }
+        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
+        .eng-yellow{ font-family: var(--font-code); color: #eab308; font-weight: bold; }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cyber-table th, .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 12px 15px;
+            font-size: 0.95rem;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover { background: var(--primary-color); color: #000; box-shadow: 0 0 15px var(--primary-color); }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align:center;margin-bottom:50px;border-bottom:1px solid #333;padding-bottom:30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="COMPARISONS" style="font-size:4rem;color:#fff;">COMPARISONS</h1>
+            </div>
+            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">THE ULTIMATE CYBER COMPARISON CHEAT SHEET</p>
+            <p style="color:#a855f7;font-size:1.1rem;margin-top:8px;font-family:var(--font-code);">Sniffing vs Spoofing vs Spamming · Active vs Passive · PAP vs CHAP · Cryptography</p>
+            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: ANALYSIS CHEAT SHEET | CLEARANCE: ARCHITECT</div>
+        </header>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 1. SNIFFING vs SPOOFING vs SPAMMING              -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="border-color:#a855f7;">
+            <h2 class="cyber-heading" style="color:#a855f7;">1. Sniffing vs. Spoofing vs. Spamming <span class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.1);">CIA TRIAD IMPACT</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                المقارنة دي مهمة جداً ومحورية في فهم التأثير المباشر لكل هجوم على أركان الـ **CIA Triad** (السرية، السلامة، والتوافر)، بجانب الميكانيزم الأساسي لكل منها:
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>Attack Type</th>
+                            <th>Definition &amp; Mechanism (كيف يعمل؟)</th>
+                            <th>CIA Triad Element Impacted (العنصر المتضرر)</th>
+                            <th>Impact Severity &amp; Goal (الهدف الرئيسي)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="color:#00e5ff; font-weight:bold;">Sniffing (التنصت)</td>
+                            <td style="color:#cbd5e1;">Capturing and monitoring data packets flowing across a network using software/hardware (sniffers) without altering the content. (سلبى)</td>
+                            <td style="color:#00e5ff; font-weight:bold;">Confidentiality (السرية)</td>
+                            <td style="color:#cbd5e1;">Breaches confidentiality because sensitive data (credentials, messages) is exposed to unauthorized listeners.</td>
+                        </tr>
+                        <tr>
+                            <td style="color:#ef4444; font-weight:bold;">Spoofing (تزييف الهوية)</td>
+                            <td style="color:#cbd5e1;">Falsifying data (IP addresses, MAC, DNS, or Email headers) to impersonate a trusted entity or device. (إيجابى)</td>
+                            <td style="color:#ef4444; font-weight:bold;">Integrity (السلامة) &amp; Authenticity</td>
+                            <td style="color:#cbd5e1;">Compromises system integrity and trust by executing unauthorized redirection, bypassing firewalls, or sending modified packets.</td>
+                        </tr>
+                        <tr>
+                            <td style="color:#f97316; font-weight:bold;">Spamming (الرسائل المزعجة)</td>
+                            <td style="color:#cbd5e1;">Sending unsolicited bulk messages (advertisements, scams, or malware installers) to a massive number of users.</td>
+                            <td style="color:#f97316; font-weight:bold;">Availability (التوافر)</td>
+                            <td style="color:#cbd5e1;">Wastes resources, clogs inboxes, and exhausts server bandwidth and storage, leading to resource depletion (DoS).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 2. ACTIVE vs PASSIVE ATTACKS                     -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="border-color:#10b981;">
+            <h2 class="cyber-heading" style="color:#10b981;">2. Active Attacks vs. Passive Attacks <span class="badge" style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">DETECTION vs PREVENTION</span></h2>
+            
+            <div class="ar-text" style="border-right-color:#10b981;">
+                المقارنة الكلاسيكية لنوعي الهجمات من حيث إمكانية منعها، اكتشافها، وتأثيرها:
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Passive Attacks (الهجمات السلبية)</th>
+                            <th>Active Attacks (الهجمات الإيجابية)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Primary Goal</b></td>
+                            <td>Read/monitor transmissions (steal information).</td>
+                            <td>Modify data stream, inject false data, or block services.</td>
+                        </tr>
+                        <tr>
+                            <td><b>System Alteration</b></td>
+                            <td style="color:#10b981;">No data is modified or deleted.</td>
+                            <td style="color:#ef4444;">Data is modified, replayed, or interrupted.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Examples</b></td>
+                            <td>Eavesdropping, traffic analysis, packet sniffing.</td>
+                            <td>Denial of Service (DoS), Masquerade, Replay, Modification.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Focus of Defense</b></td>
+                            <td style="color:#10b981; font-weight:bold;">Prevention (سهل المنع باستخدام التشفير ولكن صعب جداً اكتشافه لأنه لا يترك أثراً).</td>
+                            <td style="color:#ef4444; font-weight:bold;">Detection &amp; Recovery (صعب جداً منعه بشكل استباقي ولكن سهل اكتشاف حدوثه بسبب الأثر التخريبي).</td>
+                        </tr>
+                        <tr>
+                            <td><b>CIA Triad Impact</b></td>
+                            <td style="color:#00e5ff;">Compromises Confidentiality.</td>
+                            <td style="color:#ef4444;">Compromises Integrity &amp; Availability.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 3. MALWARE CLASSIFICATIONS                       -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="border-color:#eab308;">
+            <h2 class="cyber-heading" style="color:#eab308;">3. Malware Type Classifications <span class="badge" style="color:#eab308;border-color:#eab308;background:rgba(234,179,8,0.1);">THREAT MATRIX</span></h2>
+
+            <div style="overflow-x:auto;">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>Malware Type</th>
+                            <th>Needs Host File? (ملف حاضن)</th>
+                            <th>Self-Replicating? (انتشار ذاتي)</th>
+                            <th>Primary Goal / Damage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Virus</b></td>
+                            <td style="color:#ef4444; font-weight:bold;">Yes (attached to .exe)</td>
+                            <td>Yes (within system)</td>
+                            <td>Modifies/deletes files, causes software crashes.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Worm</b></td>
+                            <td style="color:#10b981;">No (Standalone)</td>
+                            <td style="color:#10b981; font-weight:bold;">Yes (Across network automatically)</td>
+                            <td>Consumes network bandwidth and memory, causing network collapse.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Trojan</b></td>
+                            <td style="color:#10b981;">No (Masquerades as safe)</td>
+                            <td>No</td>
+                            <td>Creates Backdoors for remote control, steals credentials.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Spyware</b></td>
+                            <td>No</td>
+                            <td>No</td>
+                            <td>Secretly monitors keystrokes and logs browsing data.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ransomware</b></td>
+                            <td>No</td>
+                            <td>No (unless worm-hybrid)</td>
+                            <td>Encrypts user data and locks screen, demanding financial ransom.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- 4. SYMMETRIC vs ASYMMETRIC CRYPTOGRAPHY          -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <div class="section-panel" style="border-color:#ef4444;">
+            <h2 class="cyber-heading" style="color:#ef4444;">4. Symmetric vs. Asymmetric Encryption <span class="badge" style="color:#ef4444;border-color:#ef4444;background:rgba(239,68,68,0.1);">CRYPTOGRAPHY</span></h2>
+
+            <div style="overflow-x:auto;">
+                <table class="cyber-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Symmetric (التماثلي)</th>
+                            <th>Asymmetric (اللاتماثلي)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Number of Keys</b></td>
+                            <td style="color:#eab308; font-weight:bold;">1 shared key (used for encryption &amp; decryption).</td>
+                            <td style="color:#10b981; font-weight:bold;">2 keys (Public Key for encryption, Private Key for decryption).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Speed</b></td>
+                            <td style="color:#10b981; font-weight:bold;">Very Fast (efficient for massive data transmission).</td>
+                            <td style="color:#ef4444;">Slow (requires heavy modular arithmetic calculations).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Key Exchange</b></td>
+                            <td style="color:#ef4444;">Difficult (how to send the secret key safely to the other side?).</td>
+                            <td style="color:#10b981;">Easy (public keys are made public to everyone).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Popular Algorithms</b></td>
+                            <td>DES, 3DES, AES, RC4, One-Time Pad (OTP).</td>
+                            <td>RSA, Diffie-Hellman, ECC (Elliptic Curve).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "COMPAREVSACTIVEPASSIVESNIFFAUTH*!";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+
+</html>
