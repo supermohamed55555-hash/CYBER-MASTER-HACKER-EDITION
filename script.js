@@ -39,6 +39,12 @@ const modules = [
         link: "section4.html"
     },
     {
+        id: "SEC-5",
+        title: "Affine Cipher (Linear Substitution)",
+        description: "Explore the hybrid power of Caesar and Multiplicative ciphers. Step-by-step encryption and decryption processes with key condition constraints.",
+        link: "section5.html"
+    },
+    {
         id: "CH-3",
         title: "Advanced Cyberattacks & Vulnerabilities",
         description: "Deep dive into DoS, DDoS, MITM, SYN Floods, and Buffer Overflows. Understand how vulnerabilities turn into full-scale attacks.",
