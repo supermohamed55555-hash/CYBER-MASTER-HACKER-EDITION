@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Section 5: Affine Cipher</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
         .content-container {
@@ -104,12 +106,41 @@
             font-size: 1.1rem;
         }
 
-        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
-        .eng-red   { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
-        .eng-purple{ font-family: var(--font-code); color: #a855f7; font-weight: bold; }
-        .eng-orange{ font-family: var(--font-code); color: #f97316; font-weight: bold; }
-        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
-        .eng-yellow{ font-family: var(--font-code); color: #eab308; font-weight: bold; }
+        .eng-word {
+            font-family: var(--font-code);
+            color: #00e5ff;
+            font-weight: bold;
+        }
+
+        .eng-red {
+            font-family: var(--font-code);
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .eng-purple {
+            font-family: var(--font-code);
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .eng-orange {
+            font-family: var(--font-code);
+            color: #f97316;
+            font-weight: bold;
+        }
+
+        .eng-green {
+            font-family: var(--font-code);
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .eng-yellow {
+            font-family: var(--font-code);
+            color: #eab308;
+            font-weight: bold;
+        }
 
         .steps-container {
             margin: 20px 0;
@@ -194,7 +225,8 @@
             background: rgba(0, 0, 0, 0.6);
         }
 
-        .cyber-table th, .cyber-table td {
+        .cyber-table th,
+        .cyber-table td {
             border: 1px solid rgba(0, 229, 255, 0.3);
             padding: 12px 15px;
             font-size: 0.95rem;
@@ -226,41 +258,61 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes blink {
-            50% { opacity: 0; }
+            50% {
+                opacity: 0;
+            }
         }
     </style>
 </head>
 
 <body>
-    <canvas id="matrixCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
-    <div class="scanlines" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;"></div>
+    <canvas id="matrixCanvas"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;">
+    </div>
 
     <div class="content-container">
         <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
 
         <header style="text-align:center;margin-bottom:50px;border-bottom:1px solid #333;padding-bottom:30px;">
             <div class="glitch-wrapper">
-                <h1 class="glitch" data-text="SECTION 5: AFFINE CIPHER" style="font-size:4rem;color:#fff;">SECTION 5: AFFINE CIPHER</h1>
+                <h1 class="glitch" data-text="SECTION 5: AFFINE CIPHER" style="font-size:4rem;color:#fff;">SECTION 5:
+                    AFFINE CIPHER</h1>
             </div>
-            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">LINEAR SUBSTITUTION ENCRYPTION</p>
-            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: CLASSIFIED | CLEARANCE: ARCHITECT</div>
+            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">LINEAR SUBSTITUTION ENCRYPTION
+            </p>
+            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: CLASSIFIED | CLEARANCE:
+                ARCHITECT</div>
         </header>
 
         <!-- 1. The Concept & The Rules -->
         <div class="section-panel" style="animation-delay:0.1s;border-color:#00e5ff;">
-            <h2 class="cyber-heading" style="color:#00e5ff;">الفكرة الأساسية ببساطة (The Concept) <span class="badge" style="color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.1);">CONCEPT</span></h2>
+            <h2 class="cyber-heading" style="color:#00e5ff;">(The Concept) <span class="badge"
+                    style="color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.1);">CONCEPT</span></h2>
 
             <div class="en-def">
-                "The Affine Cipher is a type of monoalphabetic substitution cipher, where each letter in an alphabet is mapped to its numeric equivalent, encrypted using a simple mathematical function, and converted back to a letter."
+                "The Affine Cipher is a type of monoalphabetic substitution cipher, where each letter in an alphabet is
+                mapped to its numeric equivalent, encrypted using a simple mathematical function, and converted back to
+                a letter."
             </div>
 
             <div class="ar-text" style="border-right-color:#00e5ff;">
-                الـ <span class="eng-word">Affine Cipher</span> هي عبارة عن ميكس ذكي جداً بين شفرة قيصر (<span class="eng-purple">Caesar</span>) وشفرة الضرب (<span class="eng-purple">Multiplicative Cipher</span>).
+                الـ <span class="eng-word">Affine Cipher</span> هي عبارة عن ميكس ذكي جداً بين شفرة قيصر (<span
+                    class="eng-purple">Caesar</span>) وشفرة الضرب (<span class="eng-purple">Multiplicative
+                    Cipher</span>).
                 <br><br>
                 بدل ما نعمل مجرد إزاحة للحرف زي قيصر، إحنا بنعمل خطوتين مع بعض لكل حرف في خطوة واحدة:
                 <br>
@@ -271,41 +323,46 @@
                 يعني كأنك بتطبق معادلة الخط المستقيم (y = ax + b) على كل حرف في الرسالة.
             </div>
 
-            <h3 class="sub-heading" style="color:#00e5ff;">القاعدة الرياضية للحفظ (The Rules)</h3>
+            <h3 class="sub-heading" style="color:#00e5ff;">(The Rules)</h3>
             <table class="cyber-table">
                 <thead>
                     <tr>
-                        <th>العملية (Process)</th>
-                        <th>القانون الرياضي (Formula)</th>
+                        <th>(Process)</th>
+                        <th>(Formula)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="eng-green">Encryption (التشفير)</td>
+                        <td class="eng-green">Encryption</td>
                         <td><span class="eng-word">C = (a &times; P + b) (mod 26)</span></td>
                     </tr>
                     <tr>
-                        <td class="eng-red">Decryption (فك التشفير)</td>
+                        <td class="eng-red">Decryption</td>
                         <td><span class="eng-word">P = a<sup>-1</sup> &times; (C - b) (mod 26)</span></td>
                     </tr>
                 </tbody>
             </table>
 
-            <h3 class="sub-heading" style="color:#ef4444; border-left-color:#ef4444;">شرط أساسي لصلاحية المفتاح (Key Condition)</h3>
+            <h3 class="sub-heading" style="color:#ef4444; border-left-color:#ef4444;">(Key
+                Condition)</h3>
             <div class="ar-text" style="border-right-color:#ef4444; background: rgba(239, 68, 68, 0.05);">
-                عشان نظام التشفير ده يشتغل ويكون ليه معكوس ضربي (Multiplicative Inverse) للرقم a تحت نظام الـ Mod 26، لازم يكون الـ <b>gcd(a, 26) = 1</b> (يعني مفيش عوامل مشتركة بين الرقم a والـ 26 عشان ينفع نلاقي ليه معكوس نمطي).
+                عشان نظام التشفير ده يشتغل ويكون ليه معكوس ضربي (Multiplicative Inverse) للرقم a تحت نظام الـ Mod 26،
+                لازم يكون الـ <b>gcd(a, 26) = 1</b> (يعني مفيش عوامل مشتركة بين الرقم a والـ 26 عشان ينفع نلاقي ليه
+                معكوس نمطي).
             </div>
         </div>
 
         <!-- 2. Lecture Example (GO) -->
         <div class="section-panel" style="animation-delay:0.2s;border-color:#3b82f6;">
-            <h2 class="cyber-heading" style="color:#3b82f6;">مثال عملي (Lecture Example) <span class="badge" style="color:#3b82f6;border-color:#3b82f6;background:rgba(59,130,246,0.1);">GO WALKTHROUGH</span></h2>
-            
-            <h3 class="sub-heading" style="color:#3b82f6;">أولاً: عملية التشفير (Encryption)</h3>
+            <h2 class="cyber-heading" style="color:#3b82f6;">(Lecture Example) <span class="badge"
+                    style="color:#3b82f6;border-color:#3b82f6;background:rgba(59,130,246,0.1);">GO WALKTHROUGH</span>
+            </h2>
+
+            <h3 class="sub-heading" style="color:#3b82f6;">أولاً: ال(Encryption)</h3>
             <div class="ar-text" style="border-right-color:#3b82f6;">
                 الرسالة المطلوبة: <span class="eng-word">GO</span>
                 <br>
-                المفتاح المعتمد: a = 7, b = 2  (معادلة التشفير: 7P + 2)
+                المفتاح المعتمد: a = 7, b = 2 (معادلة التشفير: 7P + 2)
             </div>
 
             <div class="steps-container">
@@ -337,7 +394,7 @@
                 </div>
             </div>
 
-            <h3 class="sub-heading" style="color:#3b82f6;">ثانياً: عملية فك التشفير (Decryption)</h3>
+            <h3 class="sub-heading" style="color:#3b82f6;">ثانياً: ال (Decryption)</h3>
             <div class="ar-text" style="border-right-color:#3b82f6;">
                 الرسالة المتشفرة: <span class="eng-red">SW</span>
                 <br>
@@ -349,10 +406,11 @@
                     <div class="step-num">1</div>
                     <div class="step-content">
                         <div class="step-title">إيجاد المعكوس الضربي للمفتاح a = 7</div>
-                        <div class="ar-text-step">باستخدام خوارزمية إقليدس الممتدة أو بالتجربة النمطية، بندور على المعكوس الضربي للـ 7 تحت نظام الـ Mod 26:</div>
+                        <div class="ar-text-step">باستخدام خوارزمية إقليدس الممتدة أو بالتجربة النمطية، بندور على
+                            المعكوس الضربي للـ 7 تحت نظام الـ Mod 26:</div>
                         <div class="math-expr">
                             (7 &times; 15) = 105<br>
-                            105 (mod 26) = 1  &rArr;  a<sup>-1</sup> = 15
+                            105 (mod 26) = 1 &rArr; a<sup>-1</sup> = 15
                         </div>
                     </div>
                 </div>
@@ -377,19 +435,23 @@
 
             <h3 class="sub-heading" style="color:#3b82f6;">ليه الـ Affine Cipher أحسن من Caesar؟</h3>
             <div class="ar-text" style="border-right-color:#3b82f6;">
-                لأن في قيصر كان عندنا 25 مفتاح بس ممكن الهاكر يجربهم في ثواني. لكن هنا إحنا عندنا مفتاحين (a و b)، وده بيخلي عدد الاحتمالات أكبر بكتير (عندنا 12 قيمة ممكنة للـ a لأنها لازم تحقق شرط الـ gcd، و 26 قيمة ممكنة للـ b، يعني 12 &times; 26 = 312 احتمال)، وده بياخد وقت أطول في الكسر اليدوي.
+                لأن في قيصر كان عندنا 25 مفتاح بس ممكن الهاكر يجربهم في ثواني. لكن هنا إحنا عندنا مفتاحين (a و b)، وده
+                بيخلي عدد الاحتمالات أكبر بكتير (عندنا 12 قيمة ممكنة للـ a لأنها لازم تحقق شرط الـ gcd، و 26 قيمة ممكنة
+                للـ b، يعني 12 &times; 26 = 312 احتمال)، وده بياخد وقت أطول في الكسر اليدوي.
             </div>
         </div>
 
         <!-- 3. Comprehensive Example (HELLO) -->
         <div class="section-panel" style="animation-delay:0.3s;border-color:#10b981;">
-            <h2 class="cyber-heading" style="color:#10b981;">مثال إضافي شامل (HELLO Walkthrough) <span class="badge" style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">COMPREHENSIVE CASE</span></h2>
+            <h2 class="cyber-heading" style="color:#10b981;">مثال إضافي شامل (HELLO Walkthrough) <span class="badge"
+                    style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">COMPREHENSIVE
+                    CASE</span></h2>
 
             <h3 class="sub-heading" style="color:#10b981;">أولاً: تشفير كلمة HELLO</h3>
             <div class="ar-text" style="border-right-color:#10b981;">
                 الرسالة المطلوبة: <span class="eng-word">HELLO</span>
                 <br>
-                المفتاح: a = 5, b = 8  (معادلة التشفير: 5P + 8)
+                المفتاح: a = 5, b = 8 (معادلة التشفير: 5P + 8)
             </div>
 
             <div class="steps-container">
@@ -420,7 +482,9 @@
             </div>
 
             <div class="ar-text" style="border-right-color:#10b981; margin-top:20px;">
-                لاحظ هنا عيب شفرة الـ Affine Cipher: الحروف المكررة في النص الأصلي (LL) فضلت مكررة زي ما هي في الشفرة (LL). ده بيحصل لأنها شفرة أحادية الأبجدية (Monoalphabetic)، يعني الحرف ليه بديل ثابت طول ما المفتاح ثابت.
+                لاحظ هنا عيب شفرة الـ Affine Cipher: الحروف المكررة في النص الأصلي (LL) فضلت مكررة زي ما هي في الشفرة
+                (LL). ده بيحصل لأنها شفرة أحادية الأبجدية (Monoalphabetic)، يعني الحرف ليه بديل ثابت طول ما المفتاح
+                ثابت.
             </div>
 
             <h3 class="sub-heading" style="color:#10b981;">ثانياً: فك تشفير كلمة RCLA</h3>
@@ -438,7 +502,7 @@
                         <div class="ar-text-step">بندور على المعكوس الضربي للـ 5 تحت نظام الـ Mod 26:</div>
                         <div class="math-expr">
                             (5 &times; 21) = 105<br>
-                            105 (mod 26) = 1  &rArr;  a<sup>-1</sup> = 21
+                            105 (mod 26) = 1 &rArr; a<sup>-1</sup> = 21
                         </div>
                     </div>
                 </div>
@@ -449,11 +513,13 @@
                         <div class="step-title">التعويض في معادلة فك التشفير وحساب الـ Mod 26</div>
                         <div class="ar-text-step">المعادلة المستخدمة هي: 21 &times; (C - 8)</div>
                         <div class="math-expr">
-                            R (17) &rArr; 21 &times; (17 - 8) = 21 &times; 9 = 189 &rArr; 189 (mod 26) = 7 &rArr; H<br><br>
+                            R (17) &rArr; 21 &times; (17 - 8) = 21 &times; 9 = 189 &rArr; 189 (mod 26) = 7 &rArr;
+                            H<br><br>
                             C (2) &rArr; 21 &times; (2 - 8) = 21 &times; (-6) = -126<br>
                             عشان نحول الرقم السالب لموجب في الـ Mod: بنجمع مضاعفات الـ 26 لحد ما نوصل لرقم موجب:<br>
                             -126 + (5 &times; 26) = -126 + 130 = 4 &rArr; E<br><br>
-                            L (11) &rArr; 21 &times; (11 - 8) = 21 &times; 3 = 63 &rArr; 63 (mod 26) = 11 &rArr; L<br><br>
+                            L (11) &rArr; 21 &times; (11 - 8) = 21 &times; 3 = 63 &rArr; 63 (mod 26) = 11 &rArr;
+                            L<br><br>
                             A (0) &rArr; 21 &times; (0 - 8) = 21 &times; (-8) = -168<br>
                             نحول الرقم السالب لموجب:<br>
                             -168 + (7 &times; 26) = -168 + 182 = 14 &rArr; O<br><br>
