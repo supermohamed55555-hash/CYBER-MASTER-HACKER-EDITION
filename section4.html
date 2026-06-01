@@ -281,12 +281,12 @@
             </div>
 
             <div class="ar-text" style="border-right-color:#00e5ff;">
-                خوارزمية <span class="eng-word">Hill Cipher</span> تعد من التطبيقات العملية المتقدمة في التشفير التقليدي اعتماداً على الرياضيات والجبر الخطي. في هذه الطريقة، لا يتم تشفير الحروف بشكل فردي (كما في Caesar) أو بتكرار كلمة مفتاحية (كما في Vigenère)، وإنما تُقسّم الرسالة الأصلية إلى كتل متساوية الحجم (<span class="eng-purple">Blocks</span>) تُعامل كمتجهات رياضية ويتم ضربها في مصفوفة مفتاحية (<span class="eng-purple">Key Matrix</span>) لإنتاج الشفرة.
+                الـ <span class="eng-word">Hill Cipher</span> هي طريقة تشفير بتعتمد بالكامل على الرياضيات والجبر الخطي. الفكرة هنا مختلفة شوية عن اللي فات؛ مش بنشفر حرف حرف زي قيصر، ولا بنكرر كلمة سر زي فيجنير.. إحنا بنقسم الرسالة لمجموعات أو كتل متساوية بنسميها <span class="eng-purple">Blocks</span>، وبنضرب حروف كل بلوك مع بعض في مصفوفة المفتاح (<span class="eng-purple">Key Matrix</span>) عشان نطلع النص المتشفر.
                 <br><br>
-                الفكرة ببساطة أنك تحوّل كل مجموعة من الحروف إلى متجه (<span class="eng-yellow">Vector</span>) وتضربهم في المصفوفة الرياضية (المفتاح) لينتج لديك حروف مشفرة لا تمت بصلة للترتيب الأصلي. الميزة الكبرى هنا هي حماية النص من تحليل تكرار الحروف البسيط؛ فحرف الـ 'A' قد يتشفر إلى 'X' في موضع، وإلى 'Z' في موضع آخر داخل نفس الكلمة بناءً على موقع الحروف المجاورة له في الكتلة.
+                الميزة القوية هنا إن حرف الـ 'A' مثلاً ممكن يتشفر لـ 'X' في أول الكلمة، ويتشفر لـ 'Z' في آخرها! ده لأن كل حرف بيتأثر بالحروف اللي معاه في نفس البلوك أثناء عملية الضرب، وده بيخلي محاولات كسر الشفرة عن طريق تحليل تكرار الحروف (Frequency Analysis) صعبة جداً ومن شبه المستحيل تنجح.
             </div>
 
-            <h3 class="sub-heading" style="color:#00e5ff;">القواعد الرياضية (The Rules)</h3>
+            <h3 class="sub-heading" style="color:#00e5ff;">القاعدة الرياضية للحفظ (The Rules)</h3>
             <table class="cyber-table">
                 <thead>
                     <tr>
@@ -308,11 +308,11 @@
 
             <h3 class="sub-heading" style="color:#ef4444; border-left-color:#ef4444;">شرط أساسي لصلاحية المفتاح (Key Condition) ⚠️</h3>
             <div class="ar-text" style="border-right-color:#ef4444; background: rgba(239, 68, 68, 0.05);">
-                لكي تكون المصفوفة صالحة كمفتاح للتشفير وفك التشفير، يجب أن يكون لها معكوس ضربي (<span class="eng-red">Inverse Matrix</span>) تحت مقياس 26، وهذا يتطلب تحقق شرطين رياضيين:
+                عشان المصفوفة تنفع تكون مفتاح تشفير وينفع نعملها فك تشفير بعدين، لازم يكون ليها معكوس ضربي (<span class="eng-red">Inverse Matrix</span>) تحت نظام الـ Mod 26. وعشان الشرط ده يتحقق، لازم نضمن حاجتين:
                 <br>
-                1. محدد المصفوفة <b>Determinant (det)</b> لا يساوي صفراً.
+                1. محدد المصفوفة <b>Determinant (det)</b> ميكونش صفر.
                 <br>
-                2. القاسم المشترك الأكبر بين المحدد والرقم 26 يساوي 1، أي: <b>gcd(det, 26) = 1</b> (لا توجد عوامل مشتركة بينهما لتجنب مشاكل القسمة نمطياً).
+                2. الرقم ده والـ 26 ميكونش بينهم أي عوامل مشتركة، يعني الـ <b>gcd(det, 26) = 1</b> (عشان ينفع نحسب المعكوس الضربي نمطياً).
             </div>
         </div>
 
@@ -322,9 +322,7 @@
             
             <h3 class="sub-heading" style="color:#3b82f6;">أولاً: عملية التشفير (Encryption)</h3>
             <div class="ar-text" style="border-right-color:#3b82f6;">
-                النص الأصلي المطلوب تشفيره: <span class="eng-word">INU</span>
-                <br>
-                مصفوفة المفتاح المعتمدة (Key Matrix):
+                تعال نشوف مثال عملي لو هنشفر كلمة <span class="eng-word">INU</span> باستخدام مصفوفة المفتاح دي:
                 <div style="text-align:center; margin: 15px 0;">
                     <span class="eng-yellow">K = </span>
                     <div class="math-matrix">
@@ -339,8 +337,8 @@
                 <div class="step-card">
                     <div class="step-num">1</div>
                     <div class="step-content">
-                        <div class="step-title">ترميز الحروف لقيم رقمية (Mapping)</div>
-                        <div class="ar-text-step">نحول حروف الكلمة إلى أرقامها الترتيبية في الأبجدية الإنجليزية (بحيث تبدأ من A=0 وتنتهي عند Z=25):</div>
+                        <div class="step-title">تحويل الحروف لأرقام (Mapping)</div>
+                        <div class="ar-text-step">بنحول حروف كلمتنا لأرقام ترتيبية في الأبجدية الإنجليزية، وبنبدأ من A=0 لحد Z=25:</div>
                         <div class="math-expr">
                             I = 8, &nbsp; N = 13, &nbsp; U = 20 &nbsp; &rArr; &nbsp; P = [8, 13, 20]
                         </div>
@@ -350,8 +348,8 @@
                 <div class="step-card">
                     <div class="step-num">2</div>
                     <div class="step-content">
-                        <div class="step-title">الضرب في مصفوفة المفتاح (Matrix Multiplication)</div>
-                        <div class="ar-text-step">نضرب صفوف مصفوفة المفتاح K في عمود النص الرقمي P كالتالي:</div>
+                        <div class="step-title">الضرب في المصفوفة (Matrix Multiplication)</div>
+                        <div class="ar-text-step">بنضرب صفوف المصفوفة K في عمود النص الرقمي P بالشكل ده:</div>
                         <div class="math-expr">
                             Row 1: (6 &times; 8) + (24 &times; 13) + (1 &times; 20) = 48 + 312 + 20 = 380<br>
                             Row 2: (13 &times; 8) + (16 &times; 13) + (10 &times; 20) = 104 + 208 + 20 = 512<br>
@@ -363,13 +361,13 @@
                 <div class="step-card">
                     <div class="step-num">3</div>
                     <div class="step-content">
-                        <div class="step-title">حساب باقي القسمة النمطية Mod 26 والترجمة للحروف</div>
-                        <div class="ar-text-step">نحسب قيمة الناتج مقسوماً نمطياً على 26 للحصول على الحروف المشفرة المقابلة:</div>
+                        <div class="step-title">حساب الـ Mod 26 والتحويل لحروف</div>
+                        <div class="ar-text-step">بنحسب الـ Mod 26 للنواتج عشان نرجعها لحروف متشفرة:</div>
                         <div class="math-expr">
                             380 (mod 26) = 16 &nbsp; &rArr; &nbsp; Q<br>
                             512 (mod 26) = 18 &nbsp; &rArr; &nbsp; S<br>
                             681 (mod 26) = 5  &nbsp; &rArr; &nbsp; F<br><br>
-                            النص المشفر الناتج (Ciphertext): QSF
+                            الناتج النهائي (Ciphertext): QSF
                         </div>
                     </div>
                 </div>
@@ -377,17 +375,17 @@
 
             <h3 class="sub-heading" style="color:#3b82f6;">ثانياً: عملية فك التشفير (Decryption)</h3>
             <div class="ar-text" style="border-right-color:#3b82f6;">
-                النص المشفر المستقبل: <span class="eng-red">QSF</span>
+                الرسالة المتشفرة: <span class="eng-red">QSF</span>
                 <br>
-                الهدف: استرجاع الكلمة الأصلية (<span class="eng-green">INU</span>) باستخدام معكوس المصفوفة K.
+                الهدف: نرجع الكلمة لأصلها (<span class="eng-green">INU</span>) باستخدام المعكوس الضربي للمصفوفة K.
             </div>
 
             <div class="steps-container">
                 <div class="step-card">
                     <div class="step-num">1</div>
                     <div class="step-content">
-                        <div class="step-title">حساب محدد المصفوفة (Determinant)</div>
-                        <div class="ar-text-step">قيمة محدد المصفوفة الثنائية K رياضياً هي 441. نقوم بحسابها تحت نظام Mod 26:</div>
+                        <div class="step-title">حساب المحدد (Determinant)</div>
+                        <div class="ar-text-step">محدد المصفوفة K رياضياً بيساوي 441. هنجيب قيمته تحت نظام الـ Mod 26:</div>
                         <div class="math-expr">
                             det(K) = 441<br>
                             441 (mod 26) = 25
@@ -398,8 +396,8 @@
                 <div class="step-card">
                     <div class="step-num">2</div>
                     <div class="step-content">
-                        <div class="step-title">إيجاد المعكوس الضربي للمحدد باستخدام طريقة الجدول (Table Method)</div>
-                        <div class="ar-text-step">نبحث عن العدد الذي إذا ضربناه في قيمة المحدد (25) يعطينا الناتج 1 بمقياس 26. نستخدم خوارزمية إقليدس الممتدة الممثلة في الجدول التالي للوصول للحل المضمون:</div>
+                        <div class="step-title">إيجاد المعكوس الضربي للـ 25 باستخدام طريقة الجدول (Table Method)</div>
+                        <div class="ar-text-step">بندور على الرقم اللي لو ضربناه في 25 يدينا 1 تحت نظام الـ Mod 26. الجدول ده هو الطريقة الأضمن للحل:</div>
                         
                         <table class="cyber-table" style="max-width: 600px; margin: 20px auto;">
                             <thead>
@@ -436,9 +434,9 @@
                         </table>
 
                         <div class="ar-text-step" style="margin-top:15px;">
-                            النتيجة: القيمة الظاهرة في خانة T<sub>2</sub> هي <b>-1</b>.
-                            في الحساب النمطي تحت نظام Mod 26، يتم تحويل القيمة السالبة بجمعها مع مقياس المود (26): <b>-1 + 26 = 25</b>.
-                            بالتالي، المعكوس الضربي للعدد 25 هو <b>25</b> نفسه (للتأكيد: 25 &times; 25 = 625، و 625 mod 26 = 1).
+                            النتيجة: الرقم اللي طلع في خانة T<sub>2</sub> هو <b>-1</b>.
+                            وفي عالم الـ Mod 26، الرقم السالب بنجمع عليه 26 عشان نخليه موجب: <b>-1 + 26 = 25</b>.
+                            إذن المعكوس الضربي للـ 25 هو <b>25</b> نفسه (تأكيد: 25 &times; 25 = 625، و 625 mod 26 = 1).
                         </div>
                     </div>
                 </div>
@@ -447,7 +445,7 @@
                     <div class="step-num">3</div>
                     <div class="step-content">
                         <div class="step-title">حساب المصفوفة العكسية (K<sup>-1</sup>)</div>
-                        <div class="ar-text-step">نضرب قيمة المعكوس الضربي للمحدد (25) في المصفوفة المرافقة (Adjoint Matrix) ثم نحسب النواتج Mod 26 لنحصل على مصفوفة فك التشفير العكسية:</div>
+                        <div class="ar-text-step">بنجيب المصفوفة المرافقة (Adjoint) ونضربها في المعكوس الضربي (25) ونحسب الـ Mod 26 للكل:</div>
                         <div class="math-expr">
                             K<sup>-1</sup> = 
                             <div class="math-matrix" style="border-color:#a855f7;">
@@ -462,13 +460,13 @@
                 <div class="step-card">
                     <div class="step-num">4</div>
                     <div class="step-content">
-                        <div class="step-title">ضرب المصفوفة العكسية في متجه النص المشفر</div>
-                        <div class="ar-text-step">نضرب صفوف المصفوفة العكسية K<sup>-1</sup> في قيم النص المشفر C = [16, 18, 5]:</div>
+                        <div class="step-title">فك التشفير (الضرب في الشفرة)</div>
+                        <div class="ar-text-step">بنضرب المصفوفة العكسية K<sup>-1</sup> في قيم الشفرة C = [16, 18, 5]:</div>
                         <div class="math-expr">
                             Row 1: (8 &times; 16) + (5 &times; 18) + (10 &times; 5)  = 128 + 90 + 50  = 268 &rArr; 268 (mod 26) = 8 &nbsp; &rArr; I<br>
                             Row 2: (21 &times; 16) + (8 &times; 18) + (21 &times; 5) = 336 + 144 + 105 = 585 &rArr; 585 (mod 26) = 13 &rArr; N<br>
                             Row 3: (21 &times; 16) + (12 &times; 18) + (8 &times; 5) = 336 + 216 + 40  = 592 &rArr; 592 (mod 26) = 20 &rArr; U<br><br>
-                            النتيجة النهائية المسترجعة: [INU]
+                            النتيجة النهائية: رجعت الكلمة الأصلية [INU] بنجاح!
                         </div>
                     </div>
                 </div>
@@ -480,11 +478,11 @@
             <h2 class="cyber-heading" style="color:#10b981;">تشفير مصفوفة من الرتبة 4x4 (Advanced Level) <span class="badge" style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">4x4 MATRIX</span></h2>
 
             <div class="ar-text" style="border-right-color:#10b981;">
-                عند التوسيع إلى رتبة 4&times;4، تتسع الكتلة المشفرة لتشمل 4 حروف يتم معالجتها معاً كمتجه أحادي في كل عملية ضرب.
+                لما نكبر المصفوفة لـ 4&times;4، بنشفر 4 حروف مع بعض في المرة الواحدة.
                 <br>
-                النص الأصلي المطلوب تشفيره: <span class="eng-word">HELP</span>
+                الرسالة المطلوبة: <span class="eng-word">HELP</span>
                 <br>
-                مصفوفة المفتاح المعتمدة (Key Matrix):
+                المصفوفة المفتاح (Key Matrix):
                 <div style="text-align:center; margin: 15px 0;">
                     <span class="eng-yellow">K = </span>
                     <div class="math-matrix">
@@ -500,7 +498,7 @@
                 <div class="step-card" style="border-left-color:#10b981;">
                     <div class="step-num">1</div>
                     <div class="step-content">
-                        <div class="step-title">ترميز الحروف لقيم رقمية (Mapping)</div>
+                        <div class="step-title">تحويل الحروف لأرقام (Mapping)</div>
                         <div class="math-expr">
                             H = 7, &nbsp; E = 4, &nbsp; L = 11, &nbsp; P = 15 &nbsp; &rArr; &nbsp; P = [7, 4, 11, 15]
                         </div>
@@ -510,8 +508,8 @@
                 <div class="step-card" style="border-left-color:#10b981;">
                     <div class="step-num">2</div>
                     <div class="step-content">
-                        <div class="step-title">عملية الضرب والـ Modulo 26</div>
-                        <div class="ar-text-step">نحسب النواتج بضرب كل صف من صفوف المفتاح في عمود النص P، ثم نطبق مقياس الحساب النمطي 26:</div>
+                        <div class="step-title">الضرب وحساب الـ Mod 26</div>
+                        <div class="ar-text-step">بنضرب كل صف من المفتاح K في عمود النص P، وبعدين نحسب الـ Mod 26 للنواتج:</div>
                         <div class="math-expr">
                             Row 1: (1 &times; 7) + (0 &times; 4) + (3 &times; 11) + (0 &times; 15) = 7 + 0 + 33 + 0 = 40 &nbsp; &rArr; 40 (mod 26) = 14 (O)<br>
                             Row 2: (2 &times; 7) + (1 &times; 4) + (0 &times; 11) + (0 &times; 15) = 14 + 4 + 0 + 0 = 18 &nbsp; &rArr; 18 (mod 26) = 18 (S)<br>
@@ -522,9 +520,9 @@
                 </div>
             </div>
 
-            <div class="ar-text" style="border-right-color:#10b981; margin-top:20px;">
-                الناتج النهائي المشفر: <span class="eng-red">OSPW</span>. 
-                تكمن قوة الرتبة 4&times;4 في أن كل حرف من الحروف المشفرة الناتجة يعتمد خطياً على جميع حروف النص الأصلي الأربعة معاً، مما يمنع تسرب أي أنماط توزيعية فردية أو ثنائية للهاكر.
+            <h3 class="sub-heading" style="color:#10b981;">ليه الـ 4x4 أقوى؟</h3>
+            <div class="ar-text" style="border-right-color:#10b981;">
+                عشان كل حرف في الشفرة الناتجة (<span class="eng-red">O, S, P, W</span>) معتمد على الـ 4 حروف الأصلية مع بعض. ده بيخلي كسر الشفرة مستحيل من غير ما تعرف المصفوفة بالكامل لأن تحليل تكرار الحروف الفردية والثنائية بيكون بلا فائدة تماماً.
             </div>
         </div>
 
@@ -533,11 +531,11 @@
             <h2 class="cyber-heading" style="color:#a855f7;">تشفير مصفوفة من الرتبة 5x5 (God Level) <span class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.1);">5x5 MATRIX</span></h2>
 
             <div class="ar-text" style="border-right-color:#a855f7;">
-                لنتوسع أكثر ونلقي نظرة على الحسابات عند استخدام مصفوفة ذات رتبة أعلى مثل 5&times;5، وهو ما يوضح كيف تتسع الخوارزمية للتعامل مع كتل نصية أكبر. في هذا المثال سنقوم بمعالجة وتشفير 5 حروف في المرة الواحدة.
+                تعال نشوف لو جاب مصفوفة 5&times;5! في الحالة دي بنشفر 5 حروف مع بعض في المرة الواحدة. هنستخدم مصفوفة ذكية محددها بيساوي 1 عشان الحسابات تكون أسهل:
                 <br>
-                النص الأصلي المطلوب تشفيره: <span class="eng-word">CYBER</span>
+                الرسالة المطلوبة: <span class="eng-word">CYBER</span>
                 <br>
-                المصفوفة المفتاح المعتمدة (وهي مصفوفة مثلثية سفلية ذكية محددها الرياضي يساوي 1، مما يسهل عملية الضرب اليدوية):
+                المصفوفة المفتاح (Key Matrix):
                 <div style="text-align:center; margin: 15px 0;">
                     <span class="eng-yellow">K = </span>
                     <div class="math-matrix">
@@ -554,7 +552,7 @@
                 <div class="step-card" style="border-left-color:#a855f7;">
                     <div class="step-num">1</div>
                     <div class="step-content">
-                        <div class="step-title">ترميز الحروف لقيم رقمية (Mapping)</div>
+                        <div class="step-title">تحويل الحروف لأرقام (Mapping)</div>
                         <div class="math-expr">
                             C = 2, &nbsp; Y = 24, &nbsp; B = 1, &nbsp; E = 4, &nbsp; R = 17 &nbsp; &rArr; &nbsp; P = [2, 24, 1, 4, 17]
                         </div>
@@ -564,8 +562,8 @@
                 <div class="step-card" style="border-left-color:#a855f7;">
                     <div class="step-num">2</div>
                     <div class="step-content">
-                        <div class="step-title">الضرب وحساب باقي القسمة نمطياً Mod 26</div>
-                        <div class="ar-text-step">نضرب صفوف مصفوفة المفتاح K في عمود النص P، ثم نختصر الناتج نمطياً:</div>
+                        <div class="step-title">الضرب وحساب الـ Mod 26</div>
+                        <div class="ar-text-step">بنضرب صفوف المفتاح K في عمود النص P، وبعدين نختصر الناتج نمطياً:</div>
                         <div class="math-expr">
                             Row 1: (1 &times; 2) + 0 + 0 + 0 + 0 = 2 &nbsp; &rArr; 2 (mod 26) = 2 (C)<br>
                             Row 2: 0 + (1 &times; 24) + 0 + 0 + 0 = 24 &nbsp; &rArr; 24 (mod 26) = 24 (Y)<br>
@@ -578,9 +576,9 @@
             </div>
 
             <div class="ar-text" style="border-right-color:#a855f7; margin-top:20px;">
-                النص المشفر الناتج (Ciphertext): <span class="eng-red">CYFYV</span>.
+                الناتج النهائي المشفر: <span class="eng-red">CYFYV</span>.
                 <br>
-                ملاحظة عملية: في الاختبارات والميدتيرم، عندما تأتي مصفوفة 5&times;5، يحرص الأستاذ غالباً على توفير مصفوفة تحتوي على عدد كبير من الأصفار (Sparse/Triangular Matrix) لتسهيل العمليات الحسابية اليدوية وتوفير وقت الطلاب، لذا يكفي إتقان آلية الضرب بدقة للوصول للدرجة الكاملة.
+                ملاحظة للامتحان: لو جاب مصفوفة 5&times;5 مش هيجيبها معقدة ومليانة أرقام في كل مكان عشان الوقت؛ هيجيب مصفوفة شبه دي (فيها أصفار كتير) عشان الضرب يكون سريع ومياخدش وقت في الحسابات اليدوية. ركز بس في طريقة الضرب وهتضمن الدرجة كاملة يا صديقي!
             </div>
         </div>
 
