@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 4: Hill Cipher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            z-index: 1;
+            position: relative;
+        }
+
+        .section-panel {
+            background: rgba(5, 5, 10, 0.85);
+            border: 1px solid var(--secondary-color);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.1);
+        }
+
+        h2.cyber-heading {
+            color: var(--primary-color);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
+            direction: ltr;
+        }
+
+        h2.cyber-heading::before {
+            content: '[SEC.04] ';
+            color: var(--secondary-color);
+            margin-right: 15px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite step-start;
+        }
+
+        h3.sub-heading {
+            color: var(--primary-color);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 2px;
+            font-size: 0.6em;
+            margin-left: 15px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .en-def {
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            color: #00e5ff;
+            line-height: 1.5;
+            padding: 15px 20px;
+            border-left: 3px solid #00e5ff;
+            background: rgba(0, 229, 255, 0.05);
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .ar-text {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #cbd5e1;
+            margin: 0 0 25px 0;
+            padding: 15px 20px;
+            border-right: 3px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.3);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
+        .eng-red   { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
+        .eng-purple{ font-family: var(--font-code); color: #a855f7; font-weight: bold; }
+        .eng-orange{ font-family: var(--font-code); color: #f97316; font-weight: bold; }
+        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
+        .eng-yellow{ font-family: var(--font-code); color: #eab308; font-weight: bold; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            direction: rtl;
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed var(--secondary-color);
+            padding: 20px;
+            direction: ltr;
+            text-align: left;
+            font-family: var(--font-code);
+            margin-bottom: 20px;
+            overflow-x: auto;
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        ul.cyber-list {
+            list-style-type: none;
+            padding-right: 20px;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 20px;
+        }
+
+        ul.cyber-list li {
+            margin-bottom: 15px;
+            position: relative;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        ul.cyber-list li::before {
+            content: '>';
+            color: var(--primary-color);
+            position: absolute;
+            right: -25px;
+            font-weight: bold;
+            font-family: var(--font-code);
+        }
+
+        .cyber-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .cyber-table th, .cyber-table td {
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .cyber-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            text-decoration: none;
+            border: 1px solid var(--primary-color);
+            padding: 10px 25px;
+            font-family: var(--font-code);
+            background: rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .math-matrix {
+            display: inline-block;
+            vertical-align: middle;
+            border-left: 2px solid #00e5ff;
+            border-right: 2px solid #00e5ff;
+            padding: 0 5px;
+            margin: 0 10px;
+            font-family: var(--font-code);
+            text-align: center;
+        }
+        
+        .math-row {
+            margin: 3px 0;
+        }
+        
+        .math-cell {
+            display: inline-block;
+            width: 30px;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="matrixCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
+    <div class="scanlines" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;"></div>
+
+    <div class="content-container">
+        <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
+
+        <header style="text-align:center;margin-bottom:50px;border-bottom:1px solid #333;padding-bottom:30px;">
+            <div class="glitch-wrapper">
+                <h1 class="glitch" data-text="SECTION 4: HILL CIPHER" style="font-size:4rem;color:#fff;">SECTION 4: HILL CIPHER</h1>
+            </div>
+            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">MATRIX MULTIPLICATION ENCRYPTION</p>
+            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: CLASSIFIED | CLEARANCE: ARCHITECT</div>
+        </header>
+
+        <!-- 1. The Concept & The Rules -->
+        <div class="section-panel" style="animation-delay:0.1s;border-color:#00e5ff;">
+            <h2 class="cyber-heading" style="color:#00e5ff;">الفكرة الأساسية ببساطة (The Concept) <span class="badge" style="color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.1);">CONCEPT</span></h2>
+
+            <div class="en-def">
+                "Hill Cipher is a polyalphabetic substitution cipher based on linear algebra, specifically matrix multiplication. It treats blocks of letters as vectors and transforms them using a key matrix."
+            </div>
+
+            <div class="ar-text" style="border-right-color:#00e5ff;">
+                الـ <span class="eng-word">Hill Cipher</span> ده بقى ليفل الوحش في الرياضيات! هنا إحنا مش بنشفر حرف حرف زي قيصر، ولا بنستخدم كلمة سر ونكررها زي فيجنير.. إحنا بنقسم الرسالة "بلوكات" (<span class="eng-purple">Blocks</span>) ونضربها في مصفوفة (<span class="eng-purple">Matrix</span>) كبيرة!
+                <br><br>
+                تخيل إنك بتحول كل عدد حروف معين لمتجه (<span class="eng-yellow">Vector</span>) وتضربهم في "خلاط" رياضي (المصفوفة) عشان يطلعلك حروف تانية خالص ملهاش علاقة بالأصلية. الميزة هنا إن حرف الـ 'A' ممكن يتشفر لـ 'X' مرة ولـ 'Z' مرة تانية في نفس الكلمة، وده بيخلي كسرها كابوس لأي حد بيحاول يحلل تكرار الحروف.
+            </div>
+
+            <h3 class="sub-heading" style="color:#00e5ff;">القاعدة الرياضية للحفظ (The Rules)</h3>
+            <table class="cyber-table">
+                <thead>
+                    <tr>
+                        <th>Process</th>
+                        <th>Formula</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="eng-green">Encryption (التشفير)</td>
+                        <td><span class="eng-word">C = (K &times; P) (mod 26)</span></td>
+                    </tr>
+                    <tr>
+                        <td class="eng-red">Decryption (فك التشفير)</td>
+                        <td><span class="eng-word">P = (K<sup>-1</sup> &times; C) (mod 26)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub-heading" style="color:#ef4444; border-left-color:#ef4444;">شرط أساسي للمفتاح (Key Condition) ⚠️</h3>
+            <div class="ar-text" style="border-right-color:#ef4444; background: rgba(239, 68, 68, 0.05);">
+                عشان المصفوفة تنفع تكون مفتاح تشفير وينفع نفك تشفيرها، لازم يكون ليها معكوس ضربي (<span class="eng-red">Inverse Matrix</span>)، وده بيتحقق بشرطين:
+                <br>
+                1. الـ <b>Determinant</b> (المحدد) بتاع المصفوفة ميكونش صفر.
+                <br>
+                2. يكون الـ <b>gcd(det, 26) = 1</b> (يعني الرقمين مفيش بينهم أي عوامل مشتركة).
+            </div>
+        </div>
+
+        <!-- 2. 3x3 Example -->
+        <div class="section-panel" style="animation-delay:0.2s;border-color:#3b82f6;">
+            <h2 class="cyber-heading" style="color:#3b82f6;">خطوات التشفير وفك التشفير بالمثال (3x3 Process) <span class="badge" style="color:#3b82f6;border-color:#3b82f6;background:rgba(59,130,246,0.1);">3x3 MATRIX</span></h2>
+            
+            <h3 class="sub-heading" style="color:#3b82f6;">أولاً: التشفير (Encryption)</h3>
+            <div class="ar-text" style="border-right-color:#3b82f6;">
+                الرسالة المطلوبة: <span class="eng-word">INU</span>
+                <br>
+                المصفوفة المفتاح (Key Matrix):
+                <div style="text-align:center; margin: 15px 0;">
+                    <span class="eng-yellow">K = </span>
+                    <div class="math-matrix">
+                        <div class="math-row"><span class="math-cell">6</span><span class="math-cell">24</span><span class="math-cell">1</span></div>
+                        <div class="math-row"><span class="math-cell">13</span><span class="math-cell">16</span><span class="math-cell">10</span></div>
+                        <div class="math-row"><span class="math-cell">20</span><span class="math-cell">17</span><span class="math-cell">15</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-box" style="border-color:#3b82f6;">
+[1] تحويل الحروف لأرقام (Mapping):
+    بنحول حروف الكلمة لأرقامها في الأبجدية (A=0, B=1, ...):
+    I = 8, N = 13, U = 20  ==>  P = [8, 13, 20]
+
+[2] الضرب في المصفوفة (Matrix Multiplication):
+    بنضرب صفوف المصفوفة في عامود النص الأصلي (P):
+    Row 1: (6 * 8) + (24 * 13) + (1 * 20)  = 48 + 312 + 20 = 380
+    Row 2: (13 * 8) + (16 * 13) + (10 * 20) = 104 + 208 + 20 = 512
+    Row 3: (20 * 8) + (17 * 13) + (15 * 20) = 160 + 221 + 300 = 681
+
+[3] حساب الـ Mod 26 وتحويلها لحروف:
+    380 (mod 26) = 16 ==> Q
+    512 (mod 26) = 18 ==> S
+    681 (mod 26) = 5  ==> F
+    
+    الناتج النهائي (Ciphertext): QSF
+            </div>
+
+            <h3 class="sub-heading" style="color:#3b82f6;">ثانياً: فك التشفير (Decryption)</h3>
+            <div class="ar-text" style="border-right-color:#3b82f6;">
+                الرسالة المتشفرة: <span class="eng-red">QSF</span>
+                <br>
+                المهمة: نرجع الكلمة لأصلها (<span class="eng-green">INU</span>) باستخدام نفس المصفوفة K.
+            </div>
+
+            <div class="code-box" style="border-color:#3b82f6;">
+[1] حساب المحدد (Determinant):
+    محدد المصفوفة K دي في الرياضيات بيساوي 441.
+    في نظام الـ Mod 26:
+    441 (mod 26) = 25
+
+[2] إيجاد المعكوس الضربي للمحدد (25) باستخدام جدول المحترفين (The Table Method):
+    الجدول ده أضمن طريقة لما تكون الأرقام صعبة، وبندور فيه على الرقم اللي يحقق المعادلة: (25 * x) mod 26 = 1.
+            </div>
+
+            <table class="cyber-table" style="max-width: 600px; margin: 20px auto;">
+                <thead>
+                    <tr>
+                        <th>q</th>
+                        <th>r<sub>1</sub></th>
+                        <th>r<sub>2</sub></th>
+                        <th>r</th>
+                        <th>T<sub>1</sub></th>
+                        <th>T<sub>2</sub></th>
+                        <th>T</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>-</td>
+                        <td>26</td>
+                        <td>25</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>-1</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>25</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>-1</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ar-text" style="border-right-color:#3b82f6; margin-top:20px;">
+                النتيجة: الرقم اللي طلع في خانة T<sub>2</sub> هو <b>-1</b>.
+                <br>
+                وفي عالم الـ Mod 26، الرقم السالب بنجمع عليه 26 عشان نخليه موجب: <b>-1 + 26 = 25</b>.
+                <br>
+                إذن المعكوس الضربي للـ 25 هو <b>25</b> نفسه! (تأكيد: 25 &times; 25 = 625، و 625 mod 26 = 1).
+            </div>
+
+            <div class="code-box" style="border-color:#3b82f6;">
+[3] حساب المصفوفة العكسية (K^-1):
+    بنحسب الـ Adjoint Matrix ونضربها في المعكوس الضربي (25) ونحسب الـ mod 26:
+    K^-1 = 
+    |  8   5  10 |
+    | 21   8  21 |
+    | 21  12   8 |
+
+[4] فك التشفير (الضرب في حروف الشفرة):
+    بنضرب المصفوفة العكسية في متجه الشفرة C = [16, 18, 5]:
+    Row 1: (8 * 16) + (5 * 18) + (10 * 5)  = 128 + 90 + 50  = 268 ==> (mod 26) = 8  ==> I
+    Row 2: (21 * 16) + (8 * 18) + (21 * 5) = 336 + 144 + 105 = 585 ==> (mod 26) = 13 ==> N
+    Row 3: (21 * 16) + (12 * 18) + (8 * 5) = 336 + 216 + 40  = 592 ==> (mod 26) = 20 ==> U
+
+    النتيجة النهائية: رجعت الرسالة الأصلية [INU] بنجاح!
+            </div>
+        </div>
+
+        <!-- 3. 4x4 Example -->
+        <div class="section-panel" style="animation-delay:0.3s;border-color:#10b981;">
+            <h2 class="cyber-heading" style="color:#10b981;">تشفير مصفوفة 4x4 (Advanced Level) <span class="badge" style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">4x4 MATRIX</span></h2>
+
+            <div class="ar-text" style="border-right-color:#10b981;">
+                لما نكبر المصفوفة لـ 4x4، إحنا بنشفر 4 حروف مع بعض في المرة الواحدة!
+                <br>
+                الرسالة المطلوبة: <span class="eng-word">HELP</span>
+                <br>
+                المصفوفة المفتاح (Key Matrix):
+                <div style="text-align:center; margin: 15px 0;">
+                    <span class="eng-yellow">K = </span>
+                    <div class="math-matrix">
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">3</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">2</span><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">1</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">1</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-box" style="border-color:#10b981;">
+[1] تحويل الحروف لأرقام:
+    H = 7, E = 4, L = 11, P = 15  ==>  P = [7, 4, 11, 15]
+
+[2] الضرب في المصفوفة (Matrix Multiplication):
+    Row 1: (1 * 7) + (0 * 4) + (3 * 11) + (0 * 15) = 7 + 0 + 33 + 0 = 40
+    Row 2: (2 * 7) + (1 * 4) + (0 * 11) + (0 * 15) = 14 + 4 + 0 + 0 = 18
+    Row 3: (0 * 7) + (1 * 4) + (1 * 11) + (0 * 15) = 0 + 4 + 11 + 0 = 15
+    Row 4: (1 * 7) + (0 * 4) + (0 * 11) + (1 * 15) = 7 + 0 + 0 + 15 = 22
+
+[3] حساب الـ Mod 26 وتحويلها لحروف:
+    40 (mod 26) = 14 ==> O
+    18 (mod 26) = 18 ==> S
+    15 (mod 26) = 15 ==> P
+    22 (mod 26) = 22 ==> W
+
+    الناتج النهائي (Ciphertext): OSPW
+            </div>
+
+            <h3 class="sub-heading" style="color:#10b981;">ليه الـ 4x4 أقوى؟</h3>
+            <div class="ar-text" style="border-right-color:#10b981;">
+                لأن كل حرف في الشفرة الناتج (<span class="eng-red">O, S, P, W</span>) معتمد على الـ 4 حروف الأصلية مع بعض. ده بيخلي كسر الشفرة مستحيل من غير ما تعرف المصفوفة بالكامل لأن تحليل التكرارات الفردية والثنائية بيكون عديم الفائدة تماماً.
+            </div>
+        </div>
+
+        <!-- 4. 5x5 Example -->
+        <div class="section-panel" style="animation-delay:0.4s;border-color:#a855f7;">
+            <h2 class="cyber-heading" style="color:#a855f7;">تشفير مصفوفة 5x5 (God Level) <span class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.1);">5x5 MATRIX</span></h2>
+
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                عشان نلبي رغبة الدكتور ونكون مستعدين لأسوأ السيناريوهات في الامتحان، تعال نشوف لو جاب مصفوفة 5&times;5! في الحالة دي إحنا بنشفر 5 حروف مع بعض.
+                <br>
+                الرسالة المطلوبة: <span class="eng-word">CYBER</span>
+                <br>
+                المصفوفة المفتاح (Key Matrix) - واخدين مصفوفة ذكية محددها بيساوي 1 عشان نضمن ليها معكوس وسهلة الحساب:
+                <div style="text-align:center; margin: 15px 0;">
+                    <span class="eng-yellow">K = </span>
+                    <div class="math-matrix">
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">2</span><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">3</span><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">2</span><span class="math-cell">0</span><span class="math-cell">1</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-box" style="border-color:#a855f7;">
+[1] تحويل الحروف لأرقام (Mapping):
+    C = 2, Y = 24, B = 1, E = 4, R = 17  ==>  P = [2, 24, 1, 4, 17]
+
+[2] الضرب في المصفوفة (Matrix Multiplication):
+    Row 1: (1 * 2) + 0 + 0 + 0 + 0 = 2
+    Row 2: 0 + (1 * 24) + 0 + 0 + 0 = 24
+    Row 3: (2 * 2) + 0 + (1 * 1) + 0 + 0 = 4 + 1 = 5
+    Row 4: 0 + (3 * 24) + 0 + (1 * 4) + 0 = 72 + 4 = 76
+    Row 5: (1 * 2) + 0 + (2 * 1) + 0 + (1 * 17) = 2 + 0 + 2 + 0 + 17 = 21
+
+[3] حساب الـ Mod 26 وتحويلها لحروف:
+    2 (mod 26)  = 2  ==> C
+    24 (mod 26) = 24 ==> Y
+    5 (mod 26)  = 5  ==> F
+    76 (mod 26) = 24 ==> Y  (لأن 76 - 52 = 24)
+    21 (mod 26) = 21 ==> V
+
+    الناتج النهائي (Ciphertext): CYFYV
+            </div>
+
+            <h3 class="sub-heading" style="color:#a855f7;">ملاحظة هامة للاختبار</h3>
+            <div class="ar-text" style="border-right-color:#a855f7;">
+                في الامتحان لو جاب 5&times;5 مش هيجيب مصفوفة معقدة مليانة أرقام في كل الخلايا عشان الوقت، هيجيب مصفوفة شبه دي (فيها أصفار كتير) عشان الضرب يكون سريع ومياخدش وقت طويل في الحسابات اليدوية. ركز على طريقة الضرب والخطوات وهتضمن الدرجة كاملة يا صديقي!
+            </div>
+        </div>
+
+        <div style="text-align:center; margin-bottom: 50px;">
+            <p style="color:#555; font-family:var(--font-code);">END OF SECTION 4</p>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Background
+        const canvas = document.getElementById("matrixCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "HILLCIPHERMATRIXMOD26XYZK";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) { drops[x] = 1; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(11, 15, 25, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00e5ff";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = "#fff";
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    ctx.fillStyle = "#00e5ff";
+                } else {
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 40);
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+
+</html>

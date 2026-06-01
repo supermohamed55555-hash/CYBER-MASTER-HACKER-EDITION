@@ -33,6 +33,12 @@ const modules = [
         link: "section3.html"
     },
     {
+        id: "SEC-4",
+        title: "Hill Cipher (Matrix Encryption)",
+        description: "Master the power of Linear Algebra in cryptography. Detailed 3x3, 4x4, and 5x5 matrix encryption and decryption processes with key conditions.",
+        link: "section4.html"
+    },
+    {
         id: "CH-3",
         title: "Advanced Cyberattacks & Vulnerabilities",
         description: "Deep dive into DoS, DDoS, MITM, SYN Floods, and Buffer Overflows. Understand how vulnerabilities turn into full-scale attacks.",
