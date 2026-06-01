@@ -459,8 +459,31 @@
                     <div class="step-num">2</div>
                     <div class="step-content">
                         <div class="step-title">إيجاد المعكوس الضربي للـ 25 باستخدام طريقة الجدول (Table Method)</div>
-                        <div class="ar-text-step">بندور على الرقم اللي لو ضربناه في 25 يدينا 1 تحت نظام الـ Mod 26.
-                            الجدول ده هو الطريقة الأضمن للحل:</div>
+                        <div class="ar-text-step">
+                            بندور على الرقم اللي لو ضربناه في 25 يدينا 1 تحت نظام الـ Mod 26. الطريقة الرسمية والأضمن هنا هي <b>طريقة الجدول (Table Method)</b> المعتمدة على خوارزمية إقليدس الممتدة (Extended Euclidean Algorithm).
+                        </div>
+
+                        <div class="math-expr" style="margin-bottom: 20px;">
+                            <strong>القوانين المستخدمة لحساب الجدول (Table Formulas):</strong><br><br>
+                            1. لحساب باقي القسمة (r):<br>
+                            <span style="color: #cbd5e1; font-family: var(--font-code);">r = r<sub>1</sub> - (q &times; r<sub>2</sub>)</span>
+                            <br><br>
+                            2. لحساب معامل المعكوس (T):<br>
+                            <span style="color: #cbd5e1; font-family: var(--font-code);">T = T<sub>1</sub> - (T<sub>2</sub> &times; q)</span>
+                        </div>
+
+                        <div class="ar-text-step">
+                            <strong>شرح المكونات وطريقة الاستخدام:</strong><br>
+                            - <span class="eng-word">q</span>: هو خارج القسمة الصحيح (Quotient) للـ <span class="eng-word">r<sub>1</sub> / r<sub>2</sub></span> بدون كسور (مثال: 26 تقسيم 25 بيساوي 1 والباقي 1، إذن q = 1).<br>
+                            - <span class="eng-word">r</span>: هو باقي القسمة (Remainder) الجديد اللي بنحسبه من القانون الأول.<br>
+                            - <span class="eng-word">T</span>: هو المتغير المساعد لحساب المعكوس الضربي من القانون الثاني.<br>
+                            - <strong>الانتقال للصف التالي:</strong> في كل خطوة جديدة، القيم بتتحرك كالتالي:<br>
+                            &nbsp;&nbsp;&bull; الـ <span class="eng-word">r<sub>2</sub></span> القديمة بتنزل تبقى هي الـ <span class="eng-word">r<sub>1</sub></span> الجديدة.<br>
+                            &nbsp;&nbsp;&bull; الـ <span class="eng-word">r</span> المحسوبة بتنزل تبقى هي الـ <span class="eng-word">r<sub>2</sub></span> الجديدة.<br>
+                            &nbsp;&nbsp;&bull; الـ <span class="eng-word">T<sub>2</sub></span> القديمة بتنزل تبقى هي الـ <span class="eng-word">T<sub>1</sub></span> الجديدة.<br>
+                            &nbsp;&nbsp;&bull; الـ <span class="eng-word">T</span> المحسوبة بتنزل تبقى هي الـ <span class="eng-word">T<sub>2</sub></span> الجديدة.<br>
+                            - بنقف أول ما نوصل لـ <span class="eng-word">r = 0</span>، وبتكون النتيجة النهائية للمعكوس الضربي هي قيمة <span class="eng-word">T<sub>2</sub></span> في الصف الأخير قبل التوقف.
+                        </div>
 
                         <table class="cyber-table" style="max-width: 600px; margin: 20px auto;">
                             <thead>
