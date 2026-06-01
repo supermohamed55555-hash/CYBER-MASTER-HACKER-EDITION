@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Section 4: Hill Cipher</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
         .content-container {
@@ -104,12 +106,41 @@
             font-size: 1.1rem;
         }
 
-        .eng-word { font-family: var(--font-code); color: #00e5ff; font-weight: bold; }
-        .eng-red   { font-family: var(--font-code); color: #ef4444; font-weight: bold; }
-        .eng-purple{ font-family: var(--font-code); color: #a855f7; font-weight: bold; }
-        .eng-orange{ font-family: var(--font-code); color: #f97316; font-weight: bold; }
-        .eng-green { font-family: var(--font-code); color: #10b981; font-weight: bold; }
-        .eng-yellow{ font-family: var(--font-code); color: #eab308; font-weight: bold; }
+        .eng-word {
+            font-family: var(--font-code);
+            color: #00e5ff;
+            font-weight: bold;
+        }
+
+        .eng-red {
+            font-family: var(--font-code);
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .eng-purple {
+            font-family: var(--font-code);
+            color: #a855f7;
+            font-weight: bold;
+        }
+
+        .eng-orange {
+            font-family: var(--font-code);
+            color: #f97316;
+            font-weight: bold;
+        }
+
+        .eng-green {
+            font-family: var(--font-code);
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .eng-yellow {
+            font-family: var(--font-code);
+            color: #eab308;
+            font-weight: bold;
+        }
 
         .steps-container {
             margin: 20px 0;
@@ -194,7 +225,8 @@
             background: rgba(0, 0, 0, 0.6);
         }
 
-        .cyber-table th, .cyber-table td {
+        .cyber-table th,
+        .cyber-table td {
             border: 1px solid rgba(0, 229, 255, 0.3);
             padding: 12px 15px;
             font-size: 0.95rem;
@@ -226,12 +258,21 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes blink {
-            50% { opacity: 0; }
+            50% {
+                opacity: 0;
+            }
         }
 
         .math-matrix {
@@ -244,11 +285,11 @@
             font-family: var(--font-code);
             text-align: center;
         }
-        
+
         .math-row {
             margin: 3px 0;
         }
-        
+
         .math-cell {
             display: inline-block;
             width: 35px;
@@ -258,32 +299,45 @@
 </head>
 
 <body>
-    <canvas id="matrixCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
-    <div class="scanlines" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;"></div>
+    <canvas id="matrixCanvas"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;opacity:0.15;"></canvas>
+    <div class="scanlines"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;background:linear-gradient(rgba(0,0,0,0) 50%,rgba(0,0,0,0.25) 50%);background-size:100% 4px;">
+    </div>
 
     <div class="content-container">
         <a href="index.html" class="back-btn">&lt; RETURN TO MAIN INTERFACE</a>
 
         <header style="text-align:center;margin-bottom:50px;border-bottom:1px solid #333;padding-bottom:30px;">
             <div class="glitch-wrapper">
-                <h1 class="glitch" data-text="SECTION 4: HILL CIPHER" style="font-size:4rem;color:#fff;">SECTION 4: HILL CIPHER</h1>
+                <h1 class="glitch" data-text="SECTION 4: HILL CIPHER" style="font-size:4rem;color:#fff;">SECTION 4: HILL
+                    CIPHER</h1>
             </div>
-            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">MATRIX MULTIPLICATION ENCRYPTION</p>
-            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: CLASSIFIED | CLEARANCE: ARCHITECT</div>
+            <p style="color:var(--primary-color);font-size:1.8rem;letter-spacing:2px;">MATRIX MULTIPLICATION ENCRYPTION
+            </p>
+            <div style="margin-top:20px;font-family:var(--font-code);color:#888;">STATUS: CLASSIFIED | CLEARANCE:
+                ARCHITECT</div>
         </header>
 
         <!-- 1. The Concept & The Rules -->
         <div class="section-panel" style="animation-delay:0.1s;border-color:#00e5ff;">
-            <h2 class="cyber-heading" style="color:#00e5ff;">(The Concept) <span class="badge" style="color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.1);">CONCEPT</span></h2>
+            <h2 class="cyber-heading" style="color:#00e5ff;">(The Concept) <span class="badge"
+                    style="color:#00e5ff;border-color:#00e5ff;background:rgba(0,229,255,0.1);">CONCEPT</span></h2>
 
             <div class="en-def">
-                "Hill Cipher is a polyalphabetic substitution cipher based on linear algebra, specifically matrix multiplication. It treats blocks of letters as vectors and transforms them using a key matrix."
+                "Hill Cipher is a polyalphabetic substitution cipher based on linear algebra, specifically matrix
+                multiplication. It treats blocks of letters as vectors and transforms them using a key matrix."
             </div>
 
             <div class="ar-text" style="border-right-color:#00e5ff;">
-                الـ <span class="eng-word">Hill Cipher</span> هي طريقة تشفير بتعتمد بالكامل على الرياضيات والجبر الخطي. الفكرة هنا مختلفة شوية عن اللي فات؛ مش بنشفر حرف حرف زي قيصر، ولا بنكرر كلمة سر زي فيجنير.. إحنا بنقسم الرسالة لمجموعات أو كتل متساوية بنسميها <span class="eng-purple">Blocks</span>، وبنضرب حروف كل بلوك مع بعض في مصفوفة المفتاح (<span class="eng-purple">Key Matrix</span>) عشان نطلع النص المتشفر.
+                الـ <span class="eng-word">Hill Cipher</span> هي طريقة تشفير بتعتمد بالكامل على الرياضيات والجبر الخطي.
+                الفكرة هنا مختلفة شوية عن اللي فات؛ مش بنشفر حرف حرف زي قيصر، ولا بنكرر كلمة سر زي فيجنير.. إحنا بنقسم
+                الرسالة لمجموعات أو كتل متساوية بنسميها <span class="eng-purple">Blocks</span>، وبنضرب حروف كل بلوك مع
+                بعض في مصفوفة المفتاح (<span class="eng-purple">Key Matrix</span>) عشان نطلع النص المتشفر.
                 <br><br>
-                الميزة القوية هنا إن حرف الـ 'A' مثلاً ممكن يتشفر لـ 'X' في أول الكلمة، ويتشفر لـ 'Z' في آخرها! ده لأن كل حرف بيتأثر بالحروف اللي معاه في نفس البلوك أثناء عملية الضرب، وده بيخلي محاولات كسر الشفرة عن طريق تحليل تكرار الحروف (Frequency Analysis) صعبة جداً ومن شبه المستحيل تنجح.
+                الميزة القوية هنا إن حرف الـ 'A' مثلاً ممكن يتشفر لـ 'X' في أول الكلمة، ويتشفر لـ 'Z' في آخرها! ده لأن
+                كل حرف بيتأثر بالحروف اللي معاه في نفس البلوك أثناء عملية الضرب، وده بيخلي محاولات كسر الشفرة عن طريق
+                تحليل تكرار الحروف (Frequency Analysis) صعبة جداً ومن شبه المستحيل تنجح.
             </div>
 
             <h3 class="sub-heading" style="color:#00e5ff;">(The Rules)</h3>
@@ -306,29 +360,35 @@
                 </tbody>
             </table>
 
-            <h3 class="sub-heading" style="color:#ef4444; border-left-color:#ef4444;">شرط أساسي لصلاحية المفتاح (Key Condition)</h3>
+            <h3 class="sub-heading" style="color:#ef4444; border-left-color:#ef4444;">(Key Condition)</h3>
             <div class="ar-text" style="border-right-color:#ef4444; background: rgba(239, 68, 68, 0.05);">
-                عشان المصفوفة تنفع تكون مفتاح تشفير وينفع نعملها فك تشفير بعدين، لازم يكون ليها معكوس ضربي (<span class="eng-red">Inverse Matrix</span>) تحت نظام الـ Mod 26. وعشان الشرط ده يتحقق، لازم نضمن حاجتين:
+                عشان المصفوفة تنفع تكون مفتاح تشفير وينفع نعملها فك تشفير بعدين، لازم يكون ليها معكوس ضربي (<span
+                    class="eng-red">Inverse Matrix</span>) تحت نظام الـ Mod 26. وعشان الشرط ده يتحقق، لازم نضمن حاجتين:
                 <br>
                 1. محدد المصفوفة <b>Determinant (det)</b> ميكونش صفر.
                 <br>
-                2. الرقم ده والـ 26 ميكونش بينهم أي عوامل مشتركة، يعني الـ <b>gcd(det, 26) = 1</b> (عشان ينفع نحسب المعكوس الضربي نمطياً).
+                2. الرقم ده والـ 26 ميكونش بينهم أي عوامل مشتركة، يعني الـ <b>gcd(det, 26) = 1</b> (عشان ينفع نحسب
+                المعكوس الضربي نمطياً).
             </div>
         </div>
 
         <!-- 2. 3x3 Example -->
         <div class="section-panel" style="animation-delay:0.2s;border-color:#3b82f6;">
-            <h2 class="cyber-heading" style="color:#3b82f6;">3x3 Matrix Walkthrough <span class="badge" style="color:#3b82f6;border-color:#3b82f6;background:rgba(59,130,246,0.1);">3x3 MATRIX</span></h2>
-            
+            <h2 class="cyber-heading" style="color:#3b82f6;">3x3 Matrix Walkthrough <span class="badge"
+                    style="color:#3b82f6;border-color:#3b82f6;background:rgba(59,130,246,0.1);">3x3 MATRIX</span></h2>
+
             <h3 class="sub-heading" style="color:#3b82f6;">أولاً: عملية التشفير (Encryption)</h3>
             <div class="ar-text" style="border-right-color:#3b82f6;">
                 تعال نشوف مثال عملي لو هنشفر كلمة <span class="eng-word">INU</span> باستخدام مصفوفة المفتاح دي:
                 <div style="text-align:center; margin: 15px 0;">
                     <span class="eng-yellow">K = </span>
                     <div class="math-matrix">
-                        <div class="math-row"><span class="math-cell">6</span><span class="math-cell">24</span><span class="math-cell">1</span></div>
-                        <div class="math-row"><span class="math-cell">13</span><span class="math-cell">16</span><span class="math-cell">10</span></div>
-                        <div class="math-row"><span class="math-cell">20</span><span class="math-cell">17</span><span class="math-cell">15</span></div>
+                        <div class="math-row"><span class="math-cell">6</span><span class="math-cell">24</span><span
+                                class="math-cell">1</span></div>
+                        <div class="math-row"><span class="math-cell">13</span><span class="math-cell">16</span><span
+                                class="math-cell">10</span></div>
+                        <div class="math-row"><span class="math-cell">20</span><span class="math-cell">17</span><span
+                                class="math-cell">15</span></div>
                     </div>
                 </div>
             </div>
@@ -338,7 +398,8 @@
                     <div class="step-num">1</div>
                     <div class="step-content">
                         <div class="step-title">تحويل الحروف لأرقام (Mapping)</div>
-                        <div class="ar-text-step">بنحول حروف كلمتنا لأرقام ترتيبية في الأبجدية الإنجليزية، وبنبدأ من A=0 لحد Z=25:</div>
+                        <div class="ar-text-step">بنحول حروف كلمتنا لأرقام ترتيبية في الأبجدية الإنجليزية، وبنبدأ من A=0
+                            لحد Z=25:</div>
                         <div class="math-expr">
                             I = 8, &nbsp; N = 13, &nbsp; U = 20 &nbsp; &rArr; &nbsp; P = [8, 13, 20]
                         </div>
@@ -366,7 +427,7 @@
                         <div class="math-expr">
                             380 (mod 26) = 16 &nbsp; &rArr; &nbsp; Q<br>
                             512 (mod 26) = 18 &nbsp; &rArr; &nbsp; S<br>
-                            681 (mod 26) = 5  &nbsp; &rArr; &nbsp; F<br><br>
+                            681 (mod 26) = 5 &nbsp; &rArr; &nbsp; F<br><br>
                             الناتج النهائي (Ciphertext): QSF
                         </div>
                     </div>
@@ -385,7 +446,8 @@
                     <div class="step-num">1</div>
                     <div class="step-content">
                         <div class="step-title">حساب المحدد (Determinant)</div>
-                        <div class="ar-text-step">محدد المصفوفة K رياضياً بيساوي 441. هنجيب قيمته تحت نظام الـ Mod 26:</div>
+                        <div class="ar-text-step">محدد المصفوفة K رياضياً بيساوي 441. هنجيب قيمته تحت نظام الـ Mod 26:
+                        </div>
                         <div class="math-expr">
                             det(K) = 441<br>
                             441 (mod 26) = 25
@@ -397,8 +459,9 @@
                     <div class="step-num">2</div>
                     <div class="step-content">
                         <div class="step-title">إيجاد المعكوس الضربي للـ 25 باستخدام طريقة الجدول (Table Method)</div>
-                        <div class="ar-text-step">بندور على الرقم اللي لو ضربناه في 25 يدينا 1 تحت نظام الـ Mod 26. الجدول ده هو الطريقة الأضمن للحل:</div>
-                        
+                        <div class="ar-text-step">بندور على الرقم اللي لو ضربناه في 25 يدينا 1 تحت نظام الـ Mod 26.
+                            الجدول ده هو الطريقة الأضمن للحل:</div>
+
                         <table class="cyber-table" style="max-width: 600px; margin: 20px auto;">
                             <thead>
                                 <tr>
@@ -445,13 +508,17 @@
                     <div class="step-num">3</div>
                     <div class="step-content">
                         <div class="step-title">حساب المصفوفة العكسية (K<sup>-1</sup>)</div>
-                        <div class="ar-text-step">بنجيب المصفوفة المرافقة (Adjoint) ونضربها في المعكوس الضربي (25) ونحسب الـ Mod 26 للكل:</div>
+                        <div class="ar-text-step">بنجيب المصفوفة المرافقة (Adjoint) ونضربها في المعكوس الضربي (25) ونحسب
+                            الـ Mod 26 للكل:</div>
                         <div class="math-expr">
-                            K<sup>-1</sup> = 
+                            K<sup>-1</sup> =
                             <div class="math-matrix" style="border-color:#a855f7;">
-                                <div class="math-row"><span class="math-cell">8</span><span class="math-cell">5</span><span class="math-cell">10</span></div>
-                                <div class="math-row"><span class="math-cell">21</span><span class="math-cell">8</span><span class="math-cell">21</span></div>
-                                <div class="math-row"><span class="math-cell">21</span><span class="math-cell">12</span><span class="math-cell">8</span></div>
+                                <div class="math-row"><span class="math-cell">8</span><span
+                                        class="math-cell">5</span><span class="math-cell">10</span></div>
+                                <div class="math-row"><span class="math-cell">21</span><span
+                                        class="math-cell">8</span><span class="math-cell">21</span></div>
+                                <div class="math-row"><span class="math-cell">21</span><span
+                                        class="math-cell">12</span><span class="math-cell">8</span></div>
                             </div>
                         </div>
                     </div>
@@ -461,11 +528,15 @@
                     <div class="step-num">4</div>
                     <div class="step-content">
                         <div class="step-title">فك التشفير (الضرب في الشفرة)</div>
-                        <div class="ar-text-step">بنضرب المصفوفة العكسية K<sup>-1</sup> في قيم الشفرة C = [16, 18, 5]:</div>
+                        <div class="ar-text-step">بنضرب المصفوفة العكسية K<sup>-1</sup> في قيم الشفرة C = [16, 18, 5]:
+                        </div>
                         <div class="math-expr">
-                            Row 1: (8 &times; 16) + (5 &times; 18) + (10 &times; 5)  = 128 + 90 + 50  = 268 &rArr; 268 (mod 26) = 8 &nbsp; &rArr; I<br>
-                            Row 2: (21 &times; 16) + (8 &times; 18) + (21 &times; 5) = 336 + 144 + 105 = 585 &rArr; 585 (mod 26) = 13 &rArr; N<br>
-                            Row 3: (21 &times; 16) + (12 &times; 18) + (8 &times; 5) = 336 + 216 + 40  = 592 &rArr; 592 (mod 26) = 20 &rArr; U<br><br>
+                            Row 1: (8 &times; 16) + (5 &times; 18) + (10 &times; 5) = 128 + 90 + 50 = 268 &rArr; 268
+                            (mod 26) = 8 &nbsp; &rArr; I<br>
+                            Row 2: (21 &times; 16) + (8 &times; 18) + (21 &times; 5) = 336 + 144 + 105 = 585 &rArr; 585
+                            (mod 26) = 13 &rArr; N<br>
+                            Row 3: (21 &times; 16) + (12 &times; 18) + (8 &times; 5) = 336 + 216 + 40 = 592 &rArr; 592
+                            (mod 26) = 20 &rArr; U<br><br>
                             النتيجة النهائية: رجعت الكلمة الأصلية [INU] بنجاح!
                         </div>
                     </div>
@@ -475,7 +546,8 @@
 
         <!-- 3. 4x4 Example -->
         <div class="section-panel" style="animation-delay:0.3s;border-color:#10b981;">
-            <h2 class="cyber-heading" style="color:#10b981;">4x4 Matrix (Advanced Level) <span class="badge" style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">4x4 MATRIX</span></h2>
+            <h2 class="cyber-heading" style="color:#10b981;">4x4 Matrix (Advanced Level) <span class="badge"
+                    style="color:#10b981;border-color:#10b981;background:rgba(16,185,129,0.1);">4x4 MATRIX</span></h2>
 
             <div class="ar-text" style="border-right-color:#10b981;">
                 لما نكبر المصفوفة لـ 4&times;4، بنشفر 4 حروف مع بعض في المرة الواحدة.
@@ -486,10 +558,14 @@
                 <div style="text-align:center; margin: 15px 0;">
                     <span class="eng-yellow">K = </span>
                     <div class="math-matrix">
-                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">3</span><span class="math-cell">0</span></div>
-                        <div class="math-row"><span class="math-cell">2</span><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
-                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">1</span><span class="math-cell">0</span></div>
-                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">1</span></div>
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span
+                                class="math-cell">3</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">2</span><span class="math-cell">1</span><span
+                                class="math-cell">0</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">1</span><span
+                                class="math-cell">1</span><span class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span
+                                class="math-cell">0</span><span class="math-cell">1</span></div>
                     </div>
                 </div>
             </div>
@@ -509,12 +585,17 @@
                     <div class="step-num">2</div>
                     <div class="step-content">
                         <div class="step-title">الضرب وحساب الـ Mod 26</div>
-                        <div class="ar-text-step">بنضرب كل صف من المفتاح K في عمود النص P، وبعدين نحسب الـ Mod 26 للنواتج:</div>
+                        <div class="ar-text-step">بنضرب كل صف من المفتاح K في عمود النص P، وبعدين نحسب الـ Mod 26
+                            للنواتج:</div>
                         <div class="math-expr">
-                            Row 1: (1 &times; 7) + (0 &times; 4) + (3 &times; 11) + (0 &times; 15) = 7 + 0 + 33 + 0 = 40 &nbsp; &rArr; 40 (mod 26) = 14 (O)<br>
-                            Row 2: (2 &times; 7) + (1 &times; 4) + (0 &times; 11) + (0 &times; 15) = 14 + 4 + 0 + 0 = 18 &nbsp; &rArr; 18 (mod 26) = 18 (S)<br>
-                            Row 3: (0 &times; 7) + (1 &times; 4) + (1 &times; 11) + (0 &times; 15) = 0 + 4 + 11 + 0 = 15 &nbsp; &rArr; 15 (mod 26) = 15 (P)<br>
-                            Row 4: (1 &times; 7) + (0 &times; 4) + (0 &times; 11) + (1 &times; 15) = 7 + 0 + 0 + 15 = 22 &nbsp; &rArr; 22 (mod 26) = 22 (W)
+                            Row 1: (1 &times; 7) + (0 &times; 4) + (3 &times; 11) + (0 &times; 15) = 7 + 0 + 33 + 0 = 40
+                            &nbsp; &rArr; 40 (mod 26) = 14 (O)<br>
+                            Row 2: (2 &times; 7) + (1 &times; 4) + (0 &times; 11) + (0 &times; 15) = 14 + 4 + 0 + 0 = 18
+                            &nbsp; &rArr; 18 (mod 26) = 18 (S)<br>
+                            Row 3: (0 &times; 7) + (1 &times; 4) + (1 &times; 11) + (0 &times; 15) = 0 + 4 + 11 + 0 = 15
+                            &nbsp; &rArr; 15 (mod 26) = 15 (P)<br>
+                            Row 4: (1 &times; 7) + (0 &times; 4) + (0 &times; 11) + (1 &times; 15) = 7 + 0 + 0 + 15 = 22
+                            &nbsp; &rArr; 22 (mod 26) = 22 (W)
                         </div>
                     </div>
                 </div>
@@ -522,16 +603,20 @@
 
             <h3 class="sub-heading" style="color:#10b981;">ليه الـ 4x4 أقوى؟</h3>
             <div class="ar-text" style="border-right-color:#10b981;">
-                عشان كل حرف في الشفرة الناتجة (<span class="eng-red">O, S, P, W</span>) معتمد على الـ 4 حروف الأصلية مع بعض. ده بيخلي كسر الشفرة مستحيل من غير ما تعرف المصفوفة بالكامل لأن تحليل تكرار الحروف الفردية والثنائية بيكون بلا فائدة تماماً.
+                عشان كل حرف في الشفرة الناتجة (<span class="eng-red">O, S, P, W</span>) معتمد على الـ 4 حروف الأصلية مع
+                بعض. ده بيخلي كسر الشفرة مستحيل من غير ما تعرف المصفوفة بالكامل لأن تحليل تكرار الحروف الفردية والثنائية
+                بيكون بلا فائدة تماماً.
             </div>
         </div>
 
         <!-- 4. 5x5 Example -->
         <div class="section-panel" style="animation-delay:0.4s;border-color:#a855f7;">
-            <h2 class="cyber-heading" style="color:#a855f7;">5x5 Matrix (God Level) <span class="badge" style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.1);">5x5 MATRIX</span></h2>
+            <h2 class="cyber-heading" style="color:#a855f7;">5x5 Matrix (God Level) <span class="badge"
+                    style="color:#a855f7;border-color:#a855f7;background:rgba(168,85,247,0.1);">5x5 MATRIX</span></h2>
 
             <div class="ar-text" style="border-right-color:#a855f7;">
-                تعال نشوف لو جاب مصفوفة 5&times;5! في الحالة دي بنشفر 5 حروف مع بعض في المرة الواحدة. هنستخدم مصفوفة ذكية محددها بيساوي 1 عشان الحسابات تكون أسهل:
+                تعال نشوف لو جاب مصفوفة 5&times;5! في الحالة دي بنشفر 5 حروف مع بعض في المرة الواحدة. هنستخدم مصفوفة
+                ذكية محددها بيساوي 1 عشان الحسابات تكون أسهل:
                 <br>
                 الرسالة المطلوبة: <span class="eng-word">CYBER</span>
                 <br>
@@ -539,11 +624,21 @@
                 <div style="text-align:center; margin: 15px 0;">
                     <span class="eng-yellow">K = </span>
                     <div class="math-matrix">
-                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
-                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
-                        <div class="math-row"><span class="math-cell">2</span><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">0</span></div>
-                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">3</span><span class="math-cell">0</span><span class="math-cell">1</span><span class="math-cell">0</span></div>
-                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span class="math-cell">2</span><span class="math-cell">0</span><span class="math-cell">1</span></div>
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span
+                                class="math-cell">0</span><span class="math-cell">0</span><span
+                                class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">1</span><span
+                                class="math-cell">0</span><span class="math-cell">0</span><span
+                                class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">2</span><span class="math-cell">0</span><span
+                                class="math-cell">1</span><span class="math-cell">0</span><span
+                                class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">0</span><span class="math-cell">3</span><span
+                                class="math-cell">0</span><span class="math-cell">1</span><span
+                                class="math-cell">0</span></div>
+                        <div class="math-row"><span class="math-cell">1</span><span class="math-cell">0</span><span
+                                class="math-cell">2</span><span class="math-cell">0</span><span
+                                class="math-cell">1</span></div>
                     </div>
                 </div>
             </div>
@@ -554,7 +649,8 @@
                     <div class="step-content">
                         <div class="step-title">تحويل الحروف لأرقام (Mapping)</div>
                         <div class="math-expr">
-                            C = 2, &nbsp; Y = 24, &nbsp; B = 1, &nbsp; E = 4, &nbsp; R = 17 &nbsp; &rArr; &nbsp; P = [2, 24, 1, 4, 17]
+                            C = 2, &nbsp; Y = 24, &nbsp; B = 1, &nbsp; E = 4, &nbsp; R = 17 &nbsp; &rArr; &nbsp; P = [2,
+                            24, 1, 4, 17]
                         </div>
                     </div>
                 </div>
@@ -567,9 +663,12 @@
                         <div class="math-expr">
                             Row 1: (1 &times; 2) + 0 + 0 + 0 + 0 = 2 &nbsp; &rArr; 2 (mod 26) = 2 (C)<br>
                             Row 2: 0 + (1 &times; 24) + 0 + 0 + 0 = 24 &nbsp; &rArr; 24 (mod 26) = 24 (Y)<br>
-                            Row 3: (2 &times; 2) + 0 + (1 &times; 1) + 0 + 0 = 4 + 1 = 5 &nbsp; &rArr; 5 (mod 26) = 5 (F)<br>
-                            Row 4: 0 + (3 &times; 24) + 0 + (1 &times; 4) + 0 = 72 + 4 = 76 &nbsp; &rArr; 76 (mod 26) = 24 (Y) &nbsp; <span class="eng-yellow">(لأن 76 - 52 = 24)</span><br>
-                            Row 5: (1 &times; 2) + 0 + (2 &times; 1) + 0 + (1 &times; 17) = 2 + 0 + 2 + 0 + 17 = 21 &nbsp; &rArr; 21 (mod 26) = 21 (V)
+                            Row 3: (2 &times; 2) + 0 + (1 &times; 1) + 0 + 0 = 4 + 1 = 5 &nbsp; &rArr; 5 (mod 26) = 5
+                            (F)<br>
+                            Row 4: 0 + (3 &times; 24) + 0 + (1 &times; 4) + 0 = 72 + 4 = 76 &nbsp; &rArr; 76 (mod 26) =
+                            24 (Y) &nbsp; <span class="eng-yellow">(لأن 76 - 52 = 24)</span><br>
+                            Row 5: (1 &times; 2) + 0 + (2 &times; 1) + 0 + (1 &times; 17) = 2 + 0 + 2 + 0 + 17 = 21
+                            &nbsp; &rArr; 21 (mod 26) = 21 (V)
                         </div>
                     </div>
                 </div>
@@ -578,7 +677,9 @@
             <div class="ar-text" style="border-right-color:#a855f7; margin-top:20px;">
                 الناتج النهائي المشفر: <span class="eng-red">CYFYV</span>.
                 <br>
-                ملاحظة للامتحان: لو جاب مصفوفة 5&times;5 مش هيجيبها معقدة ومليانة أرقام في كل مكان عشان الوقت؛ هيجيب مصفوفة شبه دي (فيها أصفار كتير) عشان الضرب يكون سريع ومياخدش وقت في الحسابات اليدوية. ركز بس في طريقة الضرب وهتضمن الدرجة كاملة يا صديقي!
+                ملاحظة للامتحان: لو جاب مصفوفة 5&times;5 مش هيجيبها معقدة ومليانة أرقام في كل مكان عشان الوقت؛ هيجيب
+                مصفوفة شبه دي (فيها أصفار كتير) عشان الضرب يكون سريع ومياخدش وقت في الحسابات اليدوية. ركز بس في طريقة
+                الضرب وهتضمن الدرجة كاملة يا صديقي!
             </div>
         </div>
 
